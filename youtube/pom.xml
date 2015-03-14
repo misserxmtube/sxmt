@@ -74,6 +74,12 @@
         </dependency>
 
         <dependency>
+            <artifactId>sxmt-persistence</artifactId>
+            <groupId>com.sxmt</groupId>
+	        <version>${sxmt.version}</version>
+        </dependency>
+
+        <dependency>
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
         </dependency>
