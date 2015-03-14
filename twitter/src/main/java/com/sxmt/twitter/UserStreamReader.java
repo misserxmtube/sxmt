@@ -2,6 +2,7 @@ package com.sxmt.twitter;
 
 import com.google.common.collect.Lists;
 
+import com.sxmt.twitter.dialects.SXMDialect;
 import com.twitter.hbc.ClientBuilder;
 import com.twitter.hbc.core.Client;
 import com.twitter.hbc.core.Constants;
@@ -15,14 +16,13 @@ import com.twitter.hbc.httpclient.auth.OAuth1;
 
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,11 +48,11 @@ public class UserStreamReader implements Runnable
 	private Client hosebirdClient;
 	private BlockingQueue<String> msgQueue;
 	private BlockingQueue<Event> eventQueue;
-	private List<Long> userIDs;
+	private Map<Long, SXMDialect> userIDs;
 
 	public UserStreamReader()
 	{
-		userIDs = new ArrayList<Long>();
+		userIDs = new HashMap<Long, SXMDialect>();
 
 		/** Set up your blocking queues: Be sure to size these properly based on expected TPS of your stream */
 		msgQueue = new LinkedBlockingQueue<String>(100000);
@@ -64,7 +64,8 @@ public class UserStreamReader implements Runnable
 	{
 		/** Declare the host you want to connect to, the endpoint, and authentication (basic auth or oauth) */
 		Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
-		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint().followings(userIDs);
+		List<Long> ids = new ArrayList<>(userIDs.keySet());
+		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint().followings(ids);
 		hosebirdEndpoint.stallWarnings(false);
 
 		// Optional: set up some followings and track terms
@@ -139,14 +140,17 @@ public class UserStreamReader implements Runnable
 	private void buildAndStoreTweet(String msg, JsonNode node)
 	{
 		// Build tweet and store it
-		Long id = node.get("id").asLong();
-		String songName = getSongName(node);
-		String artist = getArtist(node);
+		Long tweetId = node.get("id").asLong();
 		String userName = getUserName(node);
+
 		String tweetText = getTweetText(node);
 		Long userID = getUserID(node);
-		Date origination = getOriginationData(node);
-		Tweet tweet =  new Tweet(id, songName, artist, userName, userName, tweetText, userID, origination, msg);
+		SXMDialect dialect = userIDs.get(userID);
+		String songName = dialect.getSongTitle(tweetText);
+		String artist = dialect.getArtist(tweetText);
+
+		DateTime origination = getOriginationData(node);
+		Tweet tweet =  new Tweet(tweetId, songName, artist, userName, userName, tweetText, userID, origination, msg);
 		System.out.println("Tweet: " + tweet.toString());
 		try {
 			TweetStorer.storeTweet(tweet);
@@ -156,41 +160,22 @@ public class UserStreamReader implements Runnable
 		}
 	}
 
-	public void addUser(Long id)
+	public void addUser(Long id, SXMDialect dialect)
 	{
-		userIDs.add(id);
+		userIDs.put(id, dialect);
 	}
 
 	public void removeUser(Long id)
 	{
-		int x = userIDs.indexOf(id);
-		if (x != -1)
+		if (userIDs.containsKey(id))
 		{
-			userIDs.remove(x);
+			userIDs.remove(id);
 		}
 	}
 
 	private String getTweetText(JsonNode node)
 	{
 		return node.get("text").getTextValue();
-	}
-
-	// BPM: Tiesto/Allure - Pair Of Dice playing on #BPM -
-	private String getSongName(JsonNode node)
-	{
-		String text = node.get("text").getTextValue();
-		int poIndex = text.indexOf("playing on");
-		int dIndex = text.indexOf('-');
-
-		return text.substring(dIndex+1, poIndex).trim();
-	}
-
-	private String getArtist(JsonNode node)
-	{
-		String text = node.get("text").getTextValue();
-		int dIndex = text.indexOf('-');
-
-		return text.substring(0, dIndex).trim();
 	}
 
 	private Long getUserID(JsonNode node)
@@ -203,16 +188,10 @@ public class UserStreamReader implements Runnable
 		return node.get("user").get("screen_name").getTextValue();
 	}
 
-	private Date getOriginationData(JsonNode node)
+	private DateTime getOriginationData(JsonNode node)
 	{
 		String originationStr = node.get("created_at").getTextValue();
-		DateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy");
-		try {
-			return format.parse(originationStr);
-		} catch (Exception e)
-		{
-			log.error("Exception when parsing date format", e);
-			return new Date(0);
-		}
+		DateTimeFormatter formatter = DateTimeFormat.forPattern("EEE MMM dd HH:mm:ss Z yyyy");
+		return formatter.parseDateTime(originationStr);
 	}
 }

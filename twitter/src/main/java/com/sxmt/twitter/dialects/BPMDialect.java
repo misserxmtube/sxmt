@@ -19,7 +19,7 @@ public class BPMDialect implements SXMDialect
 	@Override
 	public String getSongTitle(String postContent)
 	{
-		int po = postContent.indexOf("playing on #BPM");
+		int po = postContent.indexOf("playing on");
 		int dash = postContent.indexOf('-');
 		return postContent.substring(dash+1, po).trim();
 	}

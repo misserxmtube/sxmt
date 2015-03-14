@@ -1,5 +1,6 @@
 package com.sxmt.twitter;
 
+import com.sxmt.twitter.dialects.SXMDialect;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import twitter4j.Twitter;
@@ -40,19 +41,19 @@ public class TweetConsumer
 		twitter = tf.getInstance();
 	}
 
-	public void addUser(long userID)
+	public void addUser(long userID, SXMDialect dialect)
 	{
-		reader.addUser(userID);
+		reader.addUser(userID, dialect);
 	}
 
-	public void addUser(String user)
+	public void addUser(String user, SXMDialect dialect)
 	{
 		try {
 			User tUser = twitter.users().showUser(user);
-			reader.addUser(tUser.getId());
+			reader.addUser(tUser.getId(), dialect);
 		} catch (Exception e)
 		{
-			log.error("addUser(String)", e);
+			log.error("addUser(String, SXMDialect)", e);
 		}
 	}
 
