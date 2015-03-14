@@ -48,7 +48,6 @@
         <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
-            <version>1.9.4</version>
         </dependency>
 
         <dependency>
@@ -72,6 +71,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+        </dependency>
+
+        <dependency>
+            <artifactId>sxmt-persistence</artifactId>
+            <groupId>com.sxmt</groupId>
         </dependency>
 
     </dependencies>

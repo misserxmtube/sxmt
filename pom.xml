@@ -22,6 +22,7 @@
 		<apache.commons.io.version>2.4</apache.commons.io.version>
 		<slf4j.version>1.7.7</slf4j.version>
         <org.joda.time.version>2.7</org.joda.time.version>
+        <org.codehaus.jackson.version>1.9.4</org.codehaus.jackson.version>
 	</properties>
 
 	<dependencyManagement>
@@ -54,6 +55,11 @@
                 <groupId>joda-time</groupId>
                 <artifactId>joda-time</artifactId>
                 <version>${org.joda.time.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.codehaus.jackson</groupId>
+                <artifactId>jackson-mapper-asl</artifactId>
+                <version>${org.codehaus.jackson.version}</version>
             </dependency>
 
         </dependencies>

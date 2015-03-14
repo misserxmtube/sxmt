@@ -10,12 +10,14 @@ import com.google.api.services.youtube.model.ResourceId;
 import com.google.api.services.youtube.model.SearchListResponse;
 import com.google.api.services.youtube.model.SearchResult;
 import com.google.api.services.youtube.model.Thumbnail;
+import com.sxmt.youtube.YoutubeRecord;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 
@@ -24,18 +26,10 @@ import java.util.Properties;
  */
 public class YoutubeFetcher
 {
-    /**
-     * Define a global variable that identifies the name of a file that
-     * contains the developer's API key.
-     */
     private static final String PROPERTIES_FILENAME = "youtube.properties";
-
     private static final long NUMBER_OF_VIDEOS_RETURNED = 25;
+    private static String API_KEY;
 
-    /**
-     * Define a global instance of a Youtube object, which will be used
-     * to make YouTube Data API requests.
-     */
     private YouTube youtube;
 
     /**
@@ -50,6 +44,7 @@ public class YoutubeFetcher
         try {
             InputStream in = YoutubeFetcher.class.getResourceAsStream("/" + PROPERTIES_FILENAME);
             properties.load(in);
+            API_KEY = properties.getProperty("youtube.apikey");
 
         } catch (IOException e) {
             System.err.println("There was an error reading " + PROPERTIES_FILENAME + ": " + e.getCause()
@@ -80,42 +75,40 @@ public class YoutubeFetcher
         }
     }
 
-    public YoutubeRecord fetchDataFromServer(String song, String artist){
-        YoutubeRecord ytr = new YoutubeRecord();
+    public YoutubeRecord getYoutubeRecord(String song, String artist){
+        return null;
+    }
 
+    private List<SearchResult> fetchResults(String query){
         // Define the API request for retrieving search results.
         YouTube.Search.List search = null;
+        List<SearchResult> searchResultList = new LinkedList<SearchResult>();
         try
         {
+            // Initialize Search.List call with 'parts' attribute
             search = youtube.search().list("id,snippet");
 
-            // Set your developer key from the Google Developers Console for
-            // non-authenticated requests. See:
-            // https://console.developers.google.com/
-            String apiKey = properties.getProperty("youtube.apikey");
-            search.setKey(apiKey);
-            search.setQ(queryTerm);
-
-            // Restrict the search results to only include videos. See:
-            // https://developers.google.com/youtube/v3/docs/search/list#type
+            search.setKey(API_KEY);
+            search.setQ(query);
             search.setType("video");
+            search.setVideoEmbeddable("true");
 
             // To increase efficiency, only retrieve the fields that the
             // application uses.
-            search.setFields("items(id/kind,id/videoId,snippet/title,snippet/thumbnails/default/url)");
+            search.setFields("items(id/videoId,snippet/title,snippet/channelTitle,snippet/publishedAt)");
             search.setMaxResults(NUMBER_OF_VIDEOS_RETURNED);
 
             // Call the API and print results.
             SearchListResponse searchResponse = search.execute();
-            List<SearchResult> searchResultList = searchResponse.getItems();
-            if (searchResultList != null) {
-                prettyPrint(searchResultList.iterator(), queryTerm);
-            }
+            searchResultList = searchResponse.getItems();
+//            if (searchResultList != null) {
+//                prettyPrint(searchResultList.iterator(), query);
+//            }
         } catch (IOException e)
         {
             e.printStackTrace();
         }
-        return ytr;
+        return searchResultList;
     }
 
     /*

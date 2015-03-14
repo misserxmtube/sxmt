@@ -10,6 +10,5 @@ public class App
     {
         System.out.println( "Hello World!" );
         YoutubeFetcher ytf = new YoutubeFetcher();
-        ytf.initialize();
     }
 }

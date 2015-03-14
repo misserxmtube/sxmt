@@ -1,4 +1,4 @@
-package com.sxmt;
+package com.sxmt.youtube;
 
 import org.joda.time.DateTime;
 
@@ -7,22 +7,17 @@ import org.joda.time.DateTime;
  */
 public class YoutubeRecord
 {
-
     private String videoId;
-    private DateTime publishDate;
     private String title;
-    private String description;
+    private String channelTitle;
+    private DateTime publishDate;
 
-    private String jsonBlob;
-
-    public String getVideoId()
-    {
-        return videoId;
-    }
-
-    public void setVideoId(String videoId)
+    public YoutubeRecord(String videoId, String title, String channelTitle, DateTime publishDate)
     {
         this.videoId = videoId;
+        this.title = title;
+        this.channelTitle = channelTitle;
+        this.publishDate = publishDate;
     }
 
     public DateTime getPublishDate()
@@ -35,6 +30,16 @@ public class YoutubeRecord
         this.publishDate = publishDate;
     }
 
+    public String getVideoId()
+    {
+        return videoId;
+    }
+
+    public void setVideoId(String videoId)
+    {
+        this.videoId = videoId;
+    }
+
     public String getTitle()
     {
         return title;
@@ -45,23 +50,13 @@ public class YoutubeRecord
         this.title = title;
     }
 
-    public String getDescription()
+    public String getChannelTitle()
     {
-        return description;
+        return channelTitle;
     }
 
-    public void setDescription(String description)
+    public void setChannelTitle(String channelTitle)
     {
-        this.description = description;
-    }
-
-    public String getJsonBlob()
-    {
-        return jsonBlob;
-    }
-
-    public void setJsonBlob(String jsonBlob)
-    {
-        this.jsonBlob = jsonBlob;
+        this.channelTitle = channelTitle;
     }
 }
