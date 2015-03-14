@@ -10,50 +10,68 @@ import java.sql.Statement;
 
 public class VideoRetriever
 {
-	public static String getNewestVideo() throws SQLException
+	public static VideoForDisplay getNewestVideo() throws SQLException
 	{
-        String vidId = "dQw4w9WgXcQ";
+		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
             //TODO filter by channel
             ResultSet results = statement.executeQuery(
-                    "SELECT vids.videoId FROM " + TableNames.VIDEOS + " AS vids " +
-                    "INNER JOIN " + TableNames.TWEETS + " AS twits " +
-                        "ON twits.tweetId = vids.tweetId " +
-                    "ORDER BY twits.origination DESC " +
-                    "LIMIT 1"
+                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
+                    " INNER JOIN " + TableNames.TWEETS + " AS twits " +
+                        " ON twits.tweetId = vids.tweetId " +
+                    " ORDER BY twits.origination DESC " +
+                    " LIMIT 1"
             );
 
             while(results.next()){
-                vidId = results.getString(1);
+
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
             }
         }
-		return vidId;
+		//TODO do something instead of returning null when there is nothing found
+		if(videoForDisplay == null)
+		{
+			videoForDisplay = getFillerVideo(1L);
+		}
+
+		return videoForDisplay;
 	}
 
-	public static String getNextVideo(Long previousId) throws SQLException
+	public static VideoForDisplay getNextVideo(Long previousId) throws SQLException
 	{
-        String vidId = "dQw4w9WgXcQ";
+		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
             //TODO filter by channel
             ResultSet results = statement.executeQuery(
-                    "SELECT vids.videoId FROM " + TableNames.VIDEOS + " AS vids " +
-                    "INNER JOIN " + TableNames.TWEETS + " AS twits " +
-                    "ON twits.tweetId = vids.tweetId " +
-                    "WHERE twits.origination > ( " +
-                        "SELECT origination FROM " + TableNames.TWEETS +
-                        "WHERE tweetId = " + previousId + " )" +
-                    "ORDER BY twits.origination ASC " +
-                    "LIMIT 1"
+                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
+                    " INNER JOIN " + TableNames.TWEETS + " AS twits " +
+                     "ON twits.tweetId = vids.tweetId " +
+                    " WHERE twits.origination > ( " +
+                        " SELECT origination FROM " + TableNames.TWEETS +
+                        " WHERE tweetId = " + previousId + " ) " +
+                    " ORDER BY twits.origination ASC " +
+                    " LIMIT 1"
             );
 
             while(results.next()){
-                vidId = results.getString(1);
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
             }
         }
-        return vidId;
+		//TODO do something instead of returning null when there is nothing found
+		if(videoForDisplay == null)
+		{
+			videoForDisplay = getFillerVideo(previousId);
+		}
+
+        return videoForDisplay;
+	}
+
+	private static VideoForDisplay getFillerVideo(Long previousTweet)
+	{
+		return new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", previousTweet);
 	}
 }

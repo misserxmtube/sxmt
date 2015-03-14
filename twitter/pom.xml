@@ -19,6 +19,7 @@
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-xc</artifactId>
@@ -28,6 +29,7 @@
 		<dependency>
 			<artifactId>sxmt-persistence</artifactId>
 			<groupId>com.sxmt</groupId>
+			<version>${sxmt.version}</version>
 		</dependency>
 
 		<!-- Tweety tweets-->

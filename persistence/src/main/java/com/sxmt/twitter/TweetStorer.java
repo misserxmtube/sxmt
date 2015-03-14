@@ -23,7 +23,7 @@ public class TweetStorer
 
 			//insert the 'tweet'
 			final String query = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.TWEETS + " (tweetId, userId, twitterText, songName, artist, origination, jsonBlob) VALUES (" +
-					tweet.getId() + "," + tweet.getUserId() + ",'" + tweet.getTweetText() + "','" + tweet.getSongName() + "','" + tweet.getArtist() + "','" + new SimpleDateFormat("yyyy-MM-dd").format(tweet.getOrigination().toDate()) + "','" + tweet.getBlob() + "')";
+					tweet.getId() + "," + tweet.getUserId() + ",'" + tweet.getTweetText() + "','" + tweet.getSongName() + "','" + tweet.getArtist() + "','" + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(tweet.getOrigination().toDate()) + "','" + tweet.getBlob() + "')";
 			statement.execute(query);
 		}
 

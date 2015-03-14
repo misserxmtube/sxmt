@@ -43,6 +43,21 @@
 				<groupId>com.sxmt</groupId>
 				<version>${sxmt.version}</version>
 			</dependency>
+			<dependency>
+				<artifactId>sxmt-twitter</artifactId>
+				<groupId>com.sxmt</groupId>
+				<version>${sxmt.version}</version>
+			</dependency>
+			<dependency>
+				<artifactId>sxmt-youtube</artifactId>
+				<groupId>com.sxmt</groupId>
+				<version>${sxmt.version}</version>
+			</dependency>
+			<dependency>
+				<artifactId>sxmt-ui</artifactId>
+				<groupId>com.sxmt</groupId>
+				<version>${sxmt.version}</version>
+			</dependency>
 
 			<!-- Tweety tweets-->
 			<dependency>
