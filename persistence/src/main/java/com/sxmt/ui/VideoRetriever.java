@@ -7,7 +7,7 @@ public class VideoRetriever
 		return "";
 	}
 
-	public static String getNextVideo(Integer previousId)
+	public static String getNextVideo(Long previousId)
 	{
 		return "";
 	}

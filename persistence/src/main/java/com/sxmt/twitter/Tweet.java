@@ -4,26 +4,30 @@ import java.util.Date;
 
 public class Tweet
 {
-	private final String id;
+	private final Long id;
 	private final String songName;
 	private final String artist;
 	private final String userName;
-	private final String userId;
+	private final String userHandle;
+	private final String tweetText;
+	private final Long userId;
 	private final Date origination;
 	private final String blob;
 
-	public Tweet(String id, String songName, String artist, String userName, String userId, Date origination, String blob)
+	public Tweet(Long id, String songName, String artist, String userName, String userHandle, String tweetText, Long userId, Date origination, String blob)
 	{
 		this.id = id;
 		this.songName = songName;
 		this.artist = artist;
 		this.userName = userName;
+		this.userHandle = userHandle;
+		this.tweetText = tweetText;
 		this.userId = userId;
 		this.origination = origination;
 		this.blob = blob;
 	}
 
-	public String getId()
+	public Long getId()
 	{
 		return id;
 	}
@@ -43,7 +47,12 @@ public class Tweet
 		return userName;
 	}
 
-	public String getUserId()
+	public String getTweetText()
+	{
+		return tweetText;
+	}
+
+	public Long getUserId()
 	{
 		return userId;
 	}
@@ -56,5 +65,10 @@ public class Tweet
 	public String getBlob()
 	{
 		return blob;
+	}
+
+	public String getUserHandle()
+	{
+		return userHandle;
 	}
 }
