@@ -71,4 +71,19 @@ public class Tweet
 	{
 		return userHandle;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Tweet{" +
+				"id='" + id + '\'' +
+				", songName='" + songName + '\'' +
+				", artist='" + artist + '\'' +
+				", userName='" + userName + '\'' +
+				", userHandle='" + userHandle + '\'' +
+				", userId='" + userId + '\'' +
+				", origination=" + origination +
+				", blob='" + blob + '\'' +
+				'}';
+	}
 }
