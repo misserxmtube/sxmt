@@ -1,6 +1,6 @@
 package com.sxmt.twitter;
 
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Tweet
 {
@@ -11,10 +11,10 @@ public class Tweet
 	private final String userHandle;
 	private final String tweetText;
 	private final Long userId;
-	private final Date origination;
+	private final DateTime origination;
 	private final String blob;
 
-	public Tweet(Long id, String songName, String artist, String userName, String userHandle, String tweetText, Long userId, Date origination, String blob)
+	public Tweet(Long id, String songName, String artist, String userName, String userHandle, String tweetText, Long userId, DateTime origination, String blob)
 	{
 		this.id = id;
 		this.songName = songName;
@@ -57,7 +57,7 @@ public class Tweet
 		return userId;
 	}
 
-	public Date getOrigination()
+	public DateTime getOrigination()
 	{
 		return origination;
 	}

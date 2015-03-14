@@ -1,4 +1,4 @@
-package com.sxmt.youtube;
+package com.sxmt;
 
 import org.joda.time.DateTime;
 

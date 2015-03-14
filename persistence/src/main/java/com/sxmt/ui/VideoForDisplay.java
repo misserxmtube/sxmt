@@ -8,9 +8,8 @@ public class VideoForDisplay
 	private final String description;
 	private final String videoId;
 	private final Long relevantTweetId;
-	private final String videoUrl;
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, Long relevantTweetId, String videoUrl)
+	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, Long relevantTweetId)
 	{
 		this.songName = songName;
 		this.artist = artist;
@@ -18,7 +17,6 @@ public class VideoForDisplay
 		this.description = description;
 		this.videoId = videoId;
 		this.relevantTweetId = relevantTweetId;
-		this.videoUrl = videoUrl;
 	}
 
 	public String getSongName()
@@ -49,10 +47,5 @@ public class VideoForDisplay
 	public Long getRelevantTweetId()
 	{
 		return relevantTweetId;
-	}
-
-	public String getVideoUrl()
-	{
-		return videoUrl;
 	}
 }
