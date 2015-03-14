@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  *
  * Created by rvfischione on 3/13/2015.
  */
-public class UserStreamReader
+public class UserStreamReader implements Runnable
 {
 	private final Logger log = LoggerFactory.getLogger(UserStreamReader.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
@@ -59,11 +59,9 @@ public class UserStreamReader
 		eventQueue = new LinkedBlockingQueue<Event>(1000);
 	}
 
-	public void run() throws Exception
+	@Override
+	public void run()
 	{
-		// get user id from name
-
-
 		/** Declare the host you want to connect to, the endpoint, and authentication (basic auth or oauth) */
 		Hosts hosebirdHosts = new HttpHosts(Constants.STREAM_HOST);
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint().followings(userIDs);
@@ -94,26 +92,37 @@ public class UserStreamReader
 		// Do whatever needs to be done with messages
 		while (!hosebirdClient.isDone())
 		{
-			String msg = msgQueue.poll(10, TimeUnit.SECONDS);
-			if (msg == null)
+			String msg = "";
+			try {
+				msg = msgQueue.poll(10, TimeUnit.SECONDS);
+			} catch (Exception e)
+			{
+				// interrupted while polling
+//				log.error("Unexpected error while polling", e);
+				stop();
+			}
+
+			if (msg == null || msg.equals(""))
 			{
 				System.out.println("Did not receive a message in 10 seconds");
 			} else
 			{
 //				System.out.println(msg);
-				JsonNode node = objectMapper.readTree(msg);
+				JsonNode node;
+				try {
+					node = objectMapper.readTree(msg);
+				} catch (Exception e)
+				{
+					log.error("Exception while parsing response", e);
+					throw new RuntimeException(e);
+				}
 
-				// Build tweet and store it
-				Long id = node.get("id").asLong();
-				String songName = getSongName(node);
-				String artist = getArtist(node);
-				String userName = getUserName(node);
-				String tweetText = getTweetText(node);
-				Long userID = getUserID(node);
-				Date origination = getOriginationData(node);
-				Tweet tweet =  new Tweet(id, songName, artist, userName, userName, tweetText, userID, origination, msg);
-				System.out.println("Tweet: " + tweet.toString());
-				TweetStorer.storeTweet(tweet);
+				buildAndStoreTweet(msg, node);
+			}
+
+			if (Thread.interrupted())
+			{
+				stop();
 			}
 		}
 
@@ -125,6 +134,26 @@ public class UserStreamReader
 	public void stop()
 	{
 		hosebirdClient.stop();
+	}
+
+	private void buildAndStoreTweet(String msg, JsonNode node)
+	{
+		// Build tweet and store it
+		Long id = node.get("id").asLong();
+		String songName = getSongName(node);
+		String artist = getArtist(node);
+		String userName = getUserName(node);
+		String tweetText = getTweetText(node);
+		Long userID = getUserID(node);
+		Date origination = getOriginationData(node);
+		Tweet tweet =  new Tweet(id, songName, artist, userName, userName, tweetText, userID, origination, msg);
+		System.out.println("Tweet: " + tweet.toString());
+		try {
+			TweetStorer.storeTweet(tweet);
+		} catch (Exception e)
+		{
+			log.error("Exception while storing tweet", e);
+		}
 	}
 
 	public void addUser(Long id)
@@ -146,16 +175,22 @@ public class UserStreamReader
 		return node.get("text").getTextValue();
 	}
 
+	// BPM: Tiesto/Allure - Pair Of Dice playing on #BPM -
 	private String getSongName(JsonNode node)
 	{
 		String text = node.get("text").getTextValue();
-		return "dont fuck care";
+		int poIndex = text.indexOf("playing on");
+		int dIndex = text.indexOf('-');
+
+		return text.substring(dIndex+1, poIndex).trim();
 	}
 
 	private String getArtist(JsonNode node)
 	{
 		String text = node.get("text").getTextValue();
-		return "dont fuck care";
+		int dIndex = text.indexOf('-');
+
+		return text.substring(0, dIndex).trim();
 	}
 
 	private Long getUserID(JsonNode node)
