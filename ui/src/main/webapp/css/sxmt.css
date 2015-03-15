@@ -1,0 +1,35 @@
+.noMargin {
+    margin: 0 !important;
+}
+
+.noShow {
+    height: 0;
+    padding: 0;
+}
+
+.hideOffscreen {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    left: -999999px;
+}
+
+.station {
+    text-align: center;
+    background: #F2F2F2;
+    border: 1px solid #D8D8D8;
+    cursor: pointer;
+    height: 100px;
+    margin: 0 10px;
+    margin-top: 10px;
+}
+
+.slick-prev::before, .slick-next::before {
+    color: #000000 !important;
+}
+
+.station.slick-center {
+    height: 120px;
+    margin-top: 0;
+}
+

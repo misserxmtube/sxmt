@@ -4,19 +4,106 @@
 		<artifactId>sxmt</artifactId>
 		<groupId>com.sxmt</groupId>
 		<version>1.0-SNAPSHOT</version>
-	</parent>
+    </parent>
 	<modelVersion>4.0.0</modelVersion>
 
 	<artifactId>sxmt-ui</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>sxmt-ui</name>
 	<url>http://maven.apache.org</url>
+
+    <properties>
+        <javax.servlet.version>3.0.1</javax.servlet.version>
+        <fasterxml.jackson.version>2.5.1</fasterxml.jackson.version>
+        <spring.version>4.1.1.RELEASE</spring.version>
+        <json.path.version>0.8.1</json.path.version>
+    </properties>
 	
 	<dependencies>
-		<dependency>
+        <!-- SXMT -->
+        <dependency>
+            <groupId>com.sxmt</groupId>
+            <artifactId>sxmt-persistence</artifactId>
+            <version>${sxmt.version}</version>
+        </dependency>
+
+        <!-- JAVAX -->
+
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet.version}</version>
+        </dependency>
+
+        <!-- JACKSON -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${fasterxml.jackson.version}</version>
+        </dependency>
+
+        <!-- SPRING -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+        <!-- TEST -->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path-assert</artifactId>
+            <version>${json.path.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+            <scope>test</scope>
 		</dependency>
 	</dependencies>
+
+    <build>
+        <finalName>sxmt-ui</finalName>
+        <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <configuration>
+                    <includes>
+                        <include>**/*Test.java</include>
+                    </includes>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

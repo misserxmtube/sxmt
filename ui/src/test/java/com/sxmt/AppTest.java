@@ -1,38 +1,71 @@
 package com.sxmt;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.context.WebApplicationContext;
 
-/**
- * Unit test for simple App.
- */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
+
+@RunWith(SpringJUnit4ClassRunner.class)
+@WebAppConfiguration
+@ContextConfiguration("file:ui/src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
+public class AppTest {
+    private MockMvc mockMvc;
+
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    @Autowired
+    protected WebApplicationContext wac;
+    private ObjectMapper objectMapper;
+
+    @Before
+    public void setup() {
+        this.mockMvc = webAppContextSetup(this.wac).build();
+        this.objectMapper = new ObjectMapper();
     }
 
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
+    @Test
+    public void stationsSimple() throws Exception {
+        mockMvc.perform(get("/rest/stations")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$").isArray());
     }
 
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+    @Test
+    public void newSongSimple() throws Exception {
+        StationSong stationSong = new StationSong();
+        stationSong.setStation("187541621");
+        nextSongPost(stationSong);
+    }
+
+    @Test
+    public void nextSongSimple() throws Exception {
+        StationSong stationSong = new StationSong();
+        stationSong.setStation("187541621");
+        stationSong.setLastSong("1234232");
+        nextSongPost(stationSong);
+    }
+
+    private void nextSongPost(StationSong stationSong) throws Exception {
+        mockMvc.perform(post("/rest/nextSong")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(stationSong)))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.song").exists())
+                .andExpect(jsonPath("$.artist").exists());
     }
 }
