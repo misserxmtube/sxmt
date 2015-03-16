@@ -16,7 +16,7 @@ public class VideoRetrieverTester
 	@Test
 	public void testGetNextVideo() throws SQLException
 	{
-		final VideoForDisplay nextVideo = VideoRetriever.getNextVideo(1234232L);
+		final VideoForDisplay nextVideo = VideoRetriever.getNextVideo(2624623423623452L);
 		System.out.println(nextVideo);
 	}
 

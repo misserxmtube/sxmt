@@ -81,7 +81,7 @@ public class VideoRetriever
 				" ON twits.userId = u.userId\n" +
 				" WHERE u.userName = 'bpm_playlist'\n" +
 				" AND DATE_SUB(NOW(), INTERVAL 2 HOUR) > twits.origination\n" +
-				" AND twits.tweedId != " + previousTweet +
+				" AND twits.tweetId != " + previousTweet +
 				" ORDER BY RAND()\n" +
 				" LIMIT 1";
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
