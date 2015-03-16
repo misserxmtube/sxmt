@@ -57,11 +57,11 @@ public class VideoRetriever
                     " LIMIT 1"
             );
 
-            while(results.next()){
+            if(results.next()){
 	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
             }
         }
-		//TODO do something instead of returning null when there is nothing found
+		
 		if(videoForDisplay == null)
 		{
 			videoForDisplay = getFillerVideo(previousId);
@@ -70,8 +70,35 @@ public class VideoRetriever
         return videoForDisplay;
 	}
 
-	private static VideoForDisplay getFillerVideo(Long previousTweet)
+	private static VideoForDisplay getFillerVideo(Long previousTweet) throws SQLException
 	{
-		return new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", previousTweet);
+		VideoForDisplay videoForDisplay = null;
+		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId" +
+				" FROM " + TableNames.VIDEOS + " AS vids\n" +
+				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
+				" ON vids.tweetId = twits.tweetId\n" +
+				" INNER JOIN " + TableNames.USERS + " AS u\n" +
+				" ON twits.userId = u.userId\n" +
+				" WHERE u.userName = 'bpm_playlist'\n" +
+				" AND DATE_SUB(NOW(), INTERVAL 2 HOUR) > twits.origination\n" +
+				" AND twits.tweedId != " + previousTweet +
+				" ORDER BY RAND()\n" +
+				" LIMIT 1";
+		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
+				final Statement statement = connection.createStatement())
+		{
+			//TODO filter by channel
+			ResultSet results = statement.executeQuery(fillerSql);
+
+			if(results.next()){
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+			}
+		}
+
+		if(videoForDisplay == null)
+		{
+			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", previousTweet);
+		}
+		return videoForDisplay;
 	}
 }
