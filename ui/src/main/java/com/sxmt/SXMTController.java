@@ -44,7 +44,7 @@ public class SXMTController {
 //            video = new VideoForDisplay("Every Day", "Eric Prydz", "", "", "yOLd4jl0uQ8", "", 0L); //TEST
         } else {
             // send back next song in queue for station
-            video = VideoRetriever.getNextVideo(Long.parseLong(lastTweet)); // TODO param needs to change to video id
+            video = VideoRetriever.getNextVideo(Long.parseLong(lastTweet));
 //            video = new VideoForDisplay("Shadows", "Eric Prydz", "", "", "LD26X84KfD0", "", 0L); //TEST
         }
         return new Song(

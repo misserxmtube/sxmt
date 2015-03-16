@@ -4,7 +4,7 @@ package com.sxmt;
 public class StationSong {
     private String station;
     private String lastSong;
-    private String lastTweet; //oi
+    private String lastTweet;
 
     public StationSong() {}
 

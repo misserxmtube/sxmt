@@ -5,7 +5,7 @@ public class Song {
     private String id;
     private String song;
     private String artist;
-    private String tweet; // We shouldn't need this, but alas
+    private String tweet;
 
     public Song() {}
 

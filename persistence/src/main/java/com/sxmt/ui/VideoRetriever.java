@@ -61,7 +61,7 @@ public class VideoRetriever
 	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
             }
         }
-		
+
 		if(videoForDisplay == null)
 		{
 			videoForDisplay = getFillerVideo(previousId);
