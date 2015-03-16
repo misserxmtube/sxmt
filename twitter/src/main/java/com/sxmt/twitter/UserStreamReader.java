@@ -93,38 +93,44 @@ public class UserStreamReader implements Runnable
 		// Do whatever needs to be done with messages
 		while (!hosebirdClient.isDone())
 		{
-			String msg = "";
-			try {
-				msg = msgQueue.poll(10, TimeUnit.SECONDS);
-			} catch (Exception e)
-			{
-				// interrupted while polling
-//				log.error("Unexpected error while polling", e);
-				stop();
-			}
+            try {
+                String msg = "";
+                try {
+                    msg = msgQueue.poll(10, TimeUnit.SECONDS);
+                } catch (Exception e)
+                {
+                    // interrupted while polling
+    				log.error("Unexpected error while polling", e);
+                    stop();
+                }
 
-			if (msg == null || msg.equals(""))
-			{
-				System.out.println("Did not receive a message in 10 seconds");
-			} else
-			{
-//				System.out.println(msg);
-				JsonNode node;
-				try {
-					node = objectMapper.readTree(msg);
-				} catch (Exception e)
-				{
-					log.error("Exception while parsing response", e);
-					throw new RuntimeException(e);
-				}
+                if (msg == null || msg.equals(""))
+                {
+                    System.out.println("Did not receive a message in 10 seconds");
+                } else
+                {
+    //				System.out.println(msg);
+                    JsonNode node;
+                    try {
+                        node = objectMapper.readTree(msg);
+                    } catch (Exception e)
+                    {
+                        log.error("Exception while parsing response", e);
+                        throw new RuntimeException(e);
+                    }
 
-				buildAndStoreTweet(msg, node);
-			}
+                    buildAndStoreTweet(msg, node);
+                }
 
-			if (Thread.interrupted())
-			{
-				stop();
-			}
+                if (Thread.interrupted())
+                {
+                    log.info("Stopping...");
+                    stop();
+                }
+            } catch (Exception e) {
+                // bwahaha
+                log.error("SXMT ERROR:\n", e);
+            }
 		}
 
 //		if (hosebirdClient.isDone()) {
