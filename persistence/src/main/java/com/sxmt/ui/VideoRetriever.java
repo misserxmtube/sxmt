@@ -73,7 +73,7 @@ public class VideoRetriever
 	private static VideoForDisplay getFillerVideo(Long previousTweet) throws SQLException
 	{
 		VideoForDisplay videoForDisplay = null;
-		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId" +
+		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName " +
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
 				" ON vids.tweetId = twits.tweetId\n" +
@@ -91,7 +91,7 @@ public class VideoRetriever
 			ResultSet results = statement.executeQuery(fillerSql);
 
 			if(results.next()){
-				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), previousTweet);
 			}
 		}
 
