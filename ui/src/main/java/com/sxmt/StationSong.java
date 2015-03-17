@@ -1,12 +1,16 @@
 package com.sxmt;
 
-/** Station and last song information **/
+/**
+ * Station and last song information *
+ */
 public class StationSong {
     private String station;
-    private String lastSong;
-    private String lastTweet;
+    private String song;
+    private String tweet;
+    private int next;
 
-    public StationSong() {}
+    public StationSong() {
+    }
 
     public String getStation() {
         return station;
@@ -16,19 +20,27 @@ public class StationSong {
         this.station = station;
     }
 
-    public String getLastSong() {
-        return lastSong;
+    public String getSong() {
+        return song;
     }
 
-    public void setLastSong(String lastSong) {
-        this.lastSong = lastSong;
+    public void setSong(String lastSong) {
+        this.song = lastSong;
     }
 
-    public String getLastTweet() {
-        return lastTweet;
+    public String getTweet() {
+        return tweet;
     }
 
-    public void setLastTweet(String lastTweet) {
-        this.lastTweet = lastTweet;
+    public void setTweet(String lastTweet) {
+        this.tweet = lastTweet;
+    }
+
+    public int getNext() {
+        return next;
+    }
+
+    public void setNext(int next) {
+        this.next = next;
     }
 }

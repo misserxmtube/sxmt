@@ -54,12 +54,12 @@ public class AppTest {
     public void nextSongSimple() throws Exception {
         StationSong stationSong = new StationSong();
         stationSong.setStation("187541621");
-        stationSong.setLastSong("1234232");
+        stationSong.setSong("1234232");
         nextSongPost(stationSong);
     }
 
     private void nextSongPost(StationSong stationSong) throws Exception {
-        mockMvc.perform(post("/rest/nextSong")
+        mockMvc.perform(post("/rest/song")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(stationSong)))
                 .andExpect(status().isOk())

@@ -14,9 +14,9 @@ import java.sql.SQLException;
 public class VideoRetrieverTester
 {
 	@Test
-	public void testGetNextVideo() throws SQLException
+	public void testGetVideo() throws SQLException
 	{
-		final VideoForDisplay nextVideo = VideoRetriever.getNextVideo(2624623423623452L);
+		final VideoForDisplay nextVideo = VideoRetriever.getVideo(2624623423623452L);
 		System.out.println(nextVideo);
 	}
 

@@ -15,18 +15,28 @@
     left: -999999px;
 }
 
-.station {
-    text-align: center;
-    background: #F2F2F2;
-    border: 1px solid #D8D8D8;
-    cursor: pointer;
-    height: 100px;
-    margin: 0 10px;
-    margin-top: 10px;
+.scroll-container > .row:first-child > div {
+    margin-top: 20px;
 }
 
 .slick-prev::before, .slick-next::before {
     color: #000000 !important;
+}
+
+.slick-next {
+    right: -10px;
+}
+
+.slick-prev {
+    left: -10px;
+}
+
+.station {
+    text-align: center;
+    cursor: pointer;
+    height: 100px;
+    margin: 0 10px;
+    margin-top: 10px;
 }
 
 .station.slick-center {
@@ -46,3 +56,12 @@
     margin: 0;
 }
 
+.sidebar {
+    background: #FAFAFA;
+    padding: 10px 20px;
+}
+
+.historyEntry {
+    word-break: break-all;
+    cursor: pointer;
+}

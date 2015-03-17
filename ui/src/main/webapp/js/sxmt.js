@@ -24,6 +24,8 @@ window.SXMT=(function() {
         compileTemplate("videoHeader");
         compileTemplate("videoEmbedUrl");
         compileTemplate("stations");
+        compileTemplate("historyEntry", true);
+        compileTemplate("history");
     })();
 
     SXMT.info = {};
@@ -46,9 +48,29 @@ window.SXMT=(function() {
             } else if (event.data == window.YT.PlayerState.ENDED) {
                 console.log("Video Ended");
     //            SXMT.player.stopVideo();
-                SXMT.loadNextSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);
+                SXMT.loadSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);
             }
         }
+    };
+    var onPlayerError = function(event) {
+        console.log("Error playing video.", event);
+        SXMT.loadSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);
+        // Remove song from history
+        if(sessionStorage) {
+            var history = sessionStorage.getItem("sxmt_history");
+            if (history) {
+                history = JSON.parse(history);
+                history.shift();
+            } else {
+                history = [];
+            }
+            sessionStorage.setItem("sxmt_history", JSON.stringify(history));
+        } else {
+            // Will need to do something else...
+            console.log("Session Storage is not available when attempting to remove song.");
+        }
+        var historyEntries = $("#videoHistory").find(">.historyEntry");
+        if (historyEntries.length > 0) historyEntries.first().remove();
     };
     window.onYouTubeIframeAPIReady = function() {
         SXMT.player = new window.YT.Player("videoPlayer", {
@@ -64,7 +86,8 @@ window.SXMT=(function() {
             },
             events: {
                 "onReady": onPlayerReady,
-                "onStateChange": onPlayerStateChange
+                "onStateChange": onPlayerStateChange,
+                "onError": onPlayerError
             }
         });
     };
@@ -112,23 +135,31 @@ window.SXMT=(function() {
             });
     };
 
-    /** Load Next Song **/
-    SXMT.loadNextSong = function(station, lastSong, lastTweet) {
+    /** Load Song **/
+    SXMT.loadSong = function(station, song, tweet, ignoreReferenceTweet) {
+        // TODO we might not want this actually, playing through the history isn't necessarily a bad thing... :/
+        if (SXMT.info.referenceTweet && !ignoreReferenceTweet) {
+            tweet = SXMT.info.referenceTweet;
+            delete SXMT.info.referenceTweet;
+        }
         var data = JSON.stringify({
             station: station,
-            lastSong: lastSong,
-            lastTweet: lastTweet
+            song: song,
+            tweet: tweet,
+            next: ignoreReferenceTweet ? 0 : 1
         });
         $.ajax({
-            url: "./rest/nextSong",
+            url: "./rest/song",
             method: "POST",
             contentType: "application/json",//;charset=utf-8",
             data: data
         })
             .done(function(data) {
                 console.log("Loaded song", data);
+                if (tweet) SXMT.addSongToHistory(SXMT.info.currentStation, SXMT.info.currentSong);
+                if (data.referenceTweet && !SXMT.info.referenceTweet) SXMT.info.referenceTweet = data.referenceTweet;
                 SXMT.info.currentSong = data;
-                 $(document).trigger("loadVideo.sxmt");
+                $(document).trigger("loadVideo.sxmt");
              })
             .fail(function(data) {
                 SXMT.info.currentStation = SXMT.info.lastStation;
@@ -136,14 +167,76 @@ window.SXMT=(function() {
             });
     };
 
+    /** Load History **/
+    SXMT.refreshHistory = function() {
+        if(sessionStorage) {
+            var history = sessionStorage.getItem("sxmt_history");
+            if (history) {
+                document.getElementById("videoHistory").innerHTML = templates.history(JSON.parse(history));
+            }
+        } else {
+            // Try loading from somewhere else...
+            console.log("Session Storage is not available. Cannot refresh history.");
+        }
+    };
+
+    var historyContainsEntry = function(entry, history) {
+        var index = -1, entryTweet = entry.song.tweet;//entryJson = JSON.stringify(entry);
+        for (var i = 0, l = history.length; i < l; i ++) {
+            //if (entryJson === JSON.stringify(history[i])) {
+            if (entryTweet === history[i].song.tweet) {
+                index = i;
+                break;
+            }
+        }
+        return index;
+    };
+
+    /** Add Song to History **/
+    SXMT.addSongToHistory = function(station, song) {
+        if (!(station && song && song.tweet && song.id && song.song)) return;
+        var MAX_HISTORY_ENTRIES = 10, existsAtIndex = -1,
+            entry = {
+                station: station,
+                song: song
+            };
+        console.log("Adding to history", station, song);
+        // Update session history
+        if(sessionStorage) {
+            var history = sessionStorage.getItem("sxmt_history");
+            if (history) {
+                history = JSON.parse(history);
+                if ((existsAtIndex = historyContainsEntry(entry, history)) > -1) history.splice(existsAtIndex, 1);
+                else if (history.length === MAX_HISTORY_ENTRIES) history.pop();
+            } else {
+                history = [];
+            }
+            history.unshift(entry);
+            sessionStorage.setItem("sxmt_history", JSON.stringify(history));
+        } else {
+            // Will need to do something else...
+            console.log("Session Storage is not available. Cannot save for session", station, song);
+        }
+        // Update UI history
+        var videoHistory = $("#videoHistory"), historyEntries = videoHistory.find(">.historyEntry");
+        /*if (existsAtIndex > -1) {
+            var duplicate = historyEntries.get(existsAtIndex);
+            if (duplicate) duplicate.remove();
+        } else */if (historyEntries.length === MAX_HISTORY_ENTRIES) {
+            historyEntries.last().remove();
+        }
+        videoHistory.prepend(templates.historyEntry(entry));
+    };
+
     $(document).one("loadVideo.sxmt", function() {
         $("#videoHeader").removeClass("noMargin");
         $("#videoWrapper").removeClass("noShow");
         $("#videoSkip").show();
+        SXMT.refreshHistory();
     });
     $(document).on("loadVideo.sxmt", function() {
-        SXMT.player.loadVideoById(SXMT.info.currentSong.id);
         document.getElementById("videoHeader").innerHTML = templates.videoHeader(SXMT.info.currentSong);
+        SXMT.player.loadVideoById(SXMT.info.currentSong.id);
     });
 
     /** Initialize Station List **/
@@ -153,13 +246,24 @@ window.SXMT=(function() {
         if (SXMT.info.currentStation !== tmp) {
             SXMT.info.lastStation = SXMT.info.currentStation;
             SXMT.info.currentStation = tmp;
-            SXMT.loadNextSong(SXMT.info.currentStation);
+            SXMT.loadSong(SXMT.info.currentStation);
         }
     });
     SXMT.refreshStations();
 
+    /** Initialize History **/
+    $("#videoHistory").on("click", ".historyEntry", function() {
+        var $this = $(this);
+        // Added reference tweet id so we don't end up playing through the history since the video selected
+        if (!SXMT.info.referenceTweet) SXMT.info.referenceTweet = SXMT.info.currentSong.tweet;
+        var station = $this.attr("data-station"), song = $this.attr("data-song"), tweet = $this.attr("data-tweet");
+        $this.remove();
+        SXMT.loadSong(station, song, tweet, true);
+    });
+    //SXMT.refreshHistory();
+
     /** Setup Next Video Button **/
-    $("#videoSkip").on("click", function() {SXMT.loadNextSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);});
+    $("#videoSkip").on("click", function() {SXMT.loadSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);});
 
     return SXMT;
 })();

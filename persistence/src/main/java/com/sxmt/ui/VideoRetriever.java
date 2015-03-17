@@ -39,7 +39,11 @@ public class VideoRetriever
 		return videoForDisplay;
 	}
 
-	public static VideoForDisplay getNextVideo(Long previousId) throws SQLException
+	public static VideoForDisplay getVideo(Long id) throws SQLException {
+		return getVideo(id, true);
+	}
+
+	public static VideoForDisplay getVideo(Long tweet, boolean getNext) throws SQLException
 	{
 		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
@@ -50,10 +54,9 @@ public class VideoRetriever
                     " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
                      "ON twits.tweetId = vids.tweetId " +
-                    " WHERE twits.origination > ( " +
+                    " WHERE twits.origination " + (getNext ? ">" : "=") + " ( " +
                         " SELECT origination FROM " + TableNames.TWEETS +
-                        " WHERE tweetId = " + previousId + " ) " +
-                    " ORDER BY twits.origination ASC " +
+                        " WHERE tweetId = " + tweet + " ) " +
                     " LIMIT 1"
             );
 
@@ -64,16 +67,16 @@ public class VideoRetriever
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = getFillerVideo(previousId);
+			videoForDisplay = getFillerVideo(tweet);
 		}
 
         return videoForDisplay;
 	}
 
-	private static VideoForDisplay getFillerVideo(Long previousTweet) throws SQLException
+	private static VideoForDisplay getFillerVideo(Long tweet) throws SQLException
 	{
 		VideoForDisplay videoForDisplay = null;
-		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName " +
+		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId " +
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
 				" ON vids.tweetId = twits.tweetId\n" +
@@ -81,7 +84,7 @@ public class VideoRetriever
 				" ON twits.userId = u.userId\n" +
 				" WHERE u.userName = 'bpm_playlist'\n" +
 				" AND DATE_SUB(NOW(), INTERVAL 2 HOUR) > twits.origination\n" +
-				" AND twits.tweetId != " + previousTweet +
+				" AND twits.tweetId != " + tweet +
 				" ORDER BY RAND()\n" +
 				" LIMIT 1";
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
@@ -91,13 +94,13 @@ public class VideoRetriever
 			ResultSet results = statement.executeQuery(fillerSql);
 
 			if(results.next()){
-				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), previousTweet);
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6), tweet);
 			}
 		}
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", previousTweet);
+			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
 		}
 		return videoForDisplay;
 	}

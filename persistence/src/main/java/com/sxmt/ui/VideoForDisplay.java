@@ -9,8 +9,14 @@ public class VideoForDisplay
 	private final String videoId;
 	private final String channelName;
 	private final Long relevantTweetId;
+	private final Long referenceTweetId;
 
 	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, Long relevantTweetId)
+	{
+		this(songName, artist, videoTitle, description, videoId, channelName, relevantTweetId, null);
+	}
+
+	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, Long relevantTweetId, Long referenceTweetId)
 	{
 		this.songName = songName;
 		this.artist = artist;
@@ -19,6 +25,7 @@ public class VideoForDisplay
 		this.videoId = videoId;
 		this.channelName = channelName;
 		this.relevantTweetId = relevantTweetId;
+		this.referenceTweetId = referenceTweetId;
 	}
 
 	public String getSongName()
@@ -54,5 +61,10 @@ public class VideoForDisplay
 	public Long getRelevantTweetId()
 	{
 		return relevantTweetId;
+	}
+
+	public Long getReferenceTweetId()
+	{
+		return referenceTweetId;
 	}
 }

@@ -28,30 +28,36 @@ public class SXMTController {
     }
 
 	@RequestMapping(
-            value="/nextSong",
+            value="/song",
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Song nextSong(@RequestBody StationSong stationInfo) throws SQLException {
+    public Song song(@RequestBody StationSong stationInfo) throws SQLException {
         final String station = stationInfo.getStation();
-        final String lastSong = stationInfo.getLastSong();
-        final String lastTweet = stationInfo.getLastTweet();
+        final String song = stationInfo.getSong();
+        final String tweet = stationInfo.getTweet();
+        final int next = stationInfo.getNext();
         final VideoForDisplay video;
-        if (lastSong == null) {
+        if (song == null) {
             // send back latest song for station
             video = VideoRetriever.getNewestVideo();
 //            video = new VideoForDisplay("Every Day", "Eric Prydz", "", "", "yOLd4jl0uQ8", "", 0L); //TEST
         } else {
-            // send back next song in queue for station
-            video = VideoRetriever.getNextVideo(Long.parseLong(lastTweet));
+            // next == 0 then send back the matching song else send back next song in queue for station
+            video = VideoRetriever.getVideo(Long.parseLong(tweet), (next > 0));
 //            video = new VideoForDisplay("Shadows", "Eric Prydz", "", "", "LD26X84KfD0", "", 0L); //TEST
         }
+        Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
+        String tweetId = null, referenceId = null;
+        if (tweetIdL != null) tweetId = tweetIdL.toString();
+        if (referenceIdL != null) referenceId = referenceIdL.toString();
         return new Song(
                 video.getArtist(),
                 video.getSongName(),
                 video.getVideoId(),
-                video.getRelevantTweetId().toString()
+                tweetId,
+                referenceId
         );
     }
 }

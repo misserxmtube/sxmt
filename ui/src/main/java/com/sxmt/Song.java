@@ -6,14 +6,16 @@ public class Song {
     private String song;
     private String artist;
     private String tweet;
+    private String fillerSavedTweet;
 
     public Song() {}
 
-    public Song(String artist, String song, String id, String tweet) {
+    public Song(String artist, String song, String id, String tweet, String fillerSavedTweet) {
         this.artist = artist;
         this.song = song;
         this.id = id;
         this.tweet = tweet;
+        this.fillerSavedTweet = fillerSavedTweet;
     }
 
     public String getId() {
@@ -46,5 +48,9 @@ public class Song {
 
     public void setTweet(String tweet) {
         this.tweet = tweet;
+    }
+
+    public void setFillerSavedTweet(String fillerSavedTweet) {
+        this.fillerSavedTweet = fillerSavedTweet;
     }
 }

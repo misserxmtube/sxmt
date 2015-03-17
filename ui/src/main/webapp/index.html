@@ -12,44 +12,56 @@
 </head>
 <body id="sxmtBody">
 
-<div class="row">
-    <div class="large-12 columns">
-        <h1>Welcome to Serious XM Tube</h1>
-    </div>
-</div>
-
-<div class="row">
-    <div class="large-12 columns">
-        <div class="panel">
-            <h3 id="videoHeader" class="noMargin">Choose a Station to Get Started</h3>
-            <div id="videoWrapper" class="flex-video hideOffscreen">
-                <div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;">
-                    &nbsp;_______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______&nbsp;_________
-                    (&nbsp;&nbsp;____&nbsp;\|\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/|(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)\__&nbsp;&nbsp;&nbsp;__/
-                    |&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;\/(&nbsp;\&nbsp;&nbsp;&nbsp;/&nbsp;)|&nbsp;()&nbsp;()&nbsp;|&nbsp;&nbsp;&nbsp;)&nbsp;(&nbsp;&nbsp;&nbsp;
-                    |&nbsp;(_____&nbsp;&nbsp;\&nbsp;(_)&nbsp;/&nbsp;|&nbsp;||&nbsp;||&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                    (_____&nbsp;&nbsp;)&nbsp;&nbsp;)&nbsp;_&nbsp;(&nbsp;&nbsp;|&nbsp;|(_)|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;|&nbsp;/&nbsp;(&nbsp;)&nbsp;\&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                    /\____)&nbsp;|(&nbsp;/&nbsp;&nbsp;&nbsp;\&nbsp;)|&nbsp;)&nbsp;&nbsp;&nbsp;(&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                    \_______)|/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\||/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\|&nbsp;&nbsp;&nbsp;)_(&nbsp;&nbsp;&nbsp;
+<nav class="top-bar" data-topbar="">
+    <ul class="title-area"><li class="name"><h1><a href="javascript:void(0);" target="_blank">Welcome to Serious XM Tube</a></h1></li></ul>
+    <section class="top-bar-section">
+        <ul class="right">
+            <!--<li class="divider"></li>-->
+            <!--TODO may want to add our controls here-->
+        </ul>
+    </section>
+</nav>
+<section class="scroll-container">
+    <div class="row">
+        <!--<div class="large-3 columns"></div>-->
+        <!--<div class="large-6 columns">-->
+        <div class="large-9 columns">
+            <div class="panel">
+                <h3 id="videoHeader" class="noMargin">Choose a Station to Get Started</h3>
+                <div id="videoWrapper" class="flex-video hideOffscreen">
+                    <div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;">
+                        &nbsp;_______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______&nbsp;_________
+                        (&nbsp;&nbsp;____&nbsp;\|\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/|(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)\__&nbsp;&nbsp;&nbsp;__/
+                        |&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;\/(&nbsp;\&nbsp;&nbsp;&nbsp;/&nbsp;)|&nbsp;()&nbsp;()&nbsp;|&nbsp;&nbsp;&nbsp;)&nbsp;(&nbsp;&nbsp;&nbsp;
+                        |&nbsp;(_____&nbsp;&nbsp;\&nbsp;(_)&nbsp;/&nbsp;|&nbsp;||&nbsp;||&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+                        (_____&nbsp;&nbsp;)&nbsp;&nbsp;)&nbsp;_&nbsp;(&nbsp;&nbsp;|&nbsp;|(_)|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;|&nbsp;/&nbsp;(&nbsp;)&nbsp;\&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+                        /\____)&nbsp;|(&nbsp;/&nbsp;&nbsp;&nbsp;\&nbsp;)|&nbsp;)&nbsp;&nbsp;&nbsp;(&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+                        \_______)|/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\||/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\|&nbsp;&nbsp;&nbsp;)_(&nbsp;&nbsp;&nbsp;
+                    </div>
                 </div>
+                <a id="videoSkip" class="large button expand" style="display: none;">Next Video</a>
             </div>
-            <a id="videoSkip" class="large button expand" style="display: none;">Next Video</a>
+            <div id="stations"></div>
+        </div>
+        <div class="large-3 columns">
+            <div id="sidebarRight" class="sidebar">
+                <h5>History</h5>
+                <nav>
+                    <ul id="videoHistory" class="side-nav"></ul>
+                </nav>
+            </div>
         </div>
     </div>
-</div>
-
-<div class="row">
-    <div class="large-12 columns">
-        <div id="stations"></div>
-    </div>
-</div>
+</section>
 
 <!-- TEMPLATES/ -->
 <script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{song}}&nbsp;by&nbsp;{{artist}}</a></script>
 <script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus">You&rsquo;re Listening To:</span>&nbsp;<span id="videoUrl">{{> videoUrl}}</span></script>
 <script id="HT_videoEmbedUrl" type="text/x-handlebars-template">https://www.youtube.com/embed/{{id}}?enablejsapi=1</script>
-<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station" data-station="{{id}}">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
+<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
+<script id="HT_history" type="text/x-handlebars-template">{{#each this}}{{> historyEntry}}{{/each}}</script>
+<script id="HT_historyEntry" type="text/x-handlebars-template"><div class="historyEntry panel" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><i>{{song.song}}</i><br><b>{{song.artist}}</b></div></script><!--TODO fancy up-->
 <!-- /TEMPLATES -->
 
 <script type="text/javascript" src="js/jquery.js"></script>
