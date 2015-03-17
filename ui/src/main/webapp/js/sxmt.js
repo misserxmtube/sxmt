@@ -52,7 +52,8 @@ window.SXMT=(function() {
     };
     window.onYouTubeIframeAPIReady = function() {
         SXMT.player = new window.YT.Player("videoPlayer", {
-            height: "600",
+            //height: "600",
+            height: "70%",
             width: "100%",
             playerVars: {
                 autohide: 1,
@@ -138,6 +139,7 @@ window.SXMT=(function() {
     $(document).one("loadVideo.sxmt", function() {
         $("#videoHeader").removeClass("noMargin");
         $("#videoWrapper").removeClass("noShow");
+        $("#videoSkip").show();
     });
     $(document).on("loadVideo.sxmt", function() {
         SXMT.player.loadVideoById(SXMT.info.currentSong.id);
@@ -155,6 +157,9 @@ window.SXMT=(function() {
         }
     });
     SXMT.refreshStations();
+
+    /** Setup Next Video Button **/
+    $("#videoSkip").on("click", function() {SXMT.loadNextSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);});
 
     return SXMT;
 })();
