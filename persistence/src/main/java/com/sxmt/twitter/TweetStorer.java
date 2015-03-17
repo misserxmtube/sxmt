@@ -28,6 +28,6 @@ public class TweetStorer
 			statement.execute(query);
 		}
 
-		VideoStorer.storeVideo(new YoutubeFetcher().getYoutubeRecord(tweet.getSongName(), tweet.getArtist()), tweet.getId());
+		VideoStorer.storeVideo(YoutubeFetcher.getYoutubeRecord(tweet.getSongName(), tweet.getArtist()), tweet.getId());
 	}
 }

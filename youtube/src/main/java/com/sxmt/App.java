@@ -34,15 +34,6 @@ public class App
     public static void main( String[] args )
     {
         System.out.println( "Hello World!" );
-        YoutubeFetcher fetcher = new YoutubeFetcher();
-        YoutubeRecord record = fetcher.getYoutubeRecord(getInputQuery(),"");
-
-        System.out.println( "*****************************************");
-        System.out.println( "FOUND DA BEST WON DAWG");
-        System.out.println( "Title        :"+record.getTitle() );
-        System.out.println( "VideoId:     :"+record.getVideoId() );
-        System.out.println( "ChannelTitle :"+record.getChannelTitle() );
-        System.out.println( "PublishDate  :"+record.getPublishDate().toString() );
-        System.out.println( "*****************************************");
+        YoutubeFetcher.getYoutubeRecord(getInputQuery(),"");
     }
 }

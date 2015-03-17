@@ -11,13 +11,16 @@ public class YoutubeRecord
     private String title;
     private String channelTitle;
     private DateTime publishDate;
+    private String thumbnail;
+    private int duration;
 
-    public YoutubeRecord(String videoId, String title, String channelTitle, DateTime publishDate)
+    public YoutubeRecord(String videoId, String title, String channelTitle, DateTime publishDate, String thumbnail)
     {
         this.videoId = videoId;
         this.title = title;
         this.channelTitle = channelTitle;
         this.publishDate = publishDate;
+        this.thumbnail = thumbnail;
     }
 
     public DateTime getPublishDate()
@@ -58,5 +61,25 @@ public class YoutubeRecord
     public void setChannelTitle(String channelTitle)
     {
         this.channelTitle = channelTitle;
+    }
+
+    public String getThumbnail()
+    {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail)
+    {
+        this.thumbnail = thumbnail;
+    }
+
+    public int getDuration()
+    {
+        return duration;
+    }
+
+    public void setDuration(int duration)
+    {
+        this.duration = duration;
     }
 }
