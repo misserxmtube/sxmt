@@ -57,6 +57,7 @@ public class VideoRetriever
                     " WHERE twits.origination " + (getNext ? ">" : "=") + " ( " +
                         " SELECT origination FROM " + TableNames.TWEETS +
                         " WHERE tweetId = " + tweet + " ) " +
+		                    //TODO split up the calls and do orderby origination ASC?
                     " LIMIT 1"
             );
 
