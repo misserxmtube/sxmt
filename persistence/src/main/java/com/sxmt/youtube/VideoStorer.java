@@ -17,9 +17,9 @@ public class VideoStorer
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final Statement statement = connection.createStatement())
 		{
-			//insert the 'youtubeRecord' TODO add thumbnail
-			final String query = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.VIDEOS + " (tweetId, videoTitle, videoId, channelName) VALUES (" +
-					tweetId + ",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getTitle()) + "\",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getVideoId()) + "\",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getChannelTitle()) + "\")";
+			//insert the 'youtubeRecord'
+			final String query = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.VIDEOS + " (tweetId, videoTitle, videoId, channelName, videoThumbnail) VALUES (" +
+					tweetId + ",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getTitle()) + "\",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getVideoId()) + "\",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getChannelTitle()) + "\",\"" + StringEscapeUtils.escapeJava(youtubeRecord.getThumbnail()) + "\")";
 			statement.execute(query);
 		}
 	}

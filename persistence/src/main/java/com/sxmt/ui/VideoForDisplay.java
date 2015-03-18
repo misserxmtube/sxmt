@@ -7,24 +7,22 @@ public class VideoForDisplay
 	private final String songName;
 	private final String artist;
 	private final String videoTitle;
-	private final String description;
 	private final String videoId;
 	private final String channelName;
 	private final String thumbnail;
 	private final Long relevantTweetId;
 	private final Long referenceTweetId;
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, String thumbnail, Long relevantTweetId)
+	public VideoForDisplay(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId)
 	{
-		this(songName, artist, videoTitle, description, videoId, channelName, thumbnail, relevantTweetId, null);
+		this(songName, artist, videoTitle, videoId, channelName, thumbnail, relevantTweetId, null);
 	}
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
+	public VideoForDisplay(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
 	{
 		this.songName = StringEscapeUtils.unescapeJava(songName);
 		this.artist = StringEscapeUtils.unescapeJava(artist);
 		this.videoTitle = StringEscapeUtils.unescapeJava(videoTitle);
-		this.description = StringEscapeUtils.unescapeJava(description);
 		this.videoId = StringEscapeUtils.unescapeJava(videoId);
 		this.channelName = StringEscapeUtils.unescapeJava(channelName);
 		this.thumbnail = StringEscapeUtils.unescapeJava(thumbnail);
@@ -45,11 +43,6 @@ public class VideoForDisplay
 	public String getVideoTitle()
 	{
 		return videoTitle;
-	}
-
-	public String getDescription()
-	{
-		return description;
 	}
 
 	public String getVideoId()
@@ -82,7 +75,6 @@ public class VideoForDisplay
 				"songName='" + songName + '\'' +
 				", artist='" + artist + '\'' +
 				", videoTitle='" + videoTitle + '\'' +
-				", description='" + description + '\'' +
 				", videoId='" + videoId + '\'' +
 				", channelName='" + channelName + '\'' +
 				", thumbnail='" + thumbnail + '\'' +
