@@ -52,7 +52,8 @@ public class SXMTController {
         String tweetId = null, referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();
         if (referenceIdL != null) referenceId = referenceIdL.toString();
-        return new Song(
+        return new Song( // Getting close to actually replacing this with VideoForDisplay
+                video.getVideoTitle(),
                 video.getArtist(),
                 video.getSongName(),
                 video.getVideoId(),

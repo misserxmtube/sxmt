@@ -23,9 +23,7 @@
 </nav>
 <section class="scroll-container">
     <div class="row">
-        <!--<div class="large-3 columns"></div>-->
-        <!--<div class="large-6 columns">-->
-        <div class="large-9 columns">
+        <div id="videoColumn" class="large-7 columns">
             <div class="panel">
                 <h3 id="videoHeader" class="noMargin">Choose a Station to Get Started</h3>
                 <div id="videoWrapper" class="flex-video hideOffscreen">
@@ -44,10 +42,13 @@
             </div>
             <div id="stations"></div>
         </div>
-        <div class="large-3 columns">
+        <div id="historyColumn" class="large-5 columns">
             <div id="sidebarRight" class="sidebar">
-                <h5>History</h5>
-                <nav>
+                <div id="videoHistoryHeader">
+                    <h5>History</h5>
+                    <hr></hr>
+                </div>
+                <nav id="videoHistoryNav">
                     <ul id="videoHistory" class="side-nav"></ul>
                 </nav>
             </div>
@@ -56,12 +57,12 @@
 </section>
 
 <!-- TEMPLATES/ -->
-<script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{song}}&nbsp;by&nbsp;{{artist}}</a></script>
-<script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus">You&rsquo;re Listening To:</span>&nbsp;<span id="videoUrl">{{> videoUrl}}</span></script>
+<script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{title}}<!--{{song}}&nbsp;by&nbsp;{{artist}}--></a></script>
+<script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus" style="display:none;">You&rsquo;re Listening To:</span>&nbsp;<span id="videoUrl">{{> videoUrl}}</span></script>
 <script id="HT_videoEmbedUrl" type="text/x-handlebars-template">https://www.youtube.com/embed/{{id}}?enablejsapi=1</script>
 <script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
 <script id="HT_history" type="text/x-handlebars-template">{{#each this}}{{> historyEntry}}{{/each}}</script>
-<script id="HT_historyEntry" type="text/x-handlebars-template"><div class="historyEntry panel" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><i>{{song.song}}</i><br><b>{{song.artist}}</b></div></script><!--TODO fancy up-->
+<script id="HT_historyEntry" type="text/x-handlebars-template"><a class="historyEntry panel" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><span style="text-decoration:underline;">{{song.title}}</span><br><i>{{song.song}}</i><br><b>{{song.artist}}</b></a></script><!--TODO fancy up-->
 <!-- /TEMPLATES -->
 
 <script type="text/javascript" src="js/jquery.js"></script>

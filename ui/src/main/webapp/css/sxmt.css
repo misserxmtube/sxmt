@@ -19,6 +19,10 @@
     margin-top: 20px;
 }
 
+.row {
+    max-width: 100em;
+}
+
 .slick-prev::before, .slick-next::before {
     color: #000000 !important;
 }
@@ -29,6 +33,10 @@
 
 .slick-prev {
     left: -10px;
+}
+
+.slick-slider {
+    margin-bottom: 20px;
 }
 
 .station {
@@ -45,7 +53,7 @@
 }
 
 .flex-video iframe, .flex-video object, .flex-video embed, .flex-video video {
-    max-height: 600px; /*Will end up removing this for a more flexible layout...*/
+    max-height: 600px; /*May end up removing this for a more flexible layout... maybe not :3 */
 }
 
 .flex-video:not(.noShow) {
@@ -56,12 +64,38 @@
     margin: 0;
 }
 
+#historyColumn {
+    margin-bottom: 20px;
+}
+
 .sidebar {
     background: #FAFAFA;
+}
+
+#sidebarRight {
+    padding: 0;
+}
+
+#videoHistoryHeader > h5 {
+    padding: 10px 25px;
+    margin: 0;
+}
+
+#videoHistoryHeader > hr {
+    padding: 0;
+    margin: 0;
+}
+
+#videoHistoryNav {
     padding: 10px 20px;
+    overflow: auto;
+}
+
+#videoHistory {
+    padding: 1rem 0 0;
 }
 
 .historyEntry {
-    word-break: break-all;
-    cursor: pointer;
+    word-break: break-all;/*replace with text-overflow ellipses or marquee maybe*/
+    display: block;
 }
