@@ -2,6 +2,9 @@ package com.sxmt.ui;
 
 import com.sxmt.connection.SQLConnectionFactory;
 import com.sxmt.connection.TableNames;
+import org.mortbay.log.Log;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,8 +13,11 @@ import java.sql.Statement;
 
 public class VideoRetriever
 {
+	Logger LOG = LoggerFactory.getLogger(VideoRetriever.class);
+
 	public static VideoForDisplay getNewestVideo() throws SQLException
 	{
+		Log.info("Getting newest video");
 		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
@@ -27,7 +33,7 @@ public class VideoRetriever
 
             while(results.next()){
 
-	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), null/*THUMBNAIL*/, results.getLong(6));
             }
         }
 		//TODO do something instead of returning null when there is nothing found
@@ -35,7 +41,7 @@ public class VideoRetriever
 		{
 			videoForDisplay = getFillerVideo(1L);
 		}
-
+		Log.info("Retrieved video: {}", videoForDisplay);
 		return videoForDisplay;
 	}
 
@@ -45,6 +51,7 @@ public class VideoRetriever
 
 	public static VideoForDisplay getVideo(Long tweet, boolean getNext) throws SQLException
 	{
+		Log.info("Getting " + (getNext ? "next " : "") + "video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
@@ -62,7 +69,7 @@ public class VideoRetriever
             );
 
             if(results.next()){
-	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), null/*THUMBNAIL*/, results.getLong(6));
             }
         }
 
@@ -70,12 +77,13 @@ public class VideoRetriever
 		{
 			videoForDisplay = getFillerVideo(tweet);
 		}
-
+		Log.info("Retrieved video", videoForDisplay);
         return videoForDisplay;
 	}
 
 	private static VideoForDisplay getFillerVideo(Long tweet) throws SQLException
 	{
+		Log.info("Getting filler video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
 		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId " +
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
@@ -95,13 +103,13 @@ public class VideoRetriever
 			ResultSet results = statement.executeQuery(fillerSql);
 
 			if(results.next()){
-				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6), tweet);
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), null/*THUMBNAIL*/, results.getLong(6), tweet);
 			}
 		}
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
+			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", null/*THUMBNAIL*/, null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
 		}
 		return videoForDisplay;
 	}

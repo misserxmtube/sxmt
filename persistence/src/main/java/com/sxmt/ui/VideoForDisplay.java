@@ -1,5 +1,7 @@
 package com.sxmt.ui;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 public class VideoForDisplay
 {
 	private final String songName;
@@ -8,22 +10,24 @@ public class VideoForDisplay
 	private final String description;
 	private final String videoId;
 	private final String channelName;
+	private final String thumbnail;
 	private final Long relevantTweetId;
 	private final Long referenceTweetId;
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, Long relevantTweetId)
+	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, String thumbnail, Long relevantTweetId)
 	{
-		this(songName, artist, videoTitle, description, videoId, channelName, relevantTweetId, null);
+		this(songName, artist, videoTitle, description, videoId, channelName, thumbnail, relevantTweetId, null);
 	}
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, Long relevantTweetId, Long referenceTweetId)
+	public VideoForDisplay(String songName, String artist, String videoTitle, String description, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
 	{
-		this.songName = songName;
-		this.artist = artist;
-		this.videoTitle = videoTitle;
-		this.description = description;
-		this.videoId = videoId;
-		this.channelName = channelName;
+		this.songName = StringEscapeUtils.unescapeJava(songName);
+		this.artist = StringEscapeUtils.unescapeJava(artist);
+		this.videoTitle = StringEscapeUtils.unescapeJava(videoTitle);
+		this.description = StringEscapeUtils.unescapeJava(description);
+		this.videoId = StringEscapeUtils.unescapeJava(videoId);
+		this.channelName = StringEscapeUtils.unescapeJava(channelName);
+		this.thumbnail = StringEscapeUtils.unescapeJava(thumbnail);
 		this.relevantTweetId = relevantTweetId;
 		this.referenceTweetId = referenceTweetId;
 	}
@@ -58,6 +62,10 @@ public class VideoForDisplay
 		return channelName;
 	}
 
+	public String getThumbnail() {
+		return thumbnail;
+	}
+
 	public Long getRelevantTweetId()
 	{
 		return relevantTweetId;
@@ -66,5 +74,20 @@ public class VideoForDisplay
 	public Long getReferenceTweetId()
 	{
 		return referenceTweetId;
+	}
+
+	@Override
+	public String toString() {
+		return "VideoForDisplay{" +
+				"songName='" + songName + '\'' +
+				", artist='" + artist + '\'' +
+				", videoTitle='" + videoTitle + '\'' +
+				", description='" + description + '\'' +
+				", videoId='" + videoId + '\'' +
+				", channelName='" + channelName + '\'' +
+				", thumbnail='" + thumbnail + '\'' +
+				", relevantTweetId=" + relevantTweetId +
+				", referenceTweetId=" + referenceTweetId +
+				'}';
 	}
 }
