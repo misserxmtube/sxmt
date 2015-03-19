@@ -22,7 +22,7 @@ public class VideoRetriever
              final Statement statement = connection.createStatement())
         {
             ResultSet results = statement.executeQuery(
-                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
+                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
                     " ON twits.tweetId = vids.tweetId " +
                     " AND twits.stationId = " + station +
@@ -32,7 +32,7 @@ public class VideoRetriever
 
             while(results.next()){
 
-	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), null/*THUMBNAIL*/, results.getLong(6));
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
             }
         }
 
@@ -44,7 +44,7 @@ public class VideoRetriever
 		return videoForDisplay;
 	}
 
-	public static VideoForDisplay getVideo(Long tweet, Long station) throws SQLException
+	public static VideoForDisplay getVideo(Long station, Long tweet) throws SQLException
 	{
 		LOG.info("Getting video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
@@ -72,7 +72,7 @@ public class VideoRetriever
         return videoForDisplay;
 	}
 
-	public static VideoForDisplay getNextVideo(Long tweet, Long station) throws SQLException
+	public static VideoForDisplay getNextVideo(Long station, Long tweet) throws SQLException
 	{
 		LOG.info("Getting next video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;

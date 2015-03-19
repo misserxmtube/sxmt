@@ -45,6 +45,8 @@
     height: 100px;
     margin: 0 10px;
     margin-top: 10px;
+    background-size: 100% 100%;
+    color: white;
 }
 
 .station.slick-center {
@@ -60,12 +62,35 @@
     padding-bottom: 62%;
 }
 
+/*
+#stations {
+    margin-top: 20px;
+}
+
 #videoSkip {
     margin: 0;
 }
+*/
 
-#historyColumn {
-    margin-bottom: 20px;
+#sxmtBody {
+    background-size: 100% 100%;
+}
+
+#videoColumn, #historyColumn {
+    margin: 20px 0;
+}
+
+#videoUrl > a {
+    color: #000000;
+}
+
+@media only screen and (max-width: 64em) {
+    #historyColumn {
+        margin-top: 0;
+    }
+    #videoHistoryNav {
+        max-height: none !important;
+    }
 }
 
 .sidebar {
@@ -98,4 +123,7 @@
 .historyEntry {
     word-break: break-all;/*replace with text-overflow ellipses or marquee maybe*/
     display: block;
+    font-size: 12px;
+    padding: 10px;
+    height: 100px;
 }

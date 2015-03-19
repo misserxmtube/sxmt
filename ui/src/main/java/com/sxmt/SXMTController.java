@@ -23,7 +23,7 @@ public class SXMTController {
     public List<Station> stations() {
         List<Station> stations = new ArrayList<Station>();
         // TODO Populate list with stations (need a query for this)
-        stations.add(new Station("BPM", "187541621")); //TEST
+        stations.add(new Station("BPM", "247455247", "http://i.imgur.com/fxOJROV.jpg", "http://i.imgur.com/fLVXu6r.png")); //TEST
         return stations;
     }
 
@@ -34,19 +34,20 @@ public class SXMTController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public Song song(@RequestBody StationSong stationInfo) throws SQLException {
-        final String station = stationInfo.getStation();
+        final Long station = Long.parseLong(stationInfo.getStation());
         final String song = stationInfo.getSong();
         final String tweet = stationInfo.getTweet();
         final int next = stationInfo.getNext();
         final VideoForDisplay video;
         if (song == null) {
             // send back latest song for station
-            video = VideoRetriever.getNewestVideo();
-//            video = new VideoForDisplay("Every Day", "Eric Prydz", "", "", "yOLd4jl0uQ8", "", 0L); //TEST
+            video = VideoRetriever.getNewestVideo(station);
+        } else if (next > 0) {
+            // send back next song in queue for station
+            video = VideoRetriever.getNextVideo(station, Long.parseLong(tweet));
         } else {
-            // next == 0 then send back the matching song else send back next song in queue for station
-            video = VideoRetriever.getVideo(Long.parseLong(tweet), (next > 0));
-//            video = new VideoForDisplay("Shadows", "Eric Prydz", "", "", "LD26X84KfD0", "", 0L); //TEST
+            // send back the matching song
+            video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
         Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
         String tweetId = null, referenceId = null;
@@ -57,6 +58,7 @@ public class SXMTController {
                 video.getArtist(),
                 video.getSongName(),
                 video.getVideoId(),
+                video.getThumbnail(),
                 tweetId,
                 referenceId
         );

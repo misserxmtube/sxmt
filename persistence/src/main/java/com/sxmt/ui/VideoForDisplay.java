@@ -20,12 +20,12 @@ public class VideoForDisplay
 
 	public VideoForDisplay(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
 	{
-		this.songName = StringEscapeUtils.unescapeJava(songName);
-		this.artist = StringEscapeUtils.unescapeJava(artist);
-		this.videoTitle = StringEscapeUtils.unescapeJava(videoTitle);
-		this.videoId = StringEscapeUtils.unescapeJava(videoId);
-		this.channelName = StringEscapeUtils.unescapeJava(channelName);
-		this.thumbnail = StringEscapeUtils.unescapeJava(thumbnail);
+		this.songName = StringEscapeUtils.unescapeHtml4(songName);
+		this.artist = StringEscapeUtils.unescapeHtml4(artist);
+		this.videoTitle = StringEscapeUtils.unescapeHtml4(videoTitle);
+		this.videoId = StringEscapeUtils.unescapeHtml4(videoId);
+		this.channelName = StringEscapeUtils.unescapeHtml4(channelName);
+		this.thumbnail = StringEscapeUtils.unescapeHtml4(thumbnail);
 		this.relevantTweetId = relevantTweetId;
 		this.referenceTweetId = referenceTweetId;
 	}

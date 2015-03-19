@@ -6,16 +6,18 @@ public class Song {
     private String title;
     private String song;
     private String artist;
+    private String thumbnail;
     private String tweet;
     private String referenceTweet;
 
     public Song() {}
 
-    public Song(String title, String artist, String song, String id, String tweet, String referenceTweet) {
+    public Song(String title, String artist, String song, String id, String thumbnail, String tweet, String referenceTweet) {
         this.title = title;
         this.artist = artist;
         this.song = song;
         this.id = id;
+        this.thumbnail = thumbnail;
         this.tweet = tweet;
         this.referenceTweet = referenceTweet;
     }
@@ -50,6 +52,14 @@ public class Song {
 
     public void setArtist(String artist) {
         this.artist = artist;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 
     public String getTweet() {

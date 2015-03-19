@@ -14,9 +14,9 @@ window.SXMT=(function() {
             console.log("mq change", mql);
             if (mql.matches) {
                 $("#videoHistoryNav").css("max-height", $("#videoColumn").height() - $("#videoHistoryHeader").height() - parseInt($("#historyColumn").css("margin-bottom")));
-            } else {
+            }/* else {
                 $("#videoHistoryNav").css("max-height", "none");
-            }
+            }*/
         };
     //largeScreenMQL.addListener(setHistoryMaxHeight);
     $(window).on("resize", function() {
@@ -120,12 +120,16 @@ window.SXMT=(function() {
             .done(function(data) {
                 console.log("Loaded stations", data);
                 SXMT.info.stations = data;
-                for (var i = 1; i < 5; i ++) {SXMT.info.stations[i] = SXMT.info.stations[0]}// TODO remove this. duplicating to test
-                document.getElementById("stations").innerHTML = templates.stations(SXMT.info.stations);
+//                if (data.length < 1) {alert("No stations loaded!");return;}
+                for (var i = 1; i < 5; i ++) {SXMT.info.stations[i] = data[0]}// TODO remove this. duplicating to test
+                document.getElementById("stations").innerHTML = templates.stations(data);
                 $("#stations").slick({
                     centerMode: true,
                     centerPadding: "60px",
                     slidesToShow: 3,
+                    focusOnSelect: true,
+                    autoplay: true,
+                    autoplaySpeed: 5000,
                     responsive: [
                         {
                             breakpoint: 768,
@@ -259,6 +263,11 @@ window.SXMT=(function() {
         SXMT.player.loadVideoById(SXMT.info.currentSong.id);
     });
 
+    /** Set Station Backdrop **/
+    var updateStationBackdrop = function(imgUrl) {
+        $("sxmtBody").css("background-image", "url('" + imgUrl + "')");
+    };
+
     /** Initialize Station List **/
     $("#stations").on("click", ".station", function() {
         var $this = $(this);
@@ -267,6 +276,7 @@ window.SXMT=(function() {
             SXMT.info.lastStation = SXMT.info.currentStation;
             SXMT.info.currentStation = tmp;
             SXMT.loadSong(SXMT.info.currentStation);
+            updateStationBackdrop(SXMT.info.currentStation.backdrop);
             $("html, body").animate({scrollTop: 0}, "slow");
         }
     });
