@@ -7,6 +7,24 @@ window.SXMT=(function() {
     /** Attach FastClick to the document body **/
     $(function() {FastClick.attach(document.body);});
 
+    /** Resize Handler to Manage History Max-Height **/
+    var resizeTimer,
+        //largeScreenMQL = window.matchMedia("only screen and (min-width: 64.063em)"),
+        setHistoryMaxHeight = function(mql) {
+            console.log("mq change", mql);
+            if (mql.matches) {
+                $("#videoHistoryNav").css("max-height", $("#videoColumn").height() - $("#videoHistoryHeader").height() - parseInt($("#historyColumn").css("margin-bottom")));
+            } else {
+                $("#videoHistoryNav").css("max-height", "none");
+            }
+        };
+    //largeScreenMQL.addListener(setHistoryMaxHeight);
+    $(window).on("resize", function() {
+        clearTimeout(resizeTimer);
+        setTimeout(function() {
+            setHistoryMaxHeight(window.matchMedia("only screen and (min-width: 64.063em)"));
+        }, 100);
+    });
     /** Handlebars Template Compilation **/
     var templates = {};
     (function() {
@@ -156,9 +174,10 @@ window.SXMT=(function() {
         })
             .done(function(data) {
                 console.log("Loaded song", data);
-                if (tweet) SXMT.addSongToHistory(SXMT.info.currentStation, SXMT.info.currentSong);
                 if (data.referenceTweet && !SXMT.info.referenceTweet) SXMT.info.referenceTweet = data.referenceTweet;
+                // TODO may want to get station later as well in case loading songs from other stations
                 SXMT.info.currentSong = data;
+                if (tweet) SXMT.addSongToHistory(SXMT.info.currentStation, SXMT.info.currentSong);
                 $(document).trigger("loadVideo.sxmt");
              })
             .fail(function(data) {
@@ -232,6 +251,7 @@ window.SXMT=(function() {
         $("#videoHeader").removeClass("noMargin");
         $("#videoWrapper").removeClass("noShow");
         $("#videoSkip").show();
+        setHistoryMaxHeight(window.matchMedia("only screen and (min-width: 64.063em)"));
         SXMT.refreshHistory();
     });
     $(document).on("loadVideo.sxmt", function() {
@@ -247,18 +267,21 @@ window.SXMT=(function() {
             SXMT.info.lastStation = SXMT.info.currentStation;
             SXMT.info.currentStation = tmp;
             SXMT.loadSong(SXMT.info.currentStation);
+            $("html, body").animate({scrollTop: 0}, "slow");
         }
     });
     SXMT.refreshStations();
 
     /** Initialize History **/
-    $("#videoHistory").on("click", ".historyEntry", function() {
+    $("#videoHistory").on("click", ".historyEntry", function(event) {
+        event.preventDefault();
         var $this = $(this);
         // Added reference tweet id so we don't end up playing through the history since the video selected
         if (!SXMT.info.referenceTweet) SXMT.info.referenceTweet = SXMT.info.currentSong.tweet;
         var station = $this.attr("data-station"), song = $this.attr("data-song"), tweet = $this.attr("data-tweet");
         $this.remove();
         SXMT.loadSong(station, song, tweet, true);
+        $("html, body").animate({scrollTop: 0}, "slow");
     });
     //SXMT.refreshHistory();
 

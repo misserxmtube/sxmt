@@ -5,88 +5,88 @@ SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema sxmt
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema mydb
+-- Schema sxmt
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `mydb` ;
+CREATE SCHEMA IF NOT EXISTS `sxmt` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `sxmt` ;
 
 -- -----------------------------------------------------
--- Table `mydb`.`users`
+-- Table `sxmt`.`stations`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`users` (
-  `userId` BIGINT(20) NOT NULL,
-  `userName` VARCHAR(45) NULL,
-  `userHandle` VARCHAR(45) NULL,
-  PRIMARY KEY (`userId`),
-  UNIQUE INDEX `userId_UNIQUE` (`userId` ASC))
+CREATE TABLE IF NOT EXISTS `sxmt`.`stations` (
+  `stationId` BIGINT(20) NOT NULL,
+  `stationName` VARCHAR(45) NULL,
+  `stationHandle` VARCHAR(45) NULL,
+  `stationThumbnail` VARCHAR(150) NULL,
+  `stationBackdrop` VARCHAR(150) NULL,
+  PRIMARY KEY (`stationId`),
+  UNIQUE INDEX `userId_UNIQUE` (`stationId` ASC))
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`tweets`
+-- Table `sxmt`.`tweets`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`tweets` (
+CREATE TABLE IF NOT EXISTS `sxmt`.`tweets` (
   `tweetId` BIGINT(20) NOT NULL,
-  `userId` BIGINT(20) NULL,
+  `stationId` BIGINT(20) NULL,
   `twitterText` VARCHAR(140) NULL,
   `songName` VARCHAR(100) NULL,
   `artist` VARCHAR(100) NULL,
   `origination` DATETIME NULL,
   `jsonBlob` BLOB NULL,
   PRIMARY KEY (`tweetId`),
-  INDEX `userId_idx` (`userId` ASC),
+  INDEX `userId_idx` (`stationId` ASC),
   INDEX `origination_idx` (`origination` DESC),
   UNIQUE INDEX `tweetId_UNIQUE` (`tweetId` ASC),
-  CONSTRAINT `userId`
-    FOREIGN KEY (`userId`)
-    REFERENCES `mydb`.`users` (`userId`)
+  CONSTRAINT `stationId`
+    FOREIGN KEY (`stationId`)
+    REFERENCES `sxmt`.`stations` (`stationId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`transformers`
+-- Table `sxmt`.`transformers`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`transformers` (
-  `userId` BIGINT(20) NOT NULL,
+CREATE TABLE IF NOT EXISTS `sxmt`.`transformers` (
+  `stationId` BIGINT(20) NOT NULL,
   `regex` VARCHAR(500) NULL,
   `startTime` DATE NULL,
   `endTime` DATE NULL,
-  INDEX `userId_idx` (`userId` ASC),
-  CONSTRAINT `userId2`
-    FOREIGN KEY (`userId`)
-    REFERENCES `mydb`.`users` (`userId`)
+  INDEX `userId_idx` (`stationId` ASC),
+  CONSTRAINT `stationId2`
+    FOREIGN KEY (`stationId`)
+    REFERENCES `sxmt`.`stations` (`stationId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `mydb`.`videos`
+-- Table `sxmt`.`videos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `mydb`.`videos` (
+CREATE TABLE IF NOT EXISTS `sxmt`.`videos` (
   `tweetId` BIGINT(20) NOT NULL,
   `videoTitle` VARCHAR(100) NULL,
-  `description` VARCHAR(500) NULL,
   `videoId` VARCHAR(45) NULL,
   `channelName` VARCHAR(45) NULL,
+  `videoThumbnail` VARCHAR(150) NULL,
+  `videoType` ENUM('SAFE','NORMAL') NULL,
   PRIMARY KEY (`tweetId`),
   UNIQUE INDEX `tweetId_UNIQUE` (`tweetId` ASC),
   CONSTRAINT `tweetId`
     FOREIGN KEY (`tweetId`)
-    REFERENCES `mydb`.`tweets` (`tweetId`)
+    REFERENCES `sxmt`.`tweets` (`tweetId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-CREATE USER 'sxmt' IDENTIFIED BY 'sxmt';
-
-GRANT ALL ON `mydb`.* TO 'sxmt';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

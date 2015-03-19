@@ -2,6 +2,8 @@ package com.sxmt.ui;
 
 import com.sxmt.connection.SQLConnectionFactory;
 import com.sxmt.connection.TableNames;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,79 +12,111 @@ import java.sql.Statement;
 
 public class VideoRetriever
 {
-	public static VideoForDisplay getNewestVideo() throws SQLException
+	private static final Logger LOG = LoggerFactory.getLogger(VideoRetriever.class);
+
+	public static VideoForDisplay getNewestVideo(Long station) throws SQLException
 	{
+		LOG.info("Getting newest video");
 		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
-            //TODO filter by channel
             ResultSet results = statement.executeQuery(
                     " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
-                        " ON twits.tweetId = vids.tweetId " +
+                    " ON twits.tweetId = vids.tweetId " +
+                    " AND twits.stationId = " + station +
                     " ORDER BY twits.origination DESC " +
                     " LIMIT 1"
             );
 
             while(results.next()){
 
-	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), null/*THUMBNAIL*/, results.getLong(6));
             }
         }
-		//TODO do something instead of returning null when there is nothing found
+
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = getFillerVideo(1L);
+			videoForDisplay = getFillerVideo(1L, station);
 		}
-
+		LOG.info("Retrieved video: {}", videoForDisplay);
 		return videoForDisplay;
 	}
 
-	public static VideoForDisplay getVideo(Long id) throws SQLException {
-		return getVideo(id, true);
-	}
-
-	public static VideoForDisplay getVideo(Long tweet, boolean getNext) throws SQLException
+	public static VideoForDisplay getVideo(Long tweet, Long station) throws SQLException
 	{
+		LOG.info("Getting video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
-            //TODO filter by channel
             ResultSet results = statement.executeQuery(
-                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId FROM " + TableNames.VIDEOS + " AS vids " +
+                    " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
-                     "ON twits.tweetId = vids.tweetId " +
-                    " WHERE twits.origination " + (getNext ? ">" : "=") + " ( " +
-                        " SELECT origination FROM " + TableNames.TWEETS +
-                        " WHERE tweetId = " + tweet + " ) " +
-                    " LIMIT 1"
+                    " ON twits.tweetId = vids.tweetId " +
+                    " WHERE twits.tweetId = " + tweet +
+                    " AND twits.stationId = " + station
             );
 
             if(results.next()){
-	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6));
+	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
             }
         }
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = getFillerVideo(tweet);
+			videoForDisplay = getFillerVideo(tweet, station);
 		}
-
+		LOG.info("Retrieved video", videoForDisplay);
         return videoForDisplay;
 	}
 
-	private static VideoForDisplay getFillerVideo(Long tweet) throws SQLException
+	public static VideoForDisplay getNextVideo(Long tweet, Long station) throws SQLException
 	{
+		LOG.info("Getting next video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
-		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId " +
+		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
+				final Statement statement = connection.createStatement())
+		{
+			ResultSet results = statement.executeQuery(
+					" SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
+							" INNER JOIN " + TableNames.TWEETS + " AS twits " +
+							"ON twits.tweetId = vids.tweetId " +
+							" WHERE twits.origination > ( " +
+								" SELECT origination FROM " + TableNames.TWEETS +
+								" WHERE tweetId = " + tweet +
+								" AND twits.stationId = " + station +
+							" ) " +
+							" ORDER BY twits.origination ASC " +
+							" LIMIT 1"
+			);
+
+			if(results.next()){
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
+			}
+		}
+
+		if(videoForDisplay == null)
+		{
+			videoForDisplay = getFillerVideo(tweet, station);
+		}
+		LOG.info("Retrieved video", videoForDisplay);
+		return videoForDisplay;
+	}
+
+	private static VideoForDisplay getFillerVideo(Long tweet, Long station) throws SQLException
+	{
+		LOG.info("Getting filler video for {}", tweet);
+		VideoForDisplay videoForDisplay = null;
+		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail " +
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
 				" ON vids.tweetId = twits.tweetId\n" +
-				" INNER JOIN " + TableNames.USERS + " AS u\n" +
-				" ON twits.userId = u.userId\n" +
-				" WHERE u.userName = 'bpm_playlist'\n" +
+				" INNER JOIN " + TableNames.STATIONS + " AS stn\n" +
+				" ON twits.stationId = stn.stationId\n" +
+				" WHERE stn.stationName = 'bpm_playlist'\n" +
+				" AND twits.stationId = " + station +
 				" AND DATE_SUB(NOW(), INTERVAL 2 HOUR) > twits.origination\n" +
 				" AND twits.tweetId != " + tweet +
 				" ORDER BY RAND()\n" +
@@ -90,17 +124,16 @@ public class VideoRetriever
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final Statement statement = connection.createStatement())
 		{
-			//TODO filter by channel
 			ResultSet results = statement.executeQuery(fillerSql);
 
 			if(results.next()){
-				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), "", results.getString(1), results.getString(5), results.getLong(6), tweet);
+				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), tweet);
 			}
 		}
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "", "dQw4w9WgXcQ", "Troll", null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
+			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "dQw4w9WgXcQ", "Troll", null/*THUMBNAIL*/, null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
 		}
 		return videoForDisplay;
 	}

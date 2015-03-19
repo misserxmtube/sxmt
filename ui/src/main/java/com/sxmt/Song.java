@@ -3,19 +3,21 @@ package com.sxmt;
 /** Reduced video information intermediary **/
 public class Song {
     private String id;
+    private String title;
     private String song;
     private String artist;
     private String tweet;
-    private String fillerSavedTweet;
+    private String referenceTweet;
 
     public Song() {}
 
-    public Song(String artist, String song, String id, String tweet, String fillerSavedTweet) {
+    public Song(String title, String artist, String song, String id, String tweet, String referenceTweet) {
+        this.title = title;
         this.artist = artist;
         this.song = song;
         this.id = id;
         this.tweet = tweet;
-        this.fillerSavedTweet = fillerSavedTweet;
+        this.referenceTweet = referenceTweet;
     }
 
     public String getId() {
@@ -24,6 +26,14 @@ public class Song {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getSong() {
@@ -50,7 +60,11 @@ public class Song {
         this.tweet = tweet;
     }
 
-    public void setFillerSavedTweet(String fillerSavedTweet) {
-        this.fillerSavedTweet = fillerSavedTweet;
+    public String getReferenceTweet() {
+        return referenceTweet;
+    }
+
+    public void setReferenceTweet(String referenceTweet) {
+        this.referenceTweet = referenceTweet;
     }
 }
