@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`stations` (
   `stationBackdrop` VARCHAR(150) NULL,
   PRIMARY KEY (`stationId`),
   UNIQUE INDEX `userId_UNIQUE` (`stationId` ASC))
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -48,7 +49,8 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`tweets` (
     REFERENCES `sxmt`.`stations` (`stationId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -65,7 +67,8 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`transformers` (
     REFERENCES `sxmt`.`stations` (`stationId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
@@ -85,7 +88,8 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`videos` (
     REFERENCES `sxmt`.`tweets` (`tweetId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB;
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
