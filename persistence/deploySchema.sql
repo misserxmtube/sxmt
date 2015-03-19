@@ -13,6 +13,7 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `sxmt` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `sxmt` ;
+
 -- -----------------------------------------------------
 -- Table `sxmt`.`stations`
 -- -----------------------------------------------------
@@ -86,11 +87,6 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`videos` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;
 
-DROP USER 'sxmt';
-FLUSH PRIVILEGES;
-CREATE USER 'sxmt' IDENTIFIED BY 'sxmt';
-
-GRANT ALL ON `sxmt`.* TO 'sxmt';
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
