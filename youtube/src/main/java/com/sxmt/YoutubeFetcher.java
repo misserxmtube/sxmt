@@ -60,14 +60,19 @@ public class YoutubeFetcher
 
 //    private YoutubeFetcher() {}
 
-    public static YoutubeRecord getYoutubeRecord(String song, String artist){
-        String query = song+" "+artist+" official";
-        return getBestVideo(fetchSearchResults(query, false), song, artist);
+    public static YoutubeRecord getYoutubeRecord(String song, String artist, boolean safeSearch, List<String> keys){
+        StringBuilder sb = new StringBuilder();
+        sb.append(song).append(" ").append(artist);
+        for(String key : keys){
+            sb.append(" ").append(key);
+        }
+
+        return getBestVideo(fetchSearchResults(sb.toString(), safeSearch), song, artist);
     }
 
-    public static YoutubeRecord getSafeYoutubeRecord(String song, String artist){
-        String query = song+" "+artist+" official";
-        return getBestVideo(fetchSearchResults(query, true), song, artist);
+    public static YoutubeRecord getYoutubeRecord(String song, String artist){
+        String query = song+" "+artist;
+        return getBestVideo(fetchSearchResults(query, false), song, artist);
     }
 
     protected static YoutubeRecord getBestVideo(List<SearchResult> searchResults, String song, String artist){
