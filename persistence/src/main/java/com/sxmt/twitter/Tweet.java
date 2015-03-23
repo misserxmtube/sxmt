@@ -81,6 +81,7 @@ public class Tweet
 				", artist='" + artist + '\'' +
 				", stationName='" + stationName + '\'' +
 				", stationHandle='" + stationHandle + '\'' +
+				", tweetText='" + tweetText + '\'' +
 				", stationId='" + stationId + '\'' +
 				", origination=" + origination +
 				", fullTweet='" + fullTweet + '\'' +

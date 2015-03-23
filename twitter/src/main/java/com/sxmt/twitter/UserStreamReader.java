@@ -19,6 +19,7 @@ import org.joda.time.format.DateTimeFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -157,6 +158,11 @@ public class UserStreamReader implements Runnable
 		System.out.println("Tweet: " + tweet.toString());
 		try {
 			TweetStorer.storeTweet(tweet);
+		} catch (SQLException e) {
+			LOG.error("SQLException: {}", e.getMessage());
+			LOG.error("SQLState: {}", e.getSQLState());
+			LOG.error("VendorError: {}", e.getErrorCode());
+			LOG.error("Exception encountered while storing tweet!", e);
 		} catch (Exception e)
 		{
 			LOG.error("Exception encountered while storing tweet!", e);

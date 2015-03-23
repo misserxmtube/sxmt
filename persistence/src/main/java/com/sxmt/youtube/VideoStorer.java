@@ -1,5 +1,6 @@
 package com.sxmt.youtube;
 
+import com.sxmt.VideoType;
 import com.sxmt.YoutubeRecord;
 import com.sxmt.config.Properties;
 import com.sxmt.connection.SQLConnectionFactory;
@@ -15,7 +16,7 @@ public class VideoStorer
 	{
 		//insert the 'youtubeRecord'
 		final String query = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.VIDEOS +
-				" (tweetId, videoTitle, videoId, channelName, videoThumbnail) VALUES(?,?,?,?,?)";
+				" (tweetId, videoTitle, videoId, channelName, videoThumbnail, videoType) VALUES(?,?,?,?,?,?)";
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final PreparedStatement statement = connection.prepareStatement(query))
 		{
@@ -25,7 +26,10 @@ public class VideoStorer
 			statement.setString(3, youtubeRecord.getVideoId());
             statement.setString(4, youtubeRecord.getChannelTitle());
             statement.setString(5, youtubeRecord.getThumbnail());
-			statement.execute(query);
+			statement.setString(6, VideoType.NORMAL.name());
+			//TODO switch to non-hardcoded one
+//			statement.setString(6, youtubeRecord.getVideoType().name());
+			statement.execute();
 		}
 	}
 }

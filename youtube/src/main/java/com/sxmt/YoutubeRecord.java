@@ -13,8 +13,9 @@ public class YoutubeRecord
     private DateTime publishDate;
     private String thumbnail;
     private int duration;
+	private VideoType videoType;
 
-    public YoutubeRecord(String videoId, String title, String channelTitle, DateTime publishDate, String thumbnail)
+	public YoutubeRecord(String videoId, String title, String channelTitle, DateTime publishDate, String thumbnail)
     {
         this.videoId = videoId;
         this.title = title;
@@ -82,4 +83,14 @@ public class YoutubeRecord
     {
         this.duration = duration;
     }
+
+	public VideoType getVideoType()
+	{
+		return videoType;
+	}
+
+	public void setVideoType(VideoType videoType)
+	{
+		this.videoType = videoType;
+	}
 }

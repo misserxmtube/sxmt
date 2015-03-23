@@ -22,7 +22,7 @@
 		<apache.commons.io.version>2.4</apache.commons.io.version>
 		<apache.commons.version>3.1</apache.commons.version>
 		<slf4j.version>1.7.7</slf4j.version>
-		<mysql.version>5.1.33</mysql.version>
+		<mysql.version>5.1.34</mysql.version>
         <org.joda.time.version>2.7</org.joda.time.version>
         <org.codehaus.jackson.version>1.9.4</org.codehaus.jackson.version>
 		<sxmt.version>1.0-SNAPSHOT</sxmt.version>
