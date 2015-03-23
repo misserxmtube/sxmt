@@ -34,7 +34,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class UserStreamReader implements Runnable
 {
-	private final Logger log = LoggerFactory.getLogger(UserStreamReader.class);
+	private final Logger LOG = LoggerFactory.getLogger(UserStreamReader.class);
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	private final String consumerKey = "dQskdemPDk9E6AjgmpcIfMpqi";
@@ -97,7 +97,7 @@ public class UserStreamReader implements Runnable
                 } catch (Exception e)
                 {
                     // interrupted while polling
-    				log.error("Unexpected error while polling", e);
+    				LOG.error("Unexpected error while polling", e);
                     stop();
                 }
 
@@ -112,7 +112,7 @@ public class UserStreamReader implements Runnable
                         node = objectMapper.readTree(msg);
                     } catch (Exception e)
                     {
-                        log.error("Exception while parsing response", e);
+                        LOG.error("Exception while parsing response", e);
                         throw new RuntimeException(e);
                     }
 
@@ -121,12 +121,12 @@ public class UserStreamReader implements Runnable
 
                 if (Thread.interrupted())
                 {
-                    log.info("Stopping...");
+                    LOG.info("Stopping...");
                     stop();
                 }
             } catch (Exception e) {
                 // bwahaha
-                log.error("SXMT ERROR:\n", e);
+                LOG.error("SXMT ERROR:\n", e);
             }
 		}
 
@@ -159,7 +159,7 @@ public class UserStreamReader implements Runnable
 			TweetStorer.storeTweet(tweet);
 		} catch (Exception e)
 		{
-			log.error("Exception while storing tweet", e);
+			LOG.error("Exception encountered while storing tweet!", e);
 		}
 	}
 

@@ -18,6 +18,7 @@ public class TweetConsumer
 {
 	private Logger log = LoggerFactory.getLogger(TweetConsumer.class);
 
+	//TODO put these in config file
 	private final String consumerKey = "dQskdemPDk9E6AjgmpcIfMpqi";
 	private final String consumerSecret = "TUkTc5aMsbZTPc8ndQ5UQDkWocYx5wR9ZSKHoJIEEdpZAQpuR4";
 	private final String token = "3089407595-97kWtUYxO7WtL1oUL54xSdHGdY2G6Kt3YIIpe3Y";

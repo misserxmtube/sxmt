@@ -1,7 +1,5 @@
 package com.sxmt.ui;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
 public class VideoForDisplay
 {
 	private final String songName;
@@ -20,12 +18,12 @@ public class VideoForDisplay
 
 	public VideoForDisplay(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
 	{
-		this.songName = StringEscapeUtils.unescapeHtml4(songName);
-		this.artist = StringEscapeUtils.unescapeHtml4(artist);
-		this.videoTitle = StringEscapeUtils.unescapeHtml4(videoTitle);
-		this.videoId = StringEscapeUtils.unescapeHtml4(videoId);
-		this.channelName = StringEscapeUtils.unescapeHtml4(channelName);
-		this.thumbnail = StringEscapeUtils.unescapeHtml4(thumbnail);
+		this.songName = songName;
+		this.artist = artist;
+		this.videoTitle = videoTitle;
+		this.videoId = videoId;
+		this.channelName = channelName;
+		this.thumbnail = thumbnail;
 		this.relevantTweetId = relevantTweetId;
 		this.referenceTweetId = referenceTweetId;
 	}

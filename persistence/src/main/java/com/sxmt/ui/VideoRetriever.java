@@ -21,6 +21,7 @@ public class VideoRetriever
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
+	        //TODO use prepared statement
             ResultSet results = statement.executeQuery(
                     " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
@@ -31,7 +32,7 @@ public class VideoRetriever
             );
 
             while(results.next()){
-
+	            //TODO use column var
 	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
             }
         }
@@ -51,6 +52,7 @@ public class VideoRetriever
         try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
              final Statement statement = connection.createStatement())
         {
+	        //TODO use prepared statement
             ResultSet results = statement.executeQuery(
                     " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
@@ -60,6 +62,7 @@ public class VideoRetriever
             );
 
             if(results.next()){
+	            //TODO use column var
 	            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
             }
         }
@@ -79,6 +82,7 @@ public class VideoRetriever
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final Statement statement = connection.createStatement())
 		{
+			//TODO use prepared statement
 			ResultSet results = statement.executeQuery(
 					" SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
 							" INNER JOIN " + TableNames.TWEETS + " AS twits " +
@@ -93,6 +97,7 @@ public class VideoRetriever
 			);
 
 			if(results.next()){
+				//TODO use column var
 				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6));
 			}
 		}
@@ -109,6 +114,7 @@ public class VideoRetriever
 	{
 		LOG.info("Getting filler video for {}", tweet);
 		VideoForDisplay videoForDisplay = null;
+		//TODO use prepared statement
 		final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail " +
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
@@ -127,13 +133,15 @@ public class VideoRetriever
 			ResultSet results = statement.executeQuery(fillerSql);
 
 			if(results.next()){
+				//TODO use column var
 				videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), tweet);
 			}
 		}
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "dQw4w9WgXcQ", "Troll", null/*THUMBNAIL*/, null, tweet); // TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
+			videoForDisplay = new VideoForDisplay("Never Gonna Give You Up", "Rick Astley", "Rick Astley - Never Gonna Give You Up", "dQw4w9WgXcQ", "Troll", null/*THUMBNAIL*/, null, tweet);
+			//TODO temporarily adding null for tweet on these ones (easier for ui but should remove eventually)
 		}
 		return videoForDisplay;
 	}

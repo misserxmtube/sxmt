@@ -7,24 +7,24 @@ public class Tweet
 	private final Long id;
 	private final String songName;
 	private final String artist;
-	private final String userName;
-	private final String userHandle;
+	private final String stationName;
+	private final String stationHandle;
 	private final String tweetText;
-	private final Long userId;
+	private final Long stationId;
 	private final DateTime origination;
-	private final String blob;
+	private final String fullTweet;
 
-	public Tweet(Long id, String songName, String artist, String userName, String userHandle, String tweetText, Long userId, DateTime origination, String blob)
+	public Tweet(Long id, String songName, String artist, String stationName, String stationHandle, String tweetText, Long stationId, DateTime origination, String fullTweet)
 	{
 		this.id = id;
 		this.songName = songName;
 		this.artist = artist;
-		this.userName = userName;
-		this.userHandle = userHandle;
+		this.stationName = stationName;
+		this.stationHandle = stationHandle;
 		this.tweetText = tweetText;
-		this.userId = userId;
+		this.stationId = stationId;
 		this.origination = origination;
-		this.blob = blob;
+		this.fullTweet = fullTweet;
 	}
 
 	public Long getId()
@@ -42,9 +42,9 @@ public class Tweet
 		return artist;
 	}
 
-	public String getUserName()
+	public String getStationName()
 	{
-		return userName;
+		return stationName;
 	}
 
 	public String getTweetText()
@@ -52,9 +52,9 @@ public class Tweet
 		return tweetText;
 	}
 
-	public Long getUserId()
+	public Long getStationId()
 	{
-		return userId;
+		return stationId;
 	}
 
 	public DateTime getOrigination()
@@ -62,14 +62,14 @@ public class Tweet
 		return origination;
 	}
 
-	public String getBlob()
+	public String getFullTweet()
 	{
-		return blob;
+		return fullTweet;
 	}
 
-	public String getUserHandle()
+	public String getStationHandle()
 	{
-		return userHandle;
+		return stationHandle;
 	}
 
 	@Override
@@ -79,11 +79,11 @@ public class Tweet
 				"id='" + id + '\'' +
 				", songName='" + songName + '\'' +
 				", artist='" + artist + '\'' +
-				", userName='" + userName + '\'' +
-				", userHandle='" + userHandle + '\'' +
-				", userId='" + userId + '\'' +
+				", stationName='" + stationName + '\'' +
+				", stationHandle='" + stationHandle + '\'' +
+				", stationId='" + stationId + '\'' +
 				", origination=" + origination +
-				", blob='" + blob + '\'' +
+				", fullTweet='" + fullTweet + '\'' +
 				'}';
 	}
 }
