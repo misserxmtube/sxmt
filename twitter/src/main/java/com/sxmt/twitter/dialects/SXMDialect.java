@@ -9,4 +9,5 @@ public interface SXMDialect
 {
 	public String getArtist(String postContent);
 	public String getSongTitle(String postContent);
+    public Map<String, String> getSongTitleAndArtist();
 }

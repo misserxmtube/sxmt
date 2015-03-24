@@ -23,4 +23,10 @@ public class BPMDialect implements SXMDialect
 		int dash = postContent.indexOf('-');
 		return postContent.substring(dash+1, po).trim();
 	}
+
+    @Override
+    public Map<String, String> getSongTitleAndArtist(String postContent)
+    {
+
+    }
 }
