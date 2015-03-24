@@ -128,8 +128,8 @@ window.SXMT=(function() {
                     centerPadding: "60px",
                     slidesToShow: 3,
                     focusOnSelect: true,
-                    autoplay: true,
-                    autoplaySpeed: 5000,
+//                    autoplay: true,
+//                    autoplaySpeed: 5000,
                     responsive: [
                         {
                             breakpoint: 768,
@@ -181,7 +181,7 @@ window.SXMT=(function() {
                 if (data.referenceTweet && !SXMT.info.referenceTweet) SXMT.info.referenceTweet = data.referenceTweet;
                 // TODO may want to get station later as well in case loading songs from other stations
                 SXMT.info.currentSong = data;
-                if (tweet) SXMT.addSongToHistory(SXMT.info.currentStation, SXMT.info.currentSong);
+                if (data.tweet) SXMT.addSongToHistory(SXMT.info.currentStation, SXMT.info.currentSong);
                 $(document).trigger("loadVideo.sxmt");
              })
             .fail(function(data) {

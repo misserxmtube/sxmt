@@ -123,7 +123,11 @@
 .historyEntry {
     word-break: break-all;/*replace with text-overflow ellipses or marquee maybe*/
     display: block;
-    font-size: 12px;
+    font-size: 10px;
     padding: 10px;
     height: 100px;
+}
+
+.historyTitle {
+    font-size: 12px;
 }
