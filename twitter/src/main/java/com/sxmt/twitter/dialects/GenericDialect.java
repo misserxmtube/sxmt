@@ -1,22 +1,25 @@
 package com.sxmt.twitter.dialects;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Dialect for Sirius XM BPM Twitter feed.
+ * Generic regex dialect
  *
- * Template: "${artist} - ${song} playing on #BPM - @sxmElectro"
- *
- * Created by remo.fischione on 3/14/2015.
+ * Created by doug.calderon on 3/24/2015.
  */
 public class GenericDialect implements SXMDialect
 {
     private Pattern pattern;
+    private List<String> excludes;
 
-    public GenericDialect(String regex)
+    public GenericDialect(String regex, List<String> excludes)
     {
-
+        this.pattern = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+        this.excludes = excludes;
     }
 
     @Override
@@ -39,18 +42,24 @@ public class GenericDialect implements SXMDialect
     @Override
     public Map<String, String> getSongTitleAndArtist(String postContent)
     {
+        System.out.println("Received postContent: "+ postContent);
         Matcher matcher = pattern.matcher(postContent);
         Map<String, String> map = new HashMap<String, String>();
-        if(matcher.groupCount() < 2)
+        if(matcher.find())
+        {
+            String artist = matcher.group("artist").trim();
+            String songTitle = matcher.group("songTitle").trim();
+            for(String exclude : excludes){
+                artist = artist.replaceAll(exclude, "");
+                songTitle = songTitle.replaceAll(exclude, "");
+            }
+            map.put("artist", artist);
+            map.put("songTitle", songTitle);
+        } else
         {
             System.out.println("Error parsing tweet: \""+postContent+"\"");
             map.put("artist", "");
             map.put("songTitle", "");
-        } else
-        {
-            map.put("artist", matcher.group(1));
-            map.put("songTitle", matcher.group(2));
-            //TODO MAYBE TWO REGEX?
         }
 
         return map;

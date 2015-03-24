@@ -93,7 +93,7 @@ public class UserStreamReader implements Runnable
             try {
                 String msg = "";
                 try {
-                    msg = msgQueue.poll(10, TimeUnit.SECONDS);
+                    msg = msgQueue.poll(30, TimeUnit.SECONDS);
                 } catch (Exception e)
                 {
                     // interrupted while polling
@@ -103,7 +103,7 @@ public class UserStreamReader implements Runnable
 
                 if (msg == null || msg.equals(""))
                 {
-                    System.out.println("Did not receive a message in 10 seconds");
+                    System.out.println("Did not receive a message in 30 seconds");
                 } else
                 {
     //				System.out.println(msg);

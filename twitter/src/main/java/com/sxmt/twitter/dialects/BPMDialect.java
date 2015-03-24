@@ -1,5 +1,8 @@
 package com.sxmt.twitter.dialects;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Dialect for Sirius XM BPM Twitter feed.
  *
@@ -27,6 +30,9 @@ public class BPMDialect implements SXMDialect
     @Override
     public Map<String, String> getSongTitleAndArtist(String postContent)
     {
-
+        Map<String, String> map = new HashMap<>();
+        map.put("artist", getArtist(postContent));
+        map.put("songTitle", getSongTitle(postContent));
+        return map;
     }
 }
