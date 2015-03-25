@@ -14,7 +14,7 @@ public class VideoRetriever
 {
 	private static final Logger LOG = LoggerFactory.getLogger(VideoRetriever.class);
 
-	public static VideoForDisplay getNewestVideo(Long station) throws SQLException
+	public static VideoForDisplay getNewestVideo(Long stationId) throws SQLException
 	{
 		LOG.info("Getting newest video");
 		VideoForDisplay videoForDisplay = null;
@@ -26,7 +26,7 @@ public class VideoRetriever
                     " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
                     " INNER JOIN " + TableNames.TWEETS + " AS twits " +
                     " ON twits.tweetId = vids.tweetId " +
-                    " AND twits.stationId = " + station +
+                    " AND twits.stationId = " + stationId +
                     " ORDER BY twits.origination DESC " +
                     " LIMIT 1"
             );
@@ -39,7 +39,7 @@ public class VideoRetriever
 
 		if(videoForDisplay == null)
 		{
-			videoForDisplay = getFillerVideo(1L, station);
+			videoForDisplay = getFillerVideo(1L, stationId);
 		}
 		LOG.info("Retrieved video: {}", videoForDisplay);
 		return videoForDisplay;
