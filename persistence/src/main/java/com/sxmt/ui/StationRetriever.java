@@ -14,7 +14,7 @@ import java.util.List;
 
 public class StationRetriever
 {
-	private static final Logger LOG = LoggerFactory.getLogger(VideoRetriever.class);
+	private static final Logger LOG = LoggerFactory.getLogger(StationRetriever.class);
 
 	public static List<Station> getStations() throws SQLException
 	{
