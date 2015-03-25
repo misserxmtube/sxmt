@@ -65,6 +65,7 @@ public class UserStreamReader implements Runnable
 		List<Long> ids = new ArrayList<>(userIDs.keySet());
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint().followings(ids);
 		hosebirdEndpoint.stallWarnings(false);
+        hosebirdEndpoint.filterLevel(Constants.FilterLevel.Medium);
 
 		// Optional: set up some followings and track terms
 //		List<Long> followings = Lists.newArrayList(1234L, 566788L);
