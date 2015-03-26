@@ -41,7 +41,7 @@ public class TweetStorer
 			tweetStatement.setString(3, tweet.getTweetText());
 			tweetStatement.setString(4, tweet.getSongName());
 			tweetStatement.setString(5, tweet.getArtist());
-			tweetStatement.setString(6, format.format(tweet.getOrigination()));
+			tweetStatement.setString(6, format.format(tweet.getOrigination().toDate()));
 			tweetStatement.setString(7, tweet.getFullTweet());
 			tweetStatement.execute();
 		}
