@@ -7,14 +7,15 @@ import com.sxmt.connection.TableNames;
 import com.sxmt.youtube.VideoStorer;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class TweetStorer
 {
-//	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	private static DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 	public static void storeTweet(Tweet tweet) throws SQLException, ParseException
 	{
@@ -40,8 +41,7 @@ public class TweetStorer
 			tweetStatement.setString(3, tweet.getTweetText());
 			tweetStatement.setString(4, tweet.getSongName());
 			tweetStatement.setString(5, tweet.getArtist());
-			tweetStatement.setDate(6, new Date(tweet.getOrigination().getMillis()));
-//			tweetStatement.setDate(6, new Date(format.parse(tweet.getOrigination().toString()).getTime()));
+			tweetStatement.setString(6, format.format(tweet.getOrigination()));
 			tweetStatement.setString(7, tweet.getFullTweet());
 			tweetStatement.execute();
 		}
