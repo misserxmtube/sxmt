@@ -95,10 +95,6 @@
 
 .sidebar {
     background: #FAFAFA;
-    /* TODO @Ryan/Doge approve this if I didn't do it wrong */
-    border-color: #d8d8d8;
-    border-style: solid;
-    border-width: 1px;
 }
 
 #sidebarRight {
