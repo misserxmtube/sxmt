@@ -1,5 +1,6 @@
 package com.sxmt;
 
+import com.sxmt.ui.StationRetriever;
 import com.sxmt.ui.VideoForDisplay;
 import com.sxmt.ui.VideoRetriever;
 import org.springframework.http.MediaType;
@@ -20,11 +21,13 @@ public class SXMTController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<Station> stations() {
-        List<Station> stations = new ArrayList<Station>();
-        // TODO Populate list with stations (need a query for this)
-        stations.add(new Station("BPM", "247455247", "http://i.imgur.com/fxOJROV.jpg", "http://i.imgur.com/fLVXu6r.png")); //TEST
-        return stations;
+    public List<Station> stations() throws SQLException {
+        List<Station> returnedStations = new ArrayList<Station>();
+        List<com.sxmt.ui.Station> stations = StationRetriever.getStations();
+        for (com.sxmt.ui.Station station : stations) { // Get rid o' those pesky Longs
+            returnedStations.add(new Station(station.getName(), station.getId().toString(), station.getThumbnail(), station.getBackdrop()));
+        }
+        return returnedStations;
     }
 
 	@RequestMapping(

@@ -121,7 +121,7 @@ window.SXMT=(function() {
                 console.log("Loaded stations", data);
                 SXMT.info.stations = data;
 //                if (data.length < 1) {alert("No stations loaded!");return;}
-                for (var i = 1; i < 5; i ++) {SXMT.info.stations[i] = data[0]}// TODO remove this. duplicating to test
+//                for (var i = 1; i < 5; i ++) {SXMT.info.stations[i] = data[0]}// TODO remove this. duplicating to test
                 document.getElementById("stations").innerHTML = templates.stations(data);
                 $("#stations").slick({
                     centerMode: true,
@@ -265,7 +265,7 @@ window.SXMT=(function() {
 
     /** Set Station Backdrop **/
     var updateStationBackdrop = function(imgUrl) {
-        $("sxmtBody").css("background-image", "url('" + imgUrl + "')");
+        $("sxmtBody").css("background-image", "url('" + imgUrl + "'),url('images/noImg.png')");
     };
 
     /** Initialize Station List **/

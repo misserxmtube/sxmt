@@ -60,7 +60,7 @@
 <script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{title}}<!--{{song}}&nbsp;by&nbsp;{{artist}}--></a></script>
 <script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus" style="display:none;">You&rsquo;re Listening To:&nbsp;</span><span id="videoUrl">{{> videoUrl}}</span></script>
 <script id="HT_videoEmbedUrl" type="text/x-handlebars-template">https://www.youtube.com/embed/{{id}}?enablejsapi=1</script>
-<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}');">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
+<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}'),url('images/noImg.png');">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
 <script id="HT_history" type="text/x-handlebars-template">{{#each this}}{{> historyEntry}}{{/each}}</script>
 <script id="HT_historyEntry" type="text/x-handlebars-template"><a class="historyEntry panel" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><img src="{{song.thumbnail}}" style="float:left;margin-right:10px;height:100%;" /><span class="historyTitle">{{song.title}}</span><br><b>Song:&nbsp;</b>{{song.song}}<br><b>Artist:&nbsp;</b>{{song.artist}}</a>
 </script><!--TODO fancy up-->
