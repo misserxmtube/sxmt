@@ -43,6 +43,8 @@ public class UserStreamReader implements Runnable
 	private final String token = "3089407595-97kWtUYxO7WtL1oUL54xSdHGdY2G6Kt3YIIpe3Y";
 	private final String secret = "JXUhfSdQII6qkv2bFSmR8FWyEhBvCSPHb0DgN7CPIvQDz";
 
+    private static final int POLL_INTERVAL = 20;
+
 	private Client hosebirdClient;
 	private BlockingQueue<String> msgQueue;
 	private BlockingQueue<Event> eventQueue;
@@ -65,7 +67,7 @@ public class UserStreamReader implements Runnable
 		List<Long> ids = new ArrayList<>(userIDs.keySet());
 		StatusesFilterEndpoint hosebirdEndpoint = new StatusesFilterEndpoint().followings(ids);
 		hosebirdEndpoint.stallWarnings(false);
-        hosebirdEndpoint.filterLevel(Constants.FilterLevel.Medium);
+        hosebirdEndpoint.filterLevel(Constants.FilterLevel.Low);
 
 		// Optional: set up some followings and track terms
 //		List<Long> followings = Lists.newArrayList(1234L, 566788L);
@@ -95,7 +97,7 @@ public class UserStreamReader implements Runnable
             try {
                 String msg = "";
                 try {
-                    msg = msgQueue.poll(30, TimeUnit.SECONDS);
+                    msg = msgQueue.poll(POLL_INTERVAL, TimeUnit.SECONDS);
                 } catch (Exception e)
                 {
                     // interrupted while polling
@@ -105,7 +107,7 @@ public class UserStreamReader implements Runnable
 
                 if (msg == null || msg.equals(""))
                 {
-                    System.out.println("Did not receive a message in 30 seconds");
+                    System.out.println("Did not receive a message in " + POLL_INTERVAL + " seconds");
                 } else
                 {
     //				System.out.println(msg);
