@@ -121,13 +121,13 @@ window.SXMT=(function() {
                 console.log("Loaded stations", data);
                 SXMT.info.stations = data;
 //                if (data.length < 1) {alert("No stations loaded!");return;}
-//                for (var i = 1; i < 5; i ++) {SXMT.info.stations[i] = data[0]}// TODO remove this. duplicating to test
                 document.getElementById("stations").innerHTML = templates.stations(data);
-                $("#stations").slick({
+                var stations = $("#stations");
+                stations.slick({
                     centerMode: true,
                     centerPadding: "60px",
                     slidesToShow: 3,
-                    focusOnSelect: true,
+                    focusOnSelect: false,
 //                    autoplay: true,
 //                    autoplaySpeed: 5000,
                     responsive: [
@@ -150,6 +150,13 @@ window.SXMT=(function() {
                             }
                         }
                     ]
+                });
+                var stationOptions = $(".station");
+                stationOptions.click(function() {
+                    stationOptions.siblings(".slick-center").removeClass("slick-center");
+                    var $this = $(this);
+                    $this.addClass("slick-center");
+                    stations.slick("slickGoTo", $this.data("slick-index"), false);
                 });
             })
             .fail(function(data) {
