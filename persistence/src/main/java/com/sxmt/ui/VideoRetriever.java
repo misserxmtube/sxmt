@@ -119,10 +119,7 @@ public class VideoRetriever
 				" FROM " + TableNames.VIDEOS + " AS vids\n" +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
 				" ON vids.tweetId = twits.tweetId\n" +
-				" INNER JOIN " + TableNames.STATIONS + " AS stn\n" +
-				" ON twits.stationId = stn.stationId\n" +
-				" WHERE stn.stationName = 'bpm_playlist'\n" +
-				" AND twits.stationId = " + station +
+				" WHERE twits.stationId = " + station +
 				" AND DATE_SUB(NOW(), INTERVAL 2 HOUR) > twits.origination\n" +
 				" AND twits.tweetId != " + tweet +
 				" ORDER BY RAND()\n" +
