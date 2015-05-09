@@ -69,12 +69,6 @@ public class UserStreamReader implements Runnable
 		hosebirdEndpoint.stallWarnings(false);
         hosebirdEndpoint.filterLevel(Constants.FilterLevel.Low);
 
-		// Optional: set up some followings and track terms
-//		List<Long> followings = Lists.newArrayList(1234L, 566788L);
-//		List<String> terms = Lists.newArrayList("twitter", "api");
-//		hosebirdEndpoint.followings(followings);
-//		hosebirdEndpoint.trackTerms(terms);
-
 		// These secrets should be read from a config file
 		Authentication hosebirdAuth = new OAuth1(consumerKey, consumerSecret, token, secret);
 
@@ -110,7 +104,6 @@ public class UserStreamReader implements Runnable
                     System.out.println("Did not receive a message in " + POLL_INTERVAL + " seconds");
                 } else
                 {
-    //				System.out.println(msg);
                     JsonNode node;
                     try {
                         node = objectMapper.readTree(msg);
@@ -120,7 +113,11 @@ public class UserStreamReader implements Runnable
                         throw new RuntimeException(e);
                     }
 
-                    buildAndStoreTweet(msg, node);
+					// check to see if it is a retweet
+					JsonNode retweet_status = node.get("retweet_status");
+					if (retweet_status != null) {
+						buildAndStoreTweet(msg, node);
+					}
                 }
 
                 if (Thread.interrupted())
@@ -133,10 +130,6 @@ public class UserStreamReader implements Runnable
                 LOG.error("SXMT ERROR:\n", e);
             }
 		}
-
-//		if (hosebirdClient.isDone()) {
-//			System.out.println("Client connection closed unexpectedly");
-//		}
 	}
 
 	public void stop()

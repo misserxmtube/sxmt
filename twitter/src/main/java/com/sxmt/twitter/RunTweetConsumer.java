@@ -1,6 +1,5 @@
 package com.sxmt.twitter;
 
-import com.sxmt.twitter.dialects.BPMDialect;
 import com.sxmt.twitter.dialects.GenericDialect;
 import org.apache.commons.lang3.StringUtils;
 
