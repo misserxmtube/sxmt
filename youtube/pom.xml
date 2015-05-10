@@ -19,6 +19,7 @@
         <project.http.version>1.18.0-rc</project.http.version>
         <project.oauth.version>1.18.0-rc</project.oauth.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	    <google.collections.version>1.0</google.collections.version>
     </properties>
 
     <repositories>
@@ -65,7 +66,7 @@
         <dependency>
             <groupId>com.google.collections</groupId>
             <artifactId>google-collections</artifactId>
-            <version>1.0</version>
+            <version>${google.collections.version}</version>
         </dependency>
 
         <dependency>

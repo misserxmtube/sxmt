@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>sxmt-metadata</artifactId>
-    <packaging>war</packaging>
 
     <name>sxmt-metadata</name>
     <url>http://maven.apache.org</url>
@@ -18,8 +17,7 @@
     <dependencies>
         <dependency>
             <groupId>com.googlecode.jen-api</groupId>
-            <artifactId>jen-api</artifactId>
-            <version>4.x.p</version>
+	        <artifactId>jen-api</artifactId>
         </dependency>
     </dependencies>
 

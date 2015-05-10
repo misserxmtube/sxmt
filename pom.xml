@@ -28,6 +28,9 @@
         <org.codehaus.jackson.version>1.9.4</org.codehaus.jackson.version>
 		<sxmt.version>1.0-SNAPSHOT</sxmt.version>
 		<jackson.version>1.9.4</jackson.version>
+		<googlecode.jen-api.version>4.x.p</googlecode.jen-api.version>
+		<twitter.hbc.core.version>2.2.0</twitter.hbc.core.version>
+		<twitter.twitter4j.core.version>4.0.2</twitter.twitter4j.core.version>
 	</properties>
 
 	<dependencyManagement>
@@ -65,13 +68,13 @@
 			<dependency>
 				<groupId>com.twitter</groupId>
 				<artifactId>hbc-core</artifactId>
-				<version>2.2.0</version>
+				<version>${twitter.hbc.core.version}</version>
 			</dependency>
 
 			<dependency>
 				<groupId>org.twitter4j</groupId>
 				<artifactId>twitter4j-core</artifactId>
-				<version>4.0.2</version>
+				<version>${twitter.twitter4j.core.version}</version>
 			</dependency>
 
 			<dependency>
@@ -90,6 +93,12 @@
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>${apache.commons.io.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.apache.commons</groupId>
+				<artifactId>commons-lang3</artifactId>
+				<version>${apache.commons.version}</version>
 			</dependency>
 
 			<dependency>
@@ -114,6 +123,12 @@
 				<groupId>joda-time</groupId>
 				<artifactId>joda-time</artifactId>
 				<version>${org.joda.time.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.googlecode.jen-api</groupId>
+				<artifactId>jen-api</artifactId>
+				<version>${googlecode.jen-api.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
