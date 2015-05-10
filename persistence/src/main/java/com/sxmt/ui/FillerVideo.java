@@ -1,6 +1,11 @@
 package com.sxmt.ui;
 
-public class VideoForDisplay
+/**
+ * Class FillerVideo
+ *
+ * @since 05/09/2015
+ */
+public class FillerVideo
 {
 	private final String songName;
 	private final String artist;
@@ -9,9 +14,8 @@ public class VideoForDisplay
 	private final String channelName;
 	private final String thumbnail;
 	private final Long relevantTweetId;
-	private final Long referenceTweetId;
 
-	public VideoForDisplay(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId, Long referenceTweetId)
+	public FillerVideo(String songName, String artist, String videoTitle, String videoId, String channelName, String thumbnail, Long relevantTweetId)
 	{
 		this.songName = songName;
 		this.artist = artist;
@@ -20,7 +24,6 @@ public class VideoForDisplay
 		this.channelName = channelName;
 		this.thumbnail = thumbnail;
 		this.relevantTweetId = relevantTweetId;
-		this.referenceTweetId = referenceTweetId;
 	}
 
 	public String getSongName()
@@ -57,11 +60,6 @@ public class VideoForDisplay
 		return relevantTweetId;
 	}
 
-	public Long getReferenceTweetId()
-	{
-		return referenceTweetId;
-	}
-
 	@Override
 	public String toString() {
 		return "VideoForDisplay{" +
@@ -72,7 +70,6 @@ public class VideoForDisplay
 				", channelName='" + channelName + '\'' +
 				", thumbnail='" + thumbnail + '\'' +
 				", relevantTweetId=" + relevantTweetId +
-				", referenceTweetId=" + referenceTweetId +
 				'}';
 	}
 }
