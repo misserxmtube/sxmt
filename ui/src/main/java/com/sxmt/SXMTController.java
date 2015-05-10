@@ -21,7 +21,7 @@ public class SXMTController {
             method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<Station> stations() throws SQLException {
+    public List<Station> getAllStations() throws SQLException {
         List<Station> returnedStations = new ArrayList<Station>();
         List<com.sxmt.ui.Station> stations = StationRetriever.getStations();
         for (com.sxmt.ui.Station station : stations) { // Get rid o' those pesky Longs
@@ -36,7 +36,7 @@ public class SXMTController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Song song(@RequestBody StationSong stationInfo) throws SQLException {
+    public Song getSongForStation(@RequestBody StationSong stationInfo) throws SQLException {
         final Long station = Long.parseLong(stationInfo.getStation());
         final String song = stationInfo.getSong();
         final String tweet = stationInfo.getTweet();
@@ -66,4 +66,18 @@ public class SXMTController {
                 referenceId
         );
     }
+
+	@RequestMapping(value = "/song", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public List<Song> getAllNewestSongs() throws SQLException {
+		List<Song> allSongs = new ArrayList<Song>();
+		List<Station> allStations = getAllStations();
+		for (Station s : allStations)
+		{
+			String stationId = s.getId();
+			StationSong stationSong = new StationSong();
+			stationSong.setStation(stationId);
+			allSongs.add(getSongForStation(stationSong));
+		}
+		return allSongs;
+	}
 }
