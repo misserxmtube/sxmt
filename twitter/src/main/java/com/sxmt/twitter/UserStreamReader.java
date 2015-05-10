@@ -115,7 +115,7 @@ public class UserStreamReader implements Runnable
 
 					// check to see if it is a retweet
 					JsonNode retweet_status = node.get("retweet_status");
-					if (retweet_status != null) {
+					if (retweet_status == null) {
 						buildAndStoreTweet(msg, node);
 					}
                 }
