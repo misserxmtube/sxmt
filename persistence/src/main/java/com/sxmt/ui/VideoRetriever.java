@@ -10,8 +10,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -33,7 +35,7 @@ public class VideoRetriever
 				{
 					for(Station station : StationRetriever.getStations())
 					{
-						List<FillerVideo> fillerVideoList = new ArrayList<>(25);
+						final List<FillerVideo> fillerVideoList = new ArrayList<>(25);
 						final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail " +
 								" FROM " + TableNames.VIDEOS + " AS vids\n" +
 								" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
@@ -46,11 +48,19 @@ public class VideoRetriever
 								final PreparedStatement preparedStatement = connection.prepareStatement(fillerSql))
 						{
 							preparedStatement.setLong(1, station.getId());
-							final ResultSet results = preparedStatement.executeQuery();
-
-							while(results.next()) {
-								//TODO use column var
-								fillerVideoList.add(new FillerVideo(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6)));
+							try (final ResultSet results = preparedStatement.executeQuery())
+							{
+								final Set<String> alreadySeenVideos = new HashSet<>();
+								while (results.next())
+								{
+									//TODO use column var
+									//add the video id to the list of already seen videos
+									if(!alreadySeenVideos.contains(results.getString(1)))
+									{
+										fillerVideoList.add(new FillerVideo(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6)));
+										alreadySeenVideos.add(results.getString(1));
+									}
+								}
 							}
 						}
 
