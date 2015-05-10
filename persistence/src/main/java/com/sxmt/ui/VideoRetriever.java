@@ -2,6 +2,8 @@ package com.sxmt.ui;
 
 import com.sxmt.connection.SQLConnectionFactory;
 import com.sxmt.connection.TableNames;
+import com.sxmt.connection.TweetsFields;
+import com.sxmt.connection.VideosFields;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,7 +38,7 @@ public class VideoRetriever
 					for(Station station : StationRetriever.getStations())
 					{
 						final List<FillerVideo> fillerVideoList = new ArrayList<>(25);
-						final String fillerSql = "SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail " +
+						final String fillerSql = "SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
 								" FROM " + TableNames.VIDEOS + " AS vids\n" +
 								" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
 								" ON vids.tweetId = twits.tweetId\n" +
@@ -53,12 +55,11 @@ public class VideoRetriever
 								final Set<String> alreadySeenVideos = new HashSet<>();
 								while (results.next())
 								{
-									//TODO use column var
 									//add the video id to the list of already seen videos
-									if(!alreadySeenVideos.contains(results.getString(1)))
+									if(!alreadySeenVideos.contains(results.getString(VideosFields.VIDEO_ID)))
 									{
-										fillerVideoList.add(new FillerVideo(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6)));
-										alreadySeenVideos.add(results.getString(1));
+										fillerVideoList.add(new FillerVideo(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID)));
+										alreadySeenVideos.add(results.getString(VideosFields.VIDEO_ID));
 									}
 								}
 							}
@@ -84,7 +85,8 @@ public class VideoRetriever
 	public static VideoForDisplay getNewestVideo(Long stationId) throws SQLException
 	{
 		LOG.info("Getting newest video");
-		final String sql = " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
+		final String sql = " SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
+				" FROM " + TableNames.VIDEOS + " AS vids " +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits " +
 				" ON twits.tweetId = vids.tweetId " +
 				" AND twits.stationId = ?" +
@@ -98,8 +100,7 @@ public class VideoRetriever
             try (final ResultSet results = preparedStatement.executeQuery())
             {
 	            while(results.next()){
-		            //TODO use column var
-		            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), null);
+		            videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
 	            }
             }
         }
@@ -116,7 +117,8 @@ public class VideoRetriever
 	{
 		LOG.info("Getting video for station: {} tweet: {}", station, tweet);
 		final String sql =
-				" SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
+				" SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
+						" FROM " + TableNames.VIDEOS + " AS vids " +
 						" INNER JOIN " + TableNames.TWEETS + " AS twits " +
 						" ON twits.tweetId = vids.tweetId " +
 						" WHERE twits.tweetId = ?" +
@@ -130,8 +132,7 @@ public class VideoRetriever
             try (final ResultSet results = preparedStatement.executeQuery())
             {
 	            if(results.next()){
-		            //TODO use column var
-		            videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), null);
+		            videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
 	            }
 
             }
@@ -148,7 +149,8 @@ public class VideoRetriever
 	public static VideoForDisplay getNextVideo(Long station, Long tweet) throws SQLException
 	{
 		LOG.info("Getting next video for station: {} tweet: {}", station, tweet);
-		final String sql = " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
+		final String sql = " SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
+				" FROM " + TableNames.VIDEOS + " AS vids " +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits " +
 				" ON twits.tweetId = vids.tweetId " +
 				" WHERE twits.origination > ( " +
@@ -167,8 +169,7 @@ public class VideoRetriever
 			try (final ResultSet results = preparedStatement.executeQuery())
 			{
 				if(results.next()){
-					//TODO use column var
-					videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), null);
+					videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
 				}
 			}
 		}
@@ -184,7 +185,8 @@ public class VideoRetriever
 	public static VideoForDisplay getPrevVideo(Long station, Long tweet) throws SQLException
 	{
 		LOG.info("Getting prev video for station: {} tweet: {}", station, tweet);
-		final String sql = " SELECT vids.videoId, twits.songName, twits.artist, vids.videoTitle, vids.channelName, twits.tweetId, vids.videoThumbnail FROM " + TableNames.VIDEOS + " AS vids " +
+		final String sql = " SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
+				" FROM " + TableNames.VIDEOS + " AS vids " +
 				" INNER JOIN " + TableNames.TWEETS + " AS twits " +
 				" ON twits.tweetId = vids.tweetId " +
 				" WHERE twits.origination < ( " +
@@ -203,8 +205,7 @@ public class VideoRetriever
 			try (final ResultSet results = preparedStatement.executeQuery())
 			{
 				if(results.next()){
-					//TODO use column var
-					videoForDisplay = new VideoForDisplay(results.getString(2), results.getString(3), results.getString(4), results.getString(1), results.getString(5), results.getString(7), results.getLong(6), null);
+					videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
 				}
 			}
 		}
