@@ -26,12 +26,10 @@ public class StationRetriever
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final PreparedStatement preparedStatement = connection.prepareStatement(sql))
 		{
-			//TODO use prepared statement
 			try (final ResultSet results = preparedStatement.executeQuery())
 			{
 				while (results.next())
 				{
-					//TODO use column var
 					stations.add(new Station(results.getLong(StationsFields.STATION_ID), results.getString(StationsFields.STATION_NAME), results.getString(StationsFields.STATION_HANDLE), results.getString(StationsFields.STATION_THUMBNAIL), results.getString(StationsFields.STATION_BACKDROP)));
 				}
 			}
