@@ -10,7 +10,8 @@
 		<module>youtube</module>
 		<module>persistence</module>
 		<module>ui</module>
-	</modules>
+        <module>metadata</module>
+    </modules>
 	<packaging>pom</packaging>
 
 	<name>sxmt</name>

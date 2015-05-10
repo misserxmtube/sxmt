@@ -76,12 +76,21 @@ public class YoutubeFetcher
             sb.append(" ").append(key);
         }
 
-        return getBestVideo(fetchSearchResults(sb.toString(), safeSearch), song, artist);
+        YoutubeRecord ytr = getBestVideo(fetchSearchResults(sb.toString(), safeSearch), song, artist);
+        if(safeSearch){
+            ytr.setVideoType(VideoType.SAFE);
+        }else{
+            ytr.setVideoType(VideoType.NORMAL);
+        }
+        return ytr;
     }
 
     public static YoutubeRecord getYoutubeRecord(String song, String artist){
         String query = song+" "+artist;
-        return getBestVideo(fetchSearchResults(query, false), song, artist);
+        YoutubeRecord ytr = getBestVideo(fetchSearchResults(query, false), song, artist);
+        ytr.setVideoType(VideoType.NORMAL);
+
+        return ytr;
     }
 
     protected static YoutubeRecord getBestVideo(List<SearchResult> searchResults, String song, String artist){

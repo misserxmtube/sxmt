@@ -26,9 +26,7 @@ public class VideoStorer
 			statement.setString(3, youtubeRecord.getVideoId());
             statement.setString(4, youtubeRecord.getChannelTitle());
             statement.setString(5, youtubeRecord.getThumbnail());
-			statement.setString(6, VideoType.NORMAL.name());
-			//TODO switch to non-hardcoded one
-//			statement.setString(6, youtubeRecord.getVideoType().name());
+			statement.setString(6, youtubeRecord.getVideoType().getTypeName());
 			statement.execute();
 		}
 	}
