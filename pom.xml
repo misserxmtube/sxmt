@@ -31,6 +31,11 @@
 		<googlecode.jen-api.version>4.x.p</googlecode.jen-api.version>
 		<twitter.hbc.core.version>2.2.0</twitter.hbc.core.version>
 		<twitter.twitter4j.core.version>4.0.2</twitter.twitter4j.core.version>
+		<youtube.version>v3-rev107-1.18.0-rc</youtube.version>
+		<youtube.analytics.version>v1-rev24-1.17.0-rc</youtube.analytics.version>
+		<google.http.version>1.18.0-rc</google.http.version>
+		<google.oauth.version>1.18.0-rc</google.oauth.version>
+		<google.collections.version>1.0</google.collections.version>
 	</properties>
 
 	<dependencyManagement>
@@ -129,6 +134,37 @@
 				<groupId>com.googlecode.jen-api</groupId>
 				<artifactId>jen-api</artifactId>
 				<version>${googlecode.jen-api.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.apis</groupId>
+				<artifactId>google-api-services-youtube</artifactId>
+				<version>${youtube.version}</version>
+			</dependency>
+
+			<!-- Required for any code that makes calls to the Google Analytics API -->
+			<dependency>
+				<groupId>com.google.apis</groupId>
+				<artifactId>google-api-services-youtubeAnalytics</artifactId>
+				<version>${youtube.analytics.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.http-client</groupId>
+				<artifactId>google-http-client-jackson2</artifactId>
+				<version>${google.http.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.oauth-client</groupId>
+				<artifactId>google-oauth-client-jetty</artifactId>
+				<version>${google.oauth.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.google.collections</groupId>
+				<artifactId>google-collections</artifactId>
+				<version>${google.collections.version}</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>

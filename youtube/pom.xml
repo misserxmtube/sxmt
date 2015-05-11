@@ -14,12 +14,7 @@
 	<url>http://maven.apache.org</url>
 
     <properties>
-        <project.youtube.version>v3-rev107-1.18.0-rc</project.youtube.version>
-        <project.youtube.analytics.version>v1-rev24-1.17.0-rc</project.youtube.analytics.version>
-        <project.http.version>1.18.0-rc</project.http.version>
-        <project.oauth.version>1.18.0-rc</project.oauth.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	    <google.collections.version>1.0</google.collections.version>
     </properties>
 
     <repositories>
@@ -35,14 +30,12 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-youtube</artifactId>
-            <version>${project.youtube.version}</version>
         </dependency>
 
         <!-- Required for any code that makes calls to the Google Analytics API -->
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-youtubeAnalytics</artifactId>
-            <version>${project.youtube.analytics.version}</version>
         </dependency>
 
         <!-- This dependency is only used for the Topics API sample, which requires the Jackson JSON parser -->
@@ -54,25 +47,21 @@
         <dependency>
             <groupId>com.google.http-client</groupId>
             <artifactId>google-http-client-jackson2</artifactId>
-            <version>${project.http.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.oauth-client</groupId>
             <artifactId>google-oauth-client-jetty</artifactId>
-            <version>${project.oauth.version}</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.collections</groupId>
             <artifactId>google-collections</artifactId>
-            <version>${google.collections.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
-            <version>${apache.commons.version}</version>
         </dependency>
 
         <dependency>
