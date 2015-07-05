@@ -32,7 +32,7 @@ public class RunTweetConsumer
         for(String station : stations){
             String stationHandle = props.getProperty("twitter.station." + station + ".handle");
             String stationRegex = props.getProperty("twitter.station." + station + ".regex");
-            String stationExcludes = props.getProperty("twitter.station."+station+".excludes", "");
+            String stationExcludes = props.getProperty("twitter.station." + station + ".excludes", "");
             GenericDialect stationDialect = new GenericDialect(stationRegex, Arrays.asList(StringUtils.split(stationExcludes,",")));
             consumer.addUser(stationHandle, stationDialect);
         }

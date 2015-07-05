@@ -1,11 +1,14 @@
 package com.sxmt.twitter;
 
 import com.sxmt.YoutubeFetcher;
+import com.sxmt.YoutubeRecord;
 import com.sxmt.config.Properties;
 import com.sxmt.connection.SQLConnectionFactory;
 import com.sxmt.connection.StationsFields;
 import com.sxmt.connection.TableNames;
 import com.sxmt.connection.TweetsFields;
+import com.sxmt.ui.VideoForDisplay;
+import com.sxmt.ui.VideoRetriever;
 import com.sxmt.youtube.VideoStorer;
 
 import java.sql.Connection;
@@ -26,7 +29,8 @@ public class TweetStorer
 				" (" + StationsFields.STATION_ID + ", " + StationsFields.STATION_NAME + ", " + StationsFields.STATION_HANDLE + ") VALUES(?,?,?)";
 		//insert the 'tweet'
 		final String tweetInsert = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.TWEETS +
-				" (" + TweetsFields.TWEET_ID + ", " + TweetsFields.STATION_ID + ", " + TweetsFields.TWEET_TEXT + ", " + TweetsFields.SONG_NAME + ", " + TweetsFields.ARTIST + ", " + TweetsFields.ORIGINATION + ", " + TweetsFields.JSON_BLOB + ") VALUES(?,?,?,?,?,?,?)";
+				" (" + TweetsFields.TWEET_ID + ", " + TweetsFields.VIDEO_ID + ", " + TweetsFields.STATION_ID + ", " + TweetsFields.TWEET_TEXT + ", " + TweetsFields.SONG_NAME + ", " + TweetsFields.ARTIST + ", " + TweetsFields.ORIGINATION + ", " + TweetsFields.JSON_BLOB + ") VALUES(?,?,?,?,?,?,?)";
+		final YoutubeRecord youtubeRecord = YoutubeFetcher.getYoutubeRecord(tweet.getSongName(), tweet.getArtist());
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final PreparedStatement stationStatement = connection.prepareStatement(stationInsert);
 				final PreparedStatement tweetStatement = connection.prepareStatement(tweetInsert))
@@ -37,15 +41,18 @@ public class TweetStorer
 			stationStatement.execute();
 
 			tweetStatement.setLong(1, tweet.getId());
-			tweetStatement.setLong(2, tweet.getStationId());
-			tweetStatement.setString(3, tweet.getTweetText());
-			tweetStatement.setString(4, tweet.getSongName());
-			tweetStatement.setString(5, tweet.getArtist());
-			tweetStatement.setString(6, format.format(tweet.getOrigination().toDate()));
-			tweetStatement.setString(7, tweet.getFullTweet());
+			tweetStatement.setString(2, youtubeRecord.getVideoId());
+			tweetStatement.setLong(3, tweet.getStationId());
+			tweetStatement.setString(4, tweet.getTweetText());
+			tweetStatement.setString(5, tweet.getSongName());
+			tweetStatement.setString(6, tweet.getArtist());
+			tweetStatement.setString(7, format.format(tweet.getOrigination().toDate()));
+			tweetStatement.setString(8, tweet.getFullTweet());
 			tweetStatement.execute();
 		}
+		VideoStorer.storeVideo(youtubeRecord);
 
-		VideoStorer.storeVideo(YoutubeFetcher.getYoutubeRecord(tweet.getSongName(), tweet.getArtist()), tweet.getId());
+		//this better be the newest video...
+		VideoRetriever.setNewestVideo(tweet.getStationId(), new VideoForDisplay(tweet.getSongName(), tweet.getArtist(), youtubeRecord.getTitle(), youtubeRecord.getVideoId(), youtubeRecord.getChannelTitle(), youtubeRecord.getThumbnail(), tweet.getId(), null));
 	}
 }
