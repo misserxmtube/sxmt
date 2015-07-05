@@ -23,8 +23,32 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`stations` (
   `stationHandle` VARCHAR(45) NULL,
   `stationThumbnail` VARCHAR(150) NULL,
   `stationBackdrop` VARCHAR(150) NULL,
-  PRIMARY KEY (`stationId`),
-  UNIQUE INDEX `userId_UNIQUE` (`stationId` ASC))
+  PRIMARY KEY (`stationId`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4;
+
+
+-- -----------------------------------------------------
+-- Table `sxmt`.`artists`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sxmt`.`artists` (
+  `artistId` INT NOT NULL,
+  `artistName` VARCHAR(100) NULL,
+  `echoNestId` VARCHAR(45) NULL,
+  PRIMARY KEY (`artistId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sxmt`.`videos`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sxmt`.`videos` (
+  `videoId` VARCHAR(45) NOT NULL,
+  `videoTitle` VARCHAR(100) NULL,
+  `channelName` VARCHAR(45) NULL,
+  `videoThumbnail` VARCHAR(150) NULL,
+  `videoType` ENUM('SAFE','NORMAL') NULL,
+  PRIMARY KEY (`videoId`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb4;
 
@@ -39,33 +63,28 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`tweets` (
   `songName` VARCHAR(100) NULL,
   `origination` DATETIME NULL,
   `jsonBlob` LONGTEXT NULL,
-  `tweetscol` VARCHAR(45) NULL,
   `artist` VARCHAR(100) NULL,
+  `artistId` INT NULL,
+  `stationSongIndex` BIGINT(20) NULL,
+  `videoId` VARCHAR(45) NULL,
   PRIMARY KEY (`tweetId`),
   INDEX `userId_idx` (`stationId` ASC),
   INDEX `origination_idx` (`origination` DESC),
-  UNIQUE INDEX `tweetId_UNIQUE` (`tweetId` ASC),
+  INDEX `artistid_idx` (`artistId` ASC),
+  INDEX `videoId_idx` (`videoId` ASC),
   CONSTRAINT `stationId`
     FOREIGN KEY (`stationId`)
     REFERENCES `sxmt`.`stations` (`stationId`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sxmt`.`transformers`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sxmt`.`transformers` (
-  `stationId` BIGINT(20) NOT NULL,
-  `regex` VARCHAR(500) NULL,
-  `startTime` DATE NULL,
-  `endTime` DATE NULL,
-  INDEX `userId_idx` (`stationId` ASC),
-  CONSTRAINT `stationId2`
-    FOREIGN KEY (`stationId`)
-    REFERENCES `sxmt`.`stations` (`stationId`)
+    ON UPDATE NO ACTION,
+  CONSTRAINT `artistId`
+    FOREIGN KEY (`artistId`)
+    REFERENCES `sxmt`.`artists` (`artistId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `videoId`
+    FOREIGN KEY (`videoId`)
+    REFERENCES `sxmt`.`videos` (`videoId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -73,25 +92,53 @@ DEFAULT CHARACTER SET = utf8mb4;
 
 
 -- -----------------------------------------------------
--- Table `sxmt`.`videos`
+-- Table `sxmt`.`genres`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sxmt`.`videos` (
-  `tweetId` BIGINT(20) NOT NULL,
-  `videoTitle` VARCHAR(100) NULL,
-  `videoId` VARCHAR(45) NULL,
-  `channelName` VARCHAR(45) NULL,
-  `videoThumbnail` VARCHAR(150) NULL,
-  `videoType` ENUM('SAFE','NORMAL') NULL,
-  PRIMARY KEY (`tweetId`),
-  UNIQUE INDEX `tweetId_UNIQUE` (`tweetId` ASC),
-  CONSTRAINT `tweetId`
-    FOREIGN KEY (`tweetId`)
-    REFERENCES `sxmt`.`tweets` (`tweetId`)
+CREATE TABLE IF NOT EXISTS `sxmt`.`genres` (
+  `genreId` INT NOT NULL AUTO_INCREMENT,
+  `genre` VARCHAR(40) NULL,
+  PRIMARY KEY (`genreId`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `sxmt`.`artistGenres`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sxmt`.`artistGenres` (
+  `artistGenresId` INT NOT NULL AUTO_INCREMENT,
+  `artistId` INT NULL,
+  `genreId` INT NULL,
+  PRIMARY KEY (`artistGenresId`),
+  INDEX `artistId_idx` (`artistId` ASC),
+  INDEX `genreId_idx` (`genreId` ASC),
+  CONSTRAINT `artistId`
+    FOREIGN KEY (`artistId`)
+    REFERENCES `sxmt`.`artists` (`artistId`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `genreId`
+    FOREIGN KEY (`genreId`)
+    REFERENCES `sxmt`.`genres` (`genreId`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+ENGINE = InnoDB;
 
+USE `sxmt`;
+
+DELIMITER $$
+USE `sxmt`$$
+CREATE DEFINER = CURRENT_USER TRIGGER `sxmt`.`tweets_BEFORE_INSERT` BEFORE INSERT ON `tweets` FOR EACH ROW
+BEGIN
+	SET NEW.stationSongIndex = (
+		SELECT COALESCE(MAX(stationSongIndex),0)+1
+        FROM tweets
+        WHERE stationId = NEW.stationId
+    );
+END
+$$
+
+
+DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
