@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `sxmt`.`artistGenres` (
   PRIMARY KEY (`artistGenresId`),
   INDEX `artistId_idx` (`artistId` ASC),
   INDEX `genreId_idx` (`genreId` ASC),
-  CONSTRAINT `artistId`
+  CONSTRAINT `artistId2`
     FOREIGN KEY (`artistId`)
     REFERENCES `sxmt`.`artists` (`artistId`)
     ON DELETE NO ACTION
