@@ -3,23 +3,81 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SXMT - Serious XM Tube</title>
+    <title>SXMT</title>
     <link rel="stylesheet" href="css/foundation.min.css" />
     <link rel="stylesheet" href="css/slick/slick.css" />
     <link rel="stylesheet" href="css/slick/slick-theme.css" />
     <link rel="stylesheet" href="css/sxmt.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/banner-theme.css" />
     <script type="text/javascript" src="js/modernizr.js"></script>
 </head>
 <body id="sxmtBody">
 
+<section class="hero">
+	<div class="row">
+		<div class="large-12 columns">
+			<div class="main-wrapper">
+				<h1>SeriousXMTube</h1>
+				<hr>
+				<div class="row">
+					<div class="large-6 columns large-centered">
+						<ul class="button-group even-4">
+							<li><a href="#" class="button">Home</a></li>
+							<li><a href="#" class="button">About</a></li>
+							<li><a href="#" class="button">Station List</a></li>
+							<li><a href="#" class="button">Contact</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="large-6 columns about-box">
+			<div class="black-box">
+				<div id="funstuff">
+					<div id="get-started">
+						<h3>Listen to the top satellite radio stations, for free.</h3>
+						<br>
+						<a href="#" id="homeStartButton" class="secondary small button">Get started →</a>
+					</div>
+					<div id="choose-station">
+						<h3>Choose a station</h3>
+						<div id="stations"></div>
+					</div>
+					<div id="watch-video">
+						<h3 id="videoHeader" class="noMargin"></h3>
+						<div id="videoWrapper" class="flex-video hideOffscreen">
+							<div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;">
+								&nbsp;_______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______&nbsp;_________
+								(&nbsp;&nbsp;____&nbsp;\|\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/|(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)\__&nbsp;&nbsp;&nbsp;__/
+								|&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;\/(&nbsp;\&nbsp;&nbsp;&nbsp;/&nbsp;)|&nbsp;()&nbsp;()&nbsp;|&nbsp;&nbsp;&nbsp;)&nbsp;(&nbsp;&nbsp;&nbsp;
+								|&nbsp;(_____&nbsp;&nbsp;\&nbsp;(_)&nbsp;/&nbsp;|&nbsp;||&nbsp;||&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+								(_____&nbsp;&nbsp;)&nbsp;&nbsp;)&nbsp;_&nbsp;(&nbsp;&nbsp;|&nbsp;|(_)|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+								&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;|&nbsp;/&nbsp;(&nbsp;)&nbsp;\&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+								/\____)&nbsp;|(&nbsp;/&nbsp;&nbsp;&nbsp;\&nbsp;)|&nbsp;)&nbsp;&nbsp;&nbsp;(&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
+								\_______)|/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\||/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\|&nbsp;&nbsp;&nbsp;)_(&nbsp;&nbsp;&nbsp;
+							</div>
+						</div>
+						<a id="videoSkip" class="large button expand" style="display: none;">Next Video</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- ------------------------------------------ RYAN CODE ------------------------------------------ -->
+<!--
 <nav class="top-bar" data-topbar="">
     <ul class="title-area"><li class="name"><h1><a href="javascript:void(0);" target="_blank">Welcome to Serious XM Tube</a></h1></li></ul>
     <section class="top-bar-section">
         <ul class="right">
             <!--<li class="divider"></li>-->
-            <!--TODO may want to add our controls here-->
-        </ul>
-    </section>
+<!--TODO may want to add our controls here
+</ul>
+</section>
 </nav>
 <section class="scroll-container">
     <div class="row">
@@ -54,7 +112,7 @@
             </div>
         </div>
     </div>
-</section>
+</section> -->
 
 <!-- TEMPLATES/ -->
 <script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{title}}<!--{{song}}&nbsp;by&nbsp;{{artist}}--></a></script>

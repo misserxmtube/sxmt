@@ -23,10 +23,13 @@ public class SXMTController {
     )
     public List<Station> getAllStations() throws SQLException {
         List<Station> returnedStations = new ArrayList<Station>();
+		/*
         List<com.sxmt.ui.Station> stations = StationRetriever.getStations();
         for (com.sxmt.ui.Station station : stations) { // Get rid o' those pesky Longs
             returnedStations.add(new Station(station.getName(), station.getId().toString(), station.getThumbnail(), station.getBackdrop()));
         }
+        */
+		returnedStations.add(new Station("Test Station", "123", "", ""));
         return returnedStations;
     }
 
@@ -41,7 +44,8 @@ public class SXMTController {
         final String song = stationInfo.getSong();
         final String tweet = stationInfo.getTweet();
         final int next = stationInfo.getNext();
-        final VideoForDisplay video;
+		final VideoForDisplay video;
+		/*
         if (song == null) {
             // send back latest song for station
             video = VideoRetriever.getNewestVideo(station);
@@ -52,6 +56,8 @@ public class SXMTController {
             // send back the matching song
             video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
+        */
+		video = new VideoForDisplay("Test Song", "Test Artist", "Test Title", "94Rq2TX0wj4", "Test Channel", "", null, null);
         Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
         String tweetId = null, referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();
@@ -79,5 +85,16 @@ public class SXMTController {
 			allSongs.add(getSongForStation(stationSong));
 		}
 		return allSongs;
+	}
+
+	@RequestMapping(
+			value="/song/previous",
+			method = RequestMethod.POST,
+			consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public Song getPreviousSongForStation(@RequestBody StationSong stationInfo) throws SQLException {
+		// todo wait for persistence layer implementation
+		return null;
 	}
 }

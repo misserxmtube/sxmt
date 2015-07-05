@@ -23,8 +23,9 @@
     max-width: 100em;
 }
 
-.slick-prev::before, .slick-next::before {
-    color: #000000 !important;
+.slick-prev::before,
+.slick-next::before {
+    color: #ffffff !important;
 }
 
 .slick-next {
@@ -73,7 +74,7 @@
 */
 
 #sxmtBody {
-    background-size: 100% 100%;
+    /*background-size: 100% 100%;*/
 }
 
 #videoColumn, #historyColumn {
@@ -130,4 +131,17 @@
 
 .historyTitle {
     font-size: 12px;
+}
+
+.about-box {
+	position: relative;
+	left: 25%;
+}
+
+.about-box * {
+	text-align: center;
+}
+
+.hidden {
+	display: none;
 }
