@@ -32,7 +32,7 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `sxmt`.`artists`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sxmt`.`artists` (
-  `artistId` INT NOT NULL,
+  `artistId` INT NOT NULL AUTO_INCREMENT,
   `artistName` VARCHAR(100) NULL,
   `echoNestId` VARCHAR(45) NULL,
   PRIMARY KEY (`artistId`),
