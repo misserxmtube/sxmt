@@ -35,7 +35,6 @@ public class VideoRetriever
 			public void run() {
 				try
 				{
-					final List<FillerVideo> fillerVideoList = new ArrayList<>(25);
 					final String fillerSql = "SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
 							" FROM " + TableNames.VIDEOS + " AS vids\n" +
 							" INNER JOIN " + TableNames.TWEETS + " AS twits\n" +
@@ -49,6 +48,7 @@ public class VideoRetriever
 					{
 						for(Station station : StationRetriever.getStations())
 						{
+							final List<FillerVideo> fillerVideoList = new ArrayList<>(25);
 							final long stationId = station.getId();
 							preparedStatement.setLong(1, stationId);
 							try (final ResultSet results = preparedStatement.executeQuery())
@@ -72,7 +72,6 @@ public class VideoRetriever
 							}
 
 							stationFillerSongsMap.put(stationId, fillerVideoList);
-							fillerVideoList.clear();
 						}
 					}
 				} catch (SQLException e)
