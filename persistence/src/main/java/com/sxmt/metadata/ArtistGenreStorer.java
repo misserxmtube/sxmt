@@ -81,8 +81,9 @@ public class ArtistGenreStorer
 
                 for(String genre : genres){
                     genresInsertStatement.setString(1, genre);
-                    genresInsertStatement.execute();
+                    genresInsertStatement.addBatch();
                 }
+                genresInsertStatement.executeBatch();
 
                 int count = 1;
                 for(String genre : genres){
@@ -99,8 +100,9 @@ public class ArtistGenreStorer
                 for(Integer genreId : genreIds){
                     artistGenresInsertStatement.setInt(1, artistId);
                     artistGenresInsertStatement.setInt(2, genreId);
-                    artistGenresInsertStatement.execute();
+                    artistGenresInsertStatement.addBatch();
                 }
+                artistGenresInsertStatement.executeBatch();
             }
         }
         return artistId;
