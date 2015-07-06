@@ -1,3 +1,5 @@
+package com.sxmt.metadata;
+
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import com.echonest.api.v4.Params;
