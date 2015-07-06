@@ -26,7 +26,6 @@ public class VideoRetriever
 	private static final Logger LOG = LoggerFactory.getLogger(VideoRetriever.class);
 
 	private static final ConcurrentHashMap<Long, List<FillerVideo>> stationFillerSongsMap = new ConcurrentHashMap<>();
-	private static final ConcurrentHashMap<Long, VideoForDisplay> stationNewestSongMap = new ConcurrentHashMap<>();
 
 	private static final Random rand = new Random();
 
@@ -85,8 +84,10 @@ public class VideoRetriever
 		scheduler.scheduleAtFixedRate(populateFillerSongsMap, 0, 60, TimeUnit.SECONDS);
 	}
 
-	//initialized the newestSongsMap
-	static {
+	public static VideoForDisplay getNewestVideo(Long stationId) throws SQLException
+	{
+		LOG.info("Getting newest video for stationId {}", stationId);
+		VideoForDisplay videoForDisplay = null;
 		try
 		{
 			final String sql = " SELECT vids." + VideosFields.VIDEO_ID + ", twits." + TweetsFields.SONG_NAME + ", twits." + TweetsFields.ARTIST + ", vids." + VideosFields.VIDEO_TITLE + ", vids." + VideosFields.CHANNEL_NAME + ", twits." + TweetsFields.TWEET_ID + ", vids." + VideosFields.VIDEO_THUMBNAIL +
@@ -99,43 +100,26 @@ public class VideoRetriever
 			try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 					final PreparedStatement preparedStatement = connection.prepareStatement(sql))
 			{
-				for(Station station : StationRetriever.getStations())
+				preparedStatement.setLong(1, stationId);
+				try (final ResultSet results = preparedStatement.executeQuery())
 				{
-					VideoForDisplay videoForDisplay = null;
-					final long stationId = station.getId();
-					preparedStatement.setLong(1, stationId);
-					try (final ResultSet results = preparedStatement.executeQuery())
-					{
-						while(results.next()){
-							videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
-						}
+					while(results.next()){
+						videoForDisplay = new VideoForDisplay(results.getString(TweetsFields.SONG_NAME), results.getString(TweetsFields.ARTIST), results.getString(VideosFields.VIDEO_TITLE), results.getString(VideosFields.VIDEO_ID), results.getString(VideosFields.CHANNEL_NAME), results.getString(VideosFields.VIDEO_THUMBNAIL), results.getLong(TweetsFields.TWEET_ID), null);
 					}
+				}
 
-					if(videoForDisplay == null)
-					{
-						LOG.error("Could not get the newest video for station {} ... problem!", stationId);
-						videoForDisplay = getFillerVideo(1L, stationId);
-					}
-					stationNewestSongMap.put(stationId, videoForDisplay);
+				if(videoForDisplay == null)
+				{
+					LOG.error("Could not get the newest video for station {} ... problem!", stationId);
+					videoForDisplay = getFillerVideo(1L, stationId);
 				}
 			}
 		} catch (SQLException e)
 		{
 			LOG.error("Error getting newest videos!", e);
 		}
-	}
-
-	public static VideoForDisplay getNewestVideo(Long stationId) throws SQLException
-	{
-		LOG.info("Getting newest video for stationId {}", stationId);
-		final VideoForDisplay videoForDisplay = stationNewestSongMap.get(stationId);
 		LOG.info("Retrieved video: {}", videoForDisplay);
 		return videoForDisplay;
-	}
-
-	public static void setNewestVideo(Long stationId, VideoForDisplay newestVideo)
-	{
-		stationNewestSongMap.put(stationId, newestVideo);
 	}
 
 	public static VideoForDisplay getVideo(Long stationId, Long tweetId) throws SQLException

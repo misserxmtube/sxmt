@@ -7,8 +7,6 @@ import com.sxmt.connection.SQLConnectionFactory;
 import com.sxmt.connection.StationsFields;
 import com.sxmt.connection.TableNames;
 import com.sxmt.connection.TweetsFields;
-import com.sxmt.ui.VideoForDisplay;
-import com.sxmt.ui.VideoRetriever;
 import com.sxmt.youtube.VideoStorer;
 
 import java.sql.Connection;
@@ -54,6 +52,7 @@ public class TweetStorer
 		}
 
 		//this better be the newest video...
-		VideoRetriever.setNewestVideo(tweet.getStationId(), new VideoForDisplay(tweet.getSongName(), tweet.getArtist(), youtubeRecord.getTitle(), youtubeRecord.getVideoId(), youtubeRecord.getChannelTitle(), youtubeRecord.getThumbnail(), tweet.getId(), null));
+		//TODO update materialized view to have this be the station's newest video
+//		VideoRetriever.setNewestVideo(tweet.getStationId(), new VideoForDisplay(tweet.getSongName(), tweet.getArtist(), youtubeRecord.getTitle(), youtubeRecord.getVideoId(), youtubeRecord.getChannelTitle(), youtubeRecord.getThumbnail(), tweet.getId(), null));
 	}
 }
