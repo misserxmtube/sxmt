@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="css/foundation.min.css" />
     <link rel="stylesheet" href="css/slick/slick.css" />
     <link rel="stylesheet" href="css/slick/slick-theme.css" />
-    <link rel="stylesheet" href="css/sxmt.css" />
     <link rel="stylesheet" href="css/font-awesome.min.css" />
     <link rel="stylesheet" href="css/banner-theme.css" />
+	<link rel="stylesheet" href="css/sxmt.css" />
     <script type="text/javascript" src="js/modernizr.js"></script>
 </head>
 <body id="sxmtBody">
@@ -17,15 +17,15 @@
 <section class="hero">
 	<div class="row">
 		<div class="large-12 columns">
-			<div class="main-wrapper">
+			<div class="main-wrapper black-box">
 				<h1>SeriousXMTube</h1>
 				<hr>
 				<div class="row">
 					<div class="large-6 columns large-centered">
-						<ul class="button-group even-4">
+						<ul id="sxmtNavList" class="button-group even-4">
 							<li><a href="#" class="button">Home</a></li>
 							<li><a href="#" class="button">About</a></li>
-							<li><a href="#" class="button">Station List</a></li>
+							<li><a href="#" class="button">Station Info</a></li>
 							<li><a href="#" class="button">Contact</a></li>
 						</ul>
 					</div>
@@ -34,7 +34,14 @@
 		</div>
 	</div>
 	<div class="row">
-		<div class="large-6 columns about-box">
+		<div class="large-3 columns">
+			<div class="black-box">
+				<h3>Stations</h3>
+				<hr />
+				<div id="stations"></div>
+			</div>
+		</div>
+		<div class="large-6 columns">
 			<div class="black-box">
 				<div id="funstuff">
 					<div id="get-started">
@@ -42,12 +49,9 @@
 						<br>
 						<a href="#" id="homeStartButton" class="secondary small button">Get started →</a>
 					</div>
-					<div id="choose-station">
-						<h3>Choose a station</h3>
-						<div id="stations"></div>
-					</div>
-					<div id="watch-video">
+					<div id="watch-video" class="hidden">
 						<h3 id="videoHeader" class="noMargin"></h3>
+						<hr />
 						<div id="videoWrapper" class="flex-video hideOffscreen">
 							<div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;">
 								&nbsp;_______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______&nbsp;_________
@@ -65,10 +69,20 @@
 				</div>
 			</div>
 		</div>
+		<div id="historyColumn" class="large-3 columns">
+			<div class="black-box">
+				<div id="videoHistoryHeader">
+					<h3>History</h3>
+					<hr />
+				</div>
+				<nav id="videoHistoryNav">
+					<ul id="videoHistory" class="side-nav"></ul>
+				</nav>
+			</div>
+		</div>
 	</div>
 </section>
 
-<!-- ------------------------------------------ RYAN CODE ------------------------------------------ -->
 <!--
 <nav class="top-bar" data-topbar="">
     <ul class="title-area"><li class="name"><h1><a href="javascript:void(0);" target="_blank">Welcome to Serious XM Tube</a></h1></li></ul>
@@ -116,7 +130,7 @@
 
 <!-- TEMPLATES/ -->
 <script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{title}}<!--{{song}}&nbsp;by&nbsp;{{artist}}--></a></script>
-<script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus" style="display:none;">You&rsquo;re Listening To:&nbsp;</span><span id="videoUrl">{{> videoUrl}}</span></script>
+<script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoUrl">{{> videoUrl}}</span></script>
 <script id="HT_videoEmbedUrl" type="text/x-handlebars-template">https://www.youtube.com/embed/{{id}}?enablejsapi=1</script>
 <script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}'),url('images/noImg.png');">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
 <script id="HT_history" type="text/x-handlebars-template">{{#each this}}{{> historyEntry}}{{/each}}</script>

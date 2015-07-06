@@ -122,40 +122,6 @@ window.SXMT=(function() {
                 SXMT.info.stations = data;
 //                if (data.length < 1) {alert("No stations loaded!");return;}
                 document.getElementById("stations").innerHTML = templates.stations(data);
-                var stations = $("#stations");
-                stations.slick({
-                    centerMode: true,
-                    centerPadding: "60px",
-                    slidesToShow: 3,
-                    focusOnSelect: false,
-                    responsive: [
-                        {
-                            breakpoint: 768,
-                            settings: {
-                                arrows: false,
-                                centerMode: true,
-                                centerPadding: "40px",
-                                slidesToShow: 3
-                            }
-                        },
-                        {
-                            breakpoint: 480,
-                            settings: {
-                                arrows: false,
-                                centerMode: true,
-                                centerPadding: "40px",
-                                slidesToShow: 1
-                            }
-                        }
-                    ]
-                });
-                var stationOptions = $(".station");
-                stationOptions.click(function() {
-                    stationOptions.siblings(".slick-center").removeClass("slick-center");
-                    var $this = $(this);
-                    $this.addClass("slick-center");
-                    stations.slick("slickGoTo", $this.data("slick-index"), false);
-                });
             })
             .fail(function(data) {
                 alert("Could not load station list!");
@@ -283,6 +249,9 @@ window.SXMT=(function() {
             SXMT.loadSong(SXMT.info.currentStation);
             updateStationBackdrop(SXMT.info.currentStation.backdrop);
             $("html, body").animate({scrollTop: 0}, "slow");
+
+	        $('#watch-video').removeClass('hidden');
+	        $('#get-started').addClass('hidden');
         }
     });
     SXMT.refreshStations();
@@ -303,59 +272,8 @@ window.SXMT=(function() {
     /** Setup Next Video Button **/
     $("#videoSkip").on("click", function() {SXMT.loadSong(SXMT.info.currentStation, SXMT.info.currentSong.id, SXMT.info.currentSong.tweet);});
 
-	// set up main slick div
-	$("#funstuff").slick({
-		centerMode: true,
-		centerPadding: "60px",
-		slidesToShow: 1,
-		swipe: false,
-		draggable: false,
-		touchMove: false,
-		focusOnSelect: false,
-		prevArrow: '<button type="button" class="slick-prev hidden">Previous</button>',
-		nextArrow: '<button type="button" class="slick-next hidden">Next</button>',
-		responsive: [
-			{
-				breakpoint: 768,
-				settings: {
-					arrows: false,
-					centerMode: true,
-					centerPadding: "40px",
-					slidesToShow: 3
-				}
-			},
-			{
-				breakpoint: 480,
-				settings: {
-					arrows: false,
-					centerMode: true,
-					centerPadding: "40px",
-					slidesToShow: 1
-				}
-			}
-		]
-	});
-
 	$('#homeStartButton').on('click', function() {
-		$('#funstuff').slick('slickNext');
-		$('.slick-prev').removeClass('hidden');
-	});
-
-	$('#stations').on('click', function() {
-		$('#funstuff').slick('slickNext');
-	});
-
-	$('.slick-prev').on('click', function() {
-		if ($('#funstuff').slick('slickCurrentSlide') === 0) {
-			// hide the arrow
-			$('.slick-prev').addClass('hidden');
-		}
-	});
-
-	// stupid derp stuff
-	$('#funstuff').on('init', function() {
-		$('.slick-prev').css("display", "");
-		$('.slick-next').css("display", "");
+		// haha jk
 	});
 
     return SXMT;

@@ -57,7 +57,7 @@ public class SXMTController {
             video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
         */
-		video = new VideoForDisplay("Test Song", "Test Artist", "Test Title", "94Rq2TX0wj4", "Test Channel", "", null, null);
+		video = new VideoForDisplay("Test Song", "Test Artist", "Test Title", "94Rq2TX0wj4", "Test Channel", "", 1234L, 5678L);
         Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
         String tweetId = null, referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();

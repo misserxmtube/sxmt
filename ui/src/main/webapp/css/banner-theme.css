@@ -135,7 +135,8 @@ footer p, footer a {
 }
 
 .hero {
-	padding-bottom: 50px;
+	/*padding-bottom: 50px;*/
+	padding-bottom: 15px;
 	/*background: url("../images/garry1b.jpg") repeat;*/
 	/*background-size: cover;*/
 	box-shadow: inset 0px 0px 0 2000px rgba(0,0,0,0.2);
@@ -148,7 +149,7 @@ footer p, footer a {
 }
 
 .panel {
-	margin: 40px 0 40px 0;
+	/*margin: 40px 0 40px 0;*/
 	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
 	border: none;
 	background-color: #EAEAEA;
