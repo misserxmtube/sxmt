@@ -47,7 +47,7 @@ public class ArtistGenreStorer
 
         final String artistGenresInsert =
                 "INSERT IGNORE INTO "+ DBNAME + "." + TableNames.ARTIST_GENRES +
-                "   ("+ ArtistGenresFields.ARTIST_ID+", "+ ArtistGenresFields.GENRE_ID +" VALUES(?,?)";
+                "   ("+ ArtistGenresFields.ARTIST_ID+", "+ ArtistGenresFields.GENRE_ID +") VALUES(?,?)";
 
         int artistId;
 
