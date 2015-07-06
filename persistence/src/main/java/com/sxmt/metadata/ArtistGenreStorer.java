@@ -42,7 +42,7 @@ public class ArtistGenreStorer
                 "   ("+ GenresFields.GENRE +") VALUES (?);";
 
         final String genresSelect =
-                "SELECT "+ GenresFields.GENRE_ID +" FROM " + DBNAME + "." + TableNames.ARTISTS +
+                "SELECT "+ GenresFields.GENRE_ID +" FROM " + DBNAME + "." + TableNames.GENRES +
                 "   WHERE "+GenresFields.GENRE+" IN ("+genresPlaceHolder+")";
 
         final String artistGenresInsert =
@@ -99,6 +99,7 @@ public class ArtistGenreStorer
                 for(Integer genreId : genreIds){
                     artistGenresInsertStatement.setInt(1, artistId);
                     artistGenresInsertStatement.setInt(2, genreId);
+                    artistGenresInsertStatement.execute();
                 }
             }
         }
