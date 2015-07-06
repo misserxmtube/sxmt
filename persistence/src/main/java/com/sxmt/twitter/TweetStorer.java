@@ -31,6 +31,8 @@ public class TweetStorer
 		final String tweetInsert = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.TWEETS +
 				" (" + TweetsFields.TWEET_ID + ", " + TweetsFields.VIDEO_ID + ", " + TweetsFields.STATION_ID + ", " + TweetsFields.TWEET_TEXT + ", " + TweetsFields.SONG_NAME + ", " + TweetsFields.ARTIST + ", " + TweetsFields.ORIGINATION + ", " + TweetsFields.JSON_BLOB + ") VALUES(?,?,?,?,?,?,?,?)";
 		final YoutubeRecord youtubeRecord = YoutubeFetcher.getYoutubeRecord(tweet.getSongName(), tweet.getArtist());
+		VideoStorer.storeVideo(youtubeRecord);
+
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final PreparedStatement stationStatement = connection.prepareStatement(stationInsert);
 				final PreparedStatement tweetStatement = connection.prepareStatement(tweetInsert))
@@ -50,7 +52,6 @@ public class TweetStorer
 			tweetStatement.setString(8, tweet.getFullTweet());
 			tweetStatement.execute();
 		}
-		VideoStorer.storeVideo(youtubeRecord);
 
 		//this better be the newest video...
 		VideoRetriever.setNewestVideo(tweet.getStationId(), new VideoForDisplay(tweet.getSongName(), tweet.getArtist(), youtubeRecord.getTitle(), youtubeRecord.getVideoId(), youtubeRecord.getChannelTitle(), youtubeRecord.getThumbnail(), tweet.getId(), null));
