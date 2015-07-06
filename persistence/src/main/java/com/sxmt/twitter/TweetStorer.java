@@ -29,7 +29,7 @@ public class TweetStorer
 				" (" + StationsFields.STATION_ID + ", " + StationsFields.STATION_NAME + ", " + StationsFields.STATION_HANDLE + ") VALUES(?,?,?)";
 		//insert the 'tweet'
 		final String tweetInsert = "INSERT INTO " + Properties.getInstance().getAppDatabaseName() + "." + TableNames.TWEETS +
-				" (" + TweetsFields.TWEET_ID + ", " + TweetsFields.VIDEO_ID + ", " + TweetsFields.STATION_ID + ", " + TweetsFields.TWEET_TEXT + ", " + TweetsFields.SONG_NAME + ", " + TweetsFields.ARTIST + ", " + TweetsFields.ORIGINATION + ", " + TweetsFields.JSON_BLOB + ") VALUES(?,?,?,?,?,?,?)";
+				" (" + TweetsFields.TWEET_ID + ", " + TweetsFields.VIDEO_ID + ", " + TweetsFields.STATION_ID + ", " + TweetsFields.TWEET_TEXT + ", " + TweetsFields.SONG_NAME + ", " + TweetsFields.ARTIST + ", " + TweetsFields.ORIGINATION + ", " + TweetsFields.JSON_BLOB + ") VALUES(?,?,?,?,?,?,?,?)";
 		final YoutubeRecord youtubeRecord = YoutubeFetcher.getYoutubeRecord(tweet.getSongName(), tweet.getArtist());
 		try (final Connection connection = SQLConnectionFactory.newMySQLConnection();
 				final PreparedStatement stationStatement = connection.prepareStatement(stationInsert);
