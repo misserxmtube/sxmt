@@ -8,6 +8,8 @@ import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.conf.ConfigurationBuilder;
 
+import java.util.Properties;
+
 /**
  * Consumes tweets using a UserStreamReader. In order to add/remove tweeters, use stopConsuming() beforehand and
  * resume with startConsuming().
@@ -18,26 +20,20 @@ public class TweetConsumer
 {
 	private Logger log = LoggerFactory.getLogger(TweetConsumer.class);
 
-	//TODO put these in config file
-	private final String consumerKey = "dQskdemPDk9E6AjgmpcIfMpqi";
-	private final String consumerSecret = "TUkTc5aMsbZTPc8ndQ5UQDkWocYx5wR9ZSKHoJIEEdpZAQpuR4";
-	private final String token = "3089407595-97kWtUYxO7WtL1oUL54xSdHGdY2G6Kt3YIIpe3Y";
-	private final String secret = "JXUhfSdQII6qkv2bFSmR8FWyEhBvCSPHb0DgN7CPIvQDz";
-
 	private UserStreamReader reader;
 	private Thread runner;
 	private Twitter twitter;
 
-	public TweetConsumer()
+	public TweetConsumer(Properties properties)
 	{
 		reader = new UserStreamReader();
 		runner = new Thread(reader);
 		ConfigurationBuilder cb = new ConfigurationBuilder();
 		cb.setDebugEnabled(true)
-				.setOAuthConsumerKey(consumerKey)
-				.setOAuthConsumerSecret(consumerSecret)
-				.setOAuthAccessToken(token)
-				.setOAuthAccessTokenSecret(secret);
+				.setOAuthConsumerKey(properties.getProperty("twitter.consumerKey"))
+				.setOAuthConsumerSecret(properties.getProperty("twitter.consumerSecret"))
+				.setOAuthAccessToken(properties.getProperty("twitter.token"))
+				.setOAuthAccessTokenSecret(properties.getProperty("twitter.secret"));
 		TwitterFactory tf = new TwitterFactory(cb.build());
 		twitter = tf.getInstance();
 	}

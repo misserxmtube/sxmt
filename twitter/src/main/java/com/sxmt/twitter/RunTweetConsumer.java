@@ -18,7 +18,7 @@ public class RunTweetConsumer
     private static final String PROPERTIES_FILENAME = "twitter.properties";
 	public static void main(String[] args) throws Exception
 	{
-        Properties props = new Properties();
+        final Properties props = new Properties();
         try {
             InputStream in = RunTweetConsumer.class.getResourceAsStream("/"+PROPERTIES_FILENAME);
             props.load(in);
@@ -28,7 +28,7 @@ public class RunTweetConsumer
                     + " : " + e.getMessage());
         }
         List<String> stations = Arrays.asList(StringUtils.split(props.getProperty("twitter.stations"), ","));
-        TweetConsumer consumer = new TweetConsumer();
+        TweetConsumer consumer = new TweetConsumer(props);
         for(String station : stations){
             String stationHandle = props.getProperty("twitter.station." + station + ".handle");
             String stationRegex = props.getProperty("twitter.station." + station + ".regex");
