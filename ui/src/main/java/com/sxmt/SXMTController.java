@@ -1,5 +1,6 @@
 package com.sxmt;
 
+import com.sxmt.ui.Station;
 import com.sxmt.ui.StationRetriever;
 import com.sxmt.ui.VideoForDisplay;
 import com.sxmt.ui.VideoRetriever;
@@ -22,12 +23,7 @@ public class SXMTController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<Station> getAllStations() throws SQLException {
-        List<Station> returnedStations = new ArrayList<Station>();
-        List<com.sxmt.ui.Station> stations = StationRetriever.getStations();
-        for (com.sxmt.ui.Station station : stations) { // Get rid o' those pesky Longs
-            returnedStations.add(new Station(station.getName(), station.getId().toString(), station.getThumbnail(), station.getBackdrop()));
-        }
-        return returnedStations;
+        return StationRetriever.getStations();
     }
 
 	@RequestMapping(
@@ -52,8 +48,10 @@ public class SXMTController {
             // send back the matching song
             video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
-        Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
-        String tweetId = null, referenceId = null;
+        final Long tweetIdL = video.getRelevantTweetId();
+        final Long referenceIdL = video.getReferenceTweetId();
+        String tweetId = null;
+        String referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();
         if (referenceIdL != null) referenceId = referenceIdL.toString();
         return new Song( // Getting close to actually replacing this with VideoForDisplay
@@ -67,14 +65,18 @@ public class SXMTController {
         );
     }
 
-	@RequestMapping(value = "/song", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(
+            value = "/song",
+            method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
 	public List<Song> getAllNewestSongs() throws SQLException {
-		List<Song> allSongs = new ArrayList<Song>();
-		List<Station> allStations = getAllStations();
+        final List<Song> allSongs = new ArrayList<>();
+        final List<Station> allStations = getAllStations();
 		for (Station s : allStations)
 		{
-			String stationId = s.getId();
-			StationSong stationSong = new StationSong();
+            final String stationId = String.valueOf(s.getId());
+            final StationSong stationSong = new StationSong();
 			stationSong.setStation(stationId);
 			allSongs.add(getSongForStation(stationSong));
 		}

@@ -21,7 +21,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppC
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@ContextConfiguration("file:ui/src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
+@ContextConfiguration("file:src/main/webapp/WEB-INF/mvc-dispatcher-servlet.xml")
 public class AppTest {
     private MockMvc mockMvc;
 
@@ -56,6 +56,7 @@ public class AppTest {
     public void nextSongSimple() throws Exception {
         StationSong stationSong = new StationSong();
         stationSong.setStation("187541621");
+        stationSong.setTweet("12341241231245");
         stationSong.setSong("1234232");
         nextSongPost(stationSong);
     }
