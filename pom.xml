@@ -68,6 +68,11 @@
 				<groupId>com.sxmt</groupId>
 				<version>${sxmt.version}</version>
 			</dependency>
+            <dependency>
+                <artifactId>sxmt-metadata</artifactId>
+                <groupId>com.sxmt</groupId>
+                <version>${sxmt.version}</version>
+            </dependency>
 
 			<!-- Tweety tweets-->
 			<dependency>

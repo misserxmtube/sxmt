@@ -117,7 +117,7 @@ public class YoutubeFetcher
                 }
             }
         }
-
+        //TODO ensure not empty
         YoutubeRecord result = youtubeRecordMap.get(new ArrayList<>(youtubeRecordMap.keySet()).get(0));
         prettyPrint(result);
         return result;

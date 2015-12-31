@@ -53,5 +53,11 @@
 			<groupId>com.sxmt</groupId>
 			<artifactId>sxmt-youtube</artifactId>
 		</dependency>
+
+        <dependency>
+            <groupId>com.sxmt</groupId>
+            <artifactId>sxmt-metadata</artifactId>
+        </dependency>
+
 	</dependencies>
 </project>

@@ -1,3 +1,5 @@
+package com.sxmt.metadata;
+
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import com.echonest.api.v4.Params;
@@ -40,15 +42,16 @@ public class EchonestFetcher
 
     public static List<String> getGenres(String title, String artist) {
         Song song = getSong(title, artist);
+        List<String> emptyList = new ArrayList<>();
         if(song != null){
             try {
                 return getGenresByArtistId(song.getArtistID());
             }catch(EchoNestException e){
                 e.printStackTrace();
-                return null;
+                return emptyList;
             }
         }else{
-            return null;
+            return emptyList;
         }
     }
 

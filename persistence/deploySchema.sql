@@ -32,10 +32,11 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- Table `sxmt`.`artists`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sxmt`.`artists` (
-  `artistId` INT NOT NULL,
+  `artistId` INT NOT NULL AUTO_INCREMENT,
   `artistName` VARCHAR(100) NULL,
   `echoNestId` VARCHAR(45) NULL,
-  PRIMARY KEY (`artistId`))
+  PRIMARY KEY (`artistId`),
+  UNIQUE INDEX `artistName_UNIQUE` (`artistName` ASC))
 ENGINE = InnoDB;
 
 
@@ -96,8 +97,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sxmt`.`genres` (
   `genreId` INT NOT NULL AUTO_INCREMENT,
-  `genre` VARCHAR(40) NULL,
-  PRIMARY KEY (`genreId`))
+  `genre` VARCHAR(45) NULL,
+  PRIMARY KEY (`genreId`),
+  UNIQUE INDEX `genre_UNIQUE` (`genre` ASC))
 ENGINE = InnoDB;
 
 
@@ -105,13 +107,12 @@ ENGINE = InnoDB;
 -- Table `sxmt`.`artistGenres`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `sxmt`.`artistGenres` (
-  `artistGenresId` INT NOT NULL AUTO_INCREMENT,
-  `artistId` INT NULL,
-  `genreId` INT NULL,
-  PRIMARY KEY (`artistGenresId`),
+  `artistId` INT NOT NULL,
+  `genreId` INT NOT NULL,
   INDEX `artistId_idx` (`artistId` ASC),
   INDEX `genreId_idx` (`genreId` ASC),
-  CONSTRAINT `artistId`
+  PRIMARY KEY (`artistId`, `genreId`),
+  CONSTRAINT `artistId2`
     FOREIGN KEY (`artistId`)
     REFERENCES `sxmt`.`artists` (`artistId`)
     ON DELETE NO ACTION

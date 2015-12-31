@@ -50,8 +50,8 @@ public class GenericDialect implements SXMDialect
             String artist = matcher.group("artist").trim();
             String songTitle = matcher.group("songTitle").trim();
             for(String exclude : excludes){
-                artist = artist.replaceAll(exclude, "");
-                songTitle = songTitle.replaceAll(exclude, "");
+                artist = artist.replaceAll(exclude, "").trim();
+                songTitle = songTitle.replaceAll(exclude, "").trim();
             }
             map.put("artist", artist);
             map.put("songTitle", songTitle);

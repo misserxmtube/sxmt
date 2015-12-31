@@ -7,7 +7,6 @@ package com.sxmt.connection;
  */
 public class VideosFields
 {
-	public static final String TWEET_ID = "tweetId";
 	public static final String VIDEO_TITLE = "videoTitle";
 	public static final String VIDEO_ID = "videoId";
 	public static final String CHANNEL_NAME = "channelName";
