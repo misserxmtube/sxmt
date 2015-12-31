@@ -1,5 +1,7 @@
 package com.sxmt.ui;
 
+import java.util.Map;
+
 /** Station information **/
 public class Station
 {
@@ -8,6 +10,7 @@ public class Station
 	private String handle;
 	private String thumbnail;
 	private String backdrop;
+	private Map<String, Integer> genres;
 
 	public Station(Long id, String name, String handle, String thumbnail, String backdrop) {
 		this.id = id;
@@ -57,5 +60,13 @@ public class Station
 
 	public void setBackdrop(String backdrop) {
 		this.backdrop = backdrop;
+	}
+
+	public Map<String, Integer> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(Map<String, Integer> genres) {
+		this.genres = genres;
 	}
 }

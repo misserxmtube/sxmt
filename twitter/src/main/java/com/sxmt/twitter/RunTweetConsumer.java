@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
@@ -29,11 +30,15 @@ public class RunTweetConsumer
         }
         List<String> stations = Arrays.asList(StringUtils.split(props.getProperty("twitter.stations"), ","));
         TweetConsumer consumer = new TweetConsumer(props);
+        String globalExcludes = props.getProperty("twitter.station.global.excludes", "");
+        List<String> globalExcludesList = Arrays.asList(StringUtils.split(globalExcludes, ","));
         for(String station : stations){
             String stationHandle = props.getProperty("twitter.station." + station + ".handle");
             String stationRegex = props.getProperty("twitter.station." + station + ".regex");
             String stationExcludes = props.getProperty("twitter.station." + station + ".excludes", "");
-            GenericDialect stationDialect = new GenericDialect(stationRegex, Arrays.asList(StringUtils.split(stationExcludes,",")));
+            List<String> excludesList = new ArrayList<>(Arrays.asList(StringUtils.split(stationExcludes,",")));
+            excludesList.addAll(globalExcludesList);
+            GenericDialect stationDialect = new GenericDialect(stationRegex, excludesList);
             consumer.addUser(stationHandle, stationDialect);
         }
         consumer.startConsuming();
