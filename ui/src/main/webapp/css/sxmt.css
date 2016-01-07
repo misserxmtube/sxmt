@@ -70,13 +70,19 @@ body {
     position: absolute;
     top: 3.75em;
     bottom: 0;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
+    -webkit-box-direction: reverse;
+    -moz-box-direction: reverse;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row-reverse;
+    -ms-flex-direction: row-reverse;
     flex-direction: row-reverse;
 }
-
-/*#videoColumn > div:first-child {
-    bottom: 5em;
-}*/
 
 #videoColumn > div.panel {
     height: 100%;
@@ -104,9 +110,6 @@ body {
 }
 
 #sxmt-now-playing-img {
-    /*background: red; *//*testing*/
-    /*width: 3.75em;*/
-    /*width: 20%;*/
     background: rgb(34,34,34);
     width: 5em;
     float: left;
@@ -124,39 +127,41 @@ body {
 }
 
 #sxmt-stations-panel {
-    /*background: lightslategray;*/
     background: rgb(34,34,34);
     z-index: 1;
-    /*box-shadow: 0 -0.0625em 0.3125em 0 black;*/
     width: 25em;
 }
 
 #sxmt-stations-panel > ul.tabs {
     background: whitesmoke;
-    /*box-shadow: -0.0625em 0 0.125em 0 black;*/
 }
 
 #sxmt-stations-wrapper {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
     display: flex;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
     flex-direction: column;
 }
 
 #sxmt-station-tabs-wrapper {
+    -webkit-flex-grow: 1;
     flex-grow: 1;
 }
 
 #sxmt-stations-panel > div.tabs-content {
     position: absolute;
-    /*left: 0;*/
-    /*right: 0;*/
     top: 3.625em;
     bottom: 0.0625em;
     margin: 0;
 }
-
-/*#sxmt-stations-panel > div.tabs-content[station-selected] {
-    bottom: 4.05em;
-}*/
 
 #sxmt-stations > li.station.panel:not(:first-child) {
     margin-top: 1rem;
@@ -173,8 +178,6 @@ body {
     list-style: none;
     margin: 0;
     overflow: auto;
-    /*max-height: 100%;*/
-    /*padding: 1rem;*/
     height: 100%;
 }
 
@@ -249,18 +252,10 @@ body {
     line-height: normal;
 }
 
-#sxmt-player-buttons {
-    /*text-align: center;*/
-    /*vertical-align: middle;*/
-    /*padding-top: 0.3125em;*/
-}
-
 #sxmt-player-buttons i.fa {
     padding: 0 0.625em;
     cursor: pointer;
-    /*color: deepskyblue;*/
     text-shadow: 0 0 0.01em #fff, 0 0 0.01em #fff, 0 -0.01em 0.01em #fff, 0 0.01em 0.01em #fff;
-    /*text-shadow: 0 0 0.0625em deepskyblue, 0 0 0.0625em deepskyblue, 0 -0.0625em 0.0625em deepskyblue, 0 0.0625em 0.0625em deepskyblue;*/
 }
 
 #sxmt-player-buttons i.fa:before {
@@ -268,15 +263,7 @@ body {
 }
 
 #sxmt-player-buttons i.fa:hover, #sxmt-repeat.sxmt-repeat {
-    /*color: teal;*/
-    /*color: deepskyblue;*/
-    /*text-shadow: 0 0 0.0625em #000, 0 0 0.0625em #000, 0 -0.0625em 0.0625em #000, 0 0.0625em 0.0625em #000;*/
     text-shadow: 0 0 0.0825em #fff, 0 0 0.1825em #fff, 0 0.0125em 0.0825em #fff, 0 0.0125em 0.0825em #fff !important;
-}
-
-#sxmt-player-buttons-right {
-    /*position: absolute;*/
-    /*right: 1.25em;*/
 }
 
 #sxmt-play {
@@ -287,21 +274,8 @@ body {
     float: right;
 }
 
-/*
-#sxmt-menu-drop {
-    position: absolute;
-    top: -3.5em !important;
-    width: 6.25em !important;
-    right: 0.1875em !important;
-    left: initial !important;
-}
-*/
-
-/*#videoColumn, #historyColumn {
-    margin: 1.25em 0;
-}*/
-
 #videoColumn {
+    -webkit-flex-grow: 1;
     flex-grow: 1;
 }
 
@@ -316,18 +290,14 @@ body {
 
 #videoWrapper {
     position: absolute;
-    /*left: 1.25em;*/
-    /*right: 1.25em;*/
     left: 0;
     right: 0;
     top: 3.55em;
     bottom: 0;
-    /*bottom: 1.25em;*/
 }
 
 #videoUrl > a {
     color: #000000;
-    /*color: #F5F5F5;*/
 }
 
 .sidebar {
@@ -378,64 +348,12 @@ body {
     user-select: none;
 }
 
-/* Mobile Tiny */
-/*@media only screen and (max-width: 23em) {
-    #sxmt-now-playing {
-        display: none;
-    }
-}*/
-
 /* Mobile */
 @media only screen and (max-width: 40em) {
-    /*#sxmt-repeat, #sxmt-latest {
-        display: none;
-    }*/
-
-    /*#sxmt-now-playing {
-        position: static;
-        float: left;
-        width: 3.75em;
-    }*/
-
-    #sxmt-control-bar {
-        /*padding: 0.625em;*/
-    }
 
     #sxmt-control-bar .hideOnMobile {
         display: none !important;
     }
-}
-
-/* Mobile - Medium */
-/*@media only screen and (max-width: 55em) {
-    #sxmt-now-playing {
-        width: 5.125em;
-    }
-
-    #sxmt-now-playing-img {
-        width: 100%;
-    }
-
-    #sxmt-now-playing-text {
-        display: none !important;
-    }
-}*/
-
-/* Medium - */
-@media only screen and (max-width: 64em) {
-    #sxmt-stations-panel, #videoColumn {
-        /*height: 50%;*/
-    }
-
-    /*#historyColumn {
-        margin-top: 0;
-    }
-    #videoHistoryNav {
-        max-height: none !important;
-    }
-    #sxmt-repeat {
-        margin-left: 1.25em;
-    }*/
 }
 
 /* Smallish - */
@@ -448,19 +366,11 @@ body {
         width: 1.5em;
     }
 
-    /*h3 {
-        font-size: 1.375rem;
-    }
-
-    #videoWrapper {
-        top: 3em;
-    }*/
 }
 
 /* Small - */
 @media only screen and (max-width: 40.063em) {
     #sxmt-top {
-        /*min-height: 7.5em;*/
         height: 100%;
     }
 
@@ -469,8 +379,6 @@ body {
     }
 
     #sxmt-control-bar {
-        /*text-align: left;*/
-        /*margin-left: 4em;*/
         position: absolute;
         bottom: 0;
         width: 100%;
@@ -501,8 +409,8 @@ body {
 
     #videoColumn {
         position: relative;
+        -webkit-flex-grow: 0;
         flex-grow: 0;
-        /*height: 15em;*/
         height: 8em;
     }
 
@@ -522,6 +430,7 @@ body {
 
     #sxmt-stations-panel {
         width: auto;
+        -webkit-flex-grow: 1;
         flex-grow: 1;
     }
 
@@ -537,7 +446,6 @@ body {
 
 /* JScrollPane Overrides */
 .jspTrack {
-    /*background: #b2dfed;*/
     background: #c5eaf6;
 }
 
@@ -549,7 +457,6 @@ body {
 /* Foundation Overrides */
 .tabs dd.active a, .tabs .tab-title.active a {
     background-color: #c5eaf6;
-    /*font-weight: bold;*/
 }
 
 .tabs dd, .tabs .tab-title {
