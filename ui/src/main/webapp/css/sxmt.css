@@ -1,3 +1,7 @@
+body {
+    background: #FFD612;
+}
+
 .noMargin {
     margin: 0 !important;
 }
@@ -8,89 +12,322 @@
     margin: 0;
 }
 
-.hideOffscreen {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    left: -999999px;
-}
-
-.scroll-container > .row:first-child > div {
-    margin-top: 20px;
-}
-
 .row {
     max-width: 100em;
-}
-
-.slick-prev::before, .slick-next::before {
-    color: #000000 !important;
-}
-
-.slick-next {
-    right: -10px;
-}
-
-.slick-prev {
-    left: -10px;
-}
-
-.slick-slider {
-    margin-bottom: 20px;
 }
 
 .station {
     text-align: center;
     cursor: pointer;
-    height: 100px;
-    margin: 0 10px;
-    margin-top: 10px;
+    height: 6.25em;
     background-size: 100% 100%;
-    color: white;
-}
-
-.station.slick-center {
-    height: 120px;
-    margin-top: 0;
+    color: whitesmoke;
 }
 
 .flex-video iframe, .flex-video object, .flex-video embed, .flex-video video {
-    max-height: 600px; /*May end up removing this for a more flexible layout... maybe not :3 */
+    max-height: 37.5em; /*May end up removing this for a more flexible layout... meh*/
 }
 
-.flex-video:not(.noShow) {
-    padding-bottom: 62%;
+#sxmt-stations li.station.panel:not(:first-child) {
+    margin-top: 1rem;
 }
 
-/*
-#stations {
-    margin-top: 20px;
+#sxmt-stations-panel div.tabs-content[station-selected] > #sxmt-stations li.station.panel:last-child,
+#sxmt-stations-panel div.tabs-content[station-selected] > #videoHistory li:last-child {
+    margin-bottom: 5.30em !important;
 }
-
-#videoSkip {
-    margin: 0;
-}
-*/
 
 #sxmtBody {
     background-size: 100% 100%;
 }
 
-#videoColumn, #historyColumn {
-    margin: 20px 0;
+#sxmt-top {
+    height: 3.75em;
+    background: deepskyblue;
+    /*box-shadow: 0 0 0.3125em 0 black;*/
+}
+
+#sxmt-top > * {
+    height: 100%;
+}
+
+#sxmt-logo-anchor {
+    height: 3.75em;
+    padding: 0;
+}
+
+#sxmt-logo-img, .sxmt-vertical-center {
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.fa-spinner.sxmt-vertical-center {
+    font-size: 2rem;
+}
+
+#sxmt-content-pane {
+    position: absolute;
+    top: 3.75em;
+    bottom: 0;
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+/*#videoColumn > div:first-child {
+    bottom: 5em;
+}*/
+
+#videoColumn > div.panel {
+    height: 100%;
+    width: 100%;
+}
+
+#videoPlayer {
+    height: 100%;
+}
+
+#sxmt-now-playing {
+    height: 4.5em;
+    background: rgb(34, 34, 34);
+    position: absolute;
+    margin: 0;
+    padding: 0.25em 0;
+    bottom: 0;
+    left: 1rem;
+    right: 1rem;
+}
+
+#sxmt-now-playing-img, #sxmt-now-playing-text {
+    display: inline-block;
+    height: 100%;
+}
+
+#sxmt-now-playing-img {
+    /*background: red; *//*testing*/
+    /*width: 3.75em;*/
+    /*width: 20%;*/
+    background: rgb(34,34,34);
+    width: 5em;
+    float: left;
+}
+
+#sxmt-now-playing-text {
+    font-size: 0.9em;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    position: absolute;
+    left: 6em;
+    right: 1rem;
+    color: whitesmoke;
+}
+
+#sxmt-stations-panel {
+    /*background: lightslategray;*/
+    background: rgb(34,34,34);
+    z-index: 1;
+    /*box-shadow: 0 -0.0625em 0.3125em 0 black;*/
+    width: 25em;
+}
+
+#sxmt-stations-panel > ul.tabs {
+    background: whitesmoke;
+    /*box-shadow: -0.0625em 0 0.125em 0 black;*/
+}
+
+#sxmt-stations-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+#sxmt-station-tabs-wrapper {
+    flex-grow: 1;
+}
+
+#sxmt-stations-panel > div.tabs-content {
+    position: absolute;
+    /*left: 0;*/
+    /*right: 0;*/
+    top: 3.625em;
+    bottom: 0.0625em;
+    margin: 0;
+}
+
+/*#sxmt-stations-panel > div.tabs-content[station-selected] {
+    bottom: 4.05em;
+}*/
+
+#sxmt-stations > li.station.panel:not(:first-child) {
+    margin-top: 1rem;
+}
+
+#sxmt-stations-panel, #videoColumn, .off-canvas-wrap, .inner-wrap {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+#sxmt-stations, #videoHistory {
+    list-style: none;
+    margin: 0;
+    overflow: auto;
+    /*max-height: 100%;*/
+    /*padding: 1rem;*/
+    height: 100%;
+}
+
+#sxmt-stations .jspPane:empty:before,
+#videoHistory .jspPane:empty:before {
+    color: whitesmoke;
+    text-align: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 1.5em;
+    white-space: pre-line;
+    word-wrap: break-word;
+}
+
+#sxmt-stations .jspPane:empty:before {
+    content: "If you're seeing this message, something went wrong.\APlease contact support if this persists."
+}
+
+#videoHistory .jspPane:empty:before {
+    content: "Your played tracks will show up here";
+}
+
+#sxmt-stations .station, #videoHistory li {
+    margin: 1rem;
+    position: relative;
+}
+
+#sxmt-video-overlay,
+#sxmt-stations-overlay,
+#sxmt-stations div.sxmt-station-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    background: rgba(34,34,34,0.5);
+    color: whitesmoke;
+    text-align: center;
+}
+
+#sxmt-video-overlay, #sxmt-stations-overlay {
+    top: 0;
+    bottom: 0;
+    font-size: 2rem;
+    z-index: 1;
+}
+
+#sxmt-stations div.sxmt-station-overlay {
+    top: 30%;
+    bottom: 30%;
+}
+
+#sxmt-video-overlay-text,
+#sxmt-stations-overlay-text,
+#sxmt-stations div.sxmt-station-overlay-text {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    right: 0;
+}
+
+#sxmt-control-bar {
+    background: none;
+    pointer-events: none;
+    white-space: nowrap;
+    padding: 0;
+    overflow: auto;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    text-align: right;
+    line-height: normal;
+}
+
+#sxmt-player-buttons {
+    /*text-align: center;*/
+    /*vertical-align: middle;*/
+    /*padding-top: 0.3125em;*/
+}
+
+#sxmt-player-buttons i.fa {
+    padding: 0 0.625em;
+    cursor: pointer;
+    /*color: deepskyblue;*/
+    text-shadow: 0 0 0.01em #fff, 0 0 0.01em #fff, 0 -0.01em 0.01em #fff, 0 0.01em 0.01em #fff;
+    /*text-shadow: 0 0 0.0625em deepskyblue, 0 0 0.0625em deepskyblue, 0 -0.0625em 0.0625em deepskyblue, 0 0.0625em 0.0625em deepskyblue;*/
+}
+
+#sxmt-player-buttons i.fa:before {
+    pointer-events: all;
+}
+
+#sxmt-player-buttons i.fa:hover, #sxmt-repeat.sxmt-repeat {
+    /*color: teal;*/
+    /*color: deepskyblue;*/
+    /*text-shadow: 0 0 0.0625em #000, 0 0 0.0625em #000, 0 -0.0625em 0.0625em #000, 0 0.0625em 0.0625em #000;*/
+    text-shadow: 0 0 0.0825em #fff, 0 0 0.1825em #fff, 0 0.0125em 0.0825em #fff, 0 0.0125em 0.0825em #fff !important;
+}
+
+#sxmt-player-buttons-right {
+    /*position: absolute;*/
+    /*right: 1.25em;*/
+}
+
+#sxmt-play {
+    width: 2.125em;
+}
+
+#sxmt-menu {
+    float: right;
+}
+
+/*
+#sxmt-menu-drop {
+    position: absolute;
+    top: -3.5em !important;
+    width: 6.25em !important;
+    right: 0.1875em !important;
+    left: initial !important;
+}
+*/
+
+/*#videoColumn, #historyColumn {
+    margin: 1.25em 0;
+}*/
+
+#videoColumn {
+    flex-grow: 1;
+}
+
+#videoHeader {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin: -1.25rem !important;
+    padding: 0.55em 1.25rem;
+    background: whitesmoke;
+}
+
+#videoWrapper {
+    position: absolute;
+    /*left: 1.25em;*/
+    /*right: 1.25em;*/
+    left: 0;
+    right: 0;
+    top: 3.55em;
+    bottom: 0;
+    /*bottom: 1.25em;*/
 }
 
 #videoUrl > a {
     color: #000000;
-}
-
-@media only screen and (max-width: 64em) {
-    #historyColumn {
-        margin-top: 0;
-    }
-    #videoHistoryNav {
-        max-height: none !important;
-    }
+    /*color: #F5F5F5;*/
 }
 
 .sidebar {
@@ -102,7 +339,7 @@
 }
 
 #videoHistoryHeader > h5 {
-    padding: 10px 25px;
+    padding: 0.625em 1.5625em;
     margin: 0;
 }
 
@@ -112,22 +349,210 @@
 }
 
 #videoHistoryNav {
-    padding: 10px 20px;
+    padding: 0.625em 1.25em;
     overflow: auto;
-}
-
-#videoHistory {
-    padding: 1rem 0 0;
 }
 
 .historyEntry {
     word-break: break-all;/*replace with text-overflow ellipses or marquee maybe*/
     display: block;
-    font-size: 10px;
-    padding: 10px;
-    height: 100px;
+    font-size: 0.625em;
+    padding: 0.625em;
+    height: 6.25em;
 }
 
-.historyTitle {
-    font-size: 12px;
+.historyTitle, #sxmt-now-playing-text > .sxmt-song-title {
+    font-size: 0.75em;
+}
+
+#sxmt-player-buttons {
+    margin: 0 auto;
+}
+
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* Mobile Tiny */
+/*@media only screen and (max-width: 23em) {
+    #sxmt-now-playing {
+        display: none;
+    }
+}*/
+
+/* Mobile */
+@media only screen and (max-width: 40em) {
+    /*#sxmt-repeat, #sxmt-latest {
+        display: none;
+    }*/
+
+    /*#sxmt-now-playing {
+        position: static;
+        float: left;
+        width: 3.75em;
+    }*/
+
+    #sxmt-control-bar {
+        /*padding: 0.625em;*/
+    }
+
+    #sxmt-control-bar .hideOnMobile {
+        display: none !important;
+    }
+}
+
+/* Mobile - Medium */
+/*@media only screen and (max-width: 55em) {
+    #sxmt-now-playing {
+        width: 5.125em;
+    }
+
+    #sxmt-now-playing-img {
+        width: 100%;
+    }
+
+    #sxmt-now-playing-text {
+        display: none !important;
+    }
+}*/
+
+/* Medium - */
+@media only screen and (max-width: 64em) {
+    #sxmt-stations-panel, #videoColumn {
+        /*height: 50%;*/
+    }
+
+    /*#historyColumn {
+        margin-top: 0;
+    }
+    #videoHistoryNav {
+        max-height: none !important;
+    }
+    #sxmt-repeat {
+        margin-left: 1.25em;
+    }*/
+}
+
+/* Smallish - */
+@media only screen and (max-width: 46.875em) {
+    #sxmt-player-buttons i.fa {
+        padding: 0 0.325em;
+    }
+
+    #sxmt-play {
+        width: 1.5em;
+    }
+
+    /*h3 {
+        font-size: 1.375rem;
+    }
+
+    #videoWrapper {
+        top: 3em;
+    }*/
+}
+
+/* Small - */
+@media only screen and (max-width: 40.063em) {
+    #sxmt-top {
+        /*min-height: 7.5em;*/
+        height: 100%;
+    }
+
+    #sxmt-top > * {
+        height: 50%;
+    }
+
+    #sxmt-control-bar {
+        /*text-align: left;*/
+        /*margin-left: 4em;*/
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        text-align: center;
+        padding-bottom: .625em;
+        top: initial;
+        transform: initial;
+    }
+
+    #sxmt-content-pane {
+        flex-direction: column-reverse;
+    }
+
+    #sxmt-content-pane[station-selected] {
+        bottom: 3.5em;
+    }
+
+    .top-bar .name h1 a, .top-bar .name h2 a, .top-bar .name h3 a,
+    .top-bar .name h4 a, .top-bar .name p a, .top-bar .name span a {
+        width: 100%;
+    }
+
+    section.top-bar-section {
+        -webkit-transform-style: preserve-3d;
+        -moz-transform-style: preserve-3d;
+        transform-style: preserve-3d;
+    }
+
+    #videoColumn {
+        position: relative;
+        flex-grow: 0;
+        /*height: 15em;*/
+        height: 8em;
+    }
+
+    #videoColumn > div.panel {
+        padding: 0.75em;
+    }
+
+    #videoHeader {
+        font-size: 1em !important;
+        padding: 0;
+        margin: 0 0 0.325em !important;
+    }
+
+    #videoWrapper {
+        top: 2.5em;
+    }
+
+    #sxmt-stations-panel {
+        width: auto;
+        flex-grow: 1;
+    }
+
+    #sxmt-stations-panel li.tab-title > a {
+        padding-bottom: 0.25em !important;
+        padding-top: 0.25em !important;
+    }
+
+    #sxmt-stations-panel > div.tabs-content {
+        top: 2.1em;
+    }
+}
+
+/* JScrollPane Overrides */
+.jspTrack {
+    /*background: #b2dfed;*/
+    background: #c5eaf6;
+}
+
+.jspTrack > .jspDrag {
+    background: #24b2e1;
+    cursor: default;
+}
+
+/* Foundation Overrides */
+.tabs dd.active a, .tabs .tab-title.active a {
+    background-color: #c5eaf6;
+    /*font-weight: bold;*/
+}
+
+.tabs dd, .tabs .tab-title {
+    width: 50%;
+    text-align: center;
 }

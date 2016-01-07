@@ -22,9 +22,9 @@ public class SXMTController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<Station> getAllStations() throws SQLException {
-        List<Station> returnedStations = new ArrayList<Station>();
+        List<Station> returnedStations = new ArrayList<>();
         List<com.sxmt.ui.Station> stations = StationRetriever.getStations();
-        for (com.sxmt.ui.Station station : stations) { // Get rid o' those pesky Longs
+        for (com.sxmt.ui.Station station : stations) {
             returnedStations.add(new Station(station.getName(), station.getId().toString(), station.getThumbnail(), station.getBackdrop()));
         }
         return returnedStations;
@@ -52,6 +52,30 @@ public class SXMTController {
             // send back the matching song
             video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
+//        video = new VideoForDisplay("Test Song", "Test Artist", "Test Title", "94Rq2TX0wj4", "Test Channel", "", 0L, 0L);
+        Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
+        String tweetId = null, referenceId = null;
+        if (tweetIdL != null) tweetId = tweetIdL.toString();
+        if (referenceIdL != null) referenceId = referenceIdL.toString();
+        return new Song( // Getting close to actually replacing this with VideoForDisplay
+                video.getVideoTitle(),
+                video.getArtist(),
+                video.getSongName(),
+                video.getVideoId(),
+                video.getThumbnail(),
+                tweetId,
+                referenceId
+        );
+    }
+
+	@RequestMapping(
+            value="/prevsong",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Song prevSong(@RequestBody StationSong stationInfo) throws SQLException {
+        VideoForDisplay video = VideoRetriever.getPrevVideo(Long.parseLong(stationInfo.getStation()), Long.parseLong(stationInfo.getTweet()));
         Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
         String tweetId = null, referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();

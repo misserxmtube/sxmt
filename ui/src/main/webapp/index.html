@@ -3,75 +3,111 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SXMT - Serious XM Tube</title>
+    <title>Station Shuffle</title>
     <link rel="stylesheet" href="css/foundation.min.css" />
-    <link rel="stylesheet" href="css/slick/slick.css" />
-    <link rel="stylesheet" href="css/slick/slick-theme.css" />
+    <link rel="stylesheet" href="css/font-awesome.min.css" />
+    <link rel="stylesheet" href="css/jquery.jscrollpane.css" />
     <link rel="stylesheet" href="css/sxmt.css" />
     <script type="text/javascript" src="js/modernizr.js"></script>
 </head>
 <body id="sxmtBody">
-
-<nav class="top-bar" data-topbar="">
-    <ul class="title-area"><li class="name"><h1><a href="javascript:void(0);" target="_blank">Welcome to Serious XM Tube</a></h1></li></ul>
+<div class="off-canvas-wrap" data-offcanvas><div class="inner-wrap">
+<nav id="sxmt-top" class="top-bar" data-topbar="">
+    <ul class="title-area">
+        <li class="name">
+            <h1><a id="sxmt-logo-anchor" href="javascript:void(0);">
+                <img id="sxmt-logo-img" src="images/stationshuffle.png" alt="Station Shuffle" />
+            </a></h1>
+        </li>
+    </ul>
     <section class="top-bar-section">
-        <ul class="right">
+        <ul class="right" style="display:none;">
             <!--<li class="divider"></li>-->
             <!--TODO may want to add our controls here-->
         </ul>
-    </section>
-</nav>
-<section class="scroll-container">
-    <div class="row">
-        <div id="videoColumn" class="large-7 columns">
-            <div class="panel">
-                <h3 id="videoHeader" class="noMargin">Choose a Station to Get Started</h3>
-                <div id="videoWrapper" class="flex-video hideOffscreen">
-                    <div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;">
-                        &nbsp;_______&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;_______&nbsp;_________
-                        (&nbsp;&nbsp;____&nbsp;\|\&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;/|(&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)\__&nbsp;&nbsp;&nbsp;__/
-                        |&nbsp;(&nbsp;&nbsp;&nbsp;&nbsp;\/(&nbsp;\&nbsp;&nbsp;&nbsp;/&nbsp;)|&nbsp;()&nbsp;()&nbsp;|&nbsp;&nbsp;&nbsp;)&nbsp;(&nbsp;&nbsp;&nbsp;
-                        |&nbsp;(_____&nbsp;&nbsp;\&nbsp;(_)&nbsp;/&nbsp;|&nbsp;||&nbsp;||&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                        (_____&nbsp;&nbsp;)&nbsp;&nbsp;)&nbsp;_&nbsp;(&nbsp;&nbsp;|&nbsp;|(_)|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;)&nbsp;|&nbsp;/&nbsp;(&nbsp;)&nbsp;\&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                        /\____)&nbsp;|(&nbsp;/&nbsp;&nbsp;&nbsp;\&nbsp;)|&nbsp;)&nbsp;&nbsp;&nbsp;(&nbsp;|&nbsp;&nbsp;&nbsp;|&nbsp;|&nbsp;&nbsp;&nbsp;
-                        \_______)|/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\||/&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\|&nbsp;&nbsp;&nbsp;)_(&nbsp;&nbsp;&nbsp;
-                    </div>
+        <div id="sxmt-control-bar" style="display:none;">
+            <div id="sxmt-player-wrapper">
+                <div id="sxmt-player-buttons" class="noselect">
+                    <i title="Previous Song"    id="sxmt-prev"      class="fa fa-2x fa-backward"></i>
+                    <i title="Play"             id="sxmt-play"      class="fa fa-2x fa-play"></i><!-- toggle fa-pause -->
+                    <i title="Next Song"        id="sxmt-next"      class="fa fa-2x fa-forward"></i>
+                                <span id="sxmt-player-buttons-right">
+                                    <i title="Repeat Song"  id="sxmt-repeat"    class="fa fa-2x fa-repeat"></i>
+                                    <i title="Latest Song"  id="sxmt-latest"    class="fa fa-2x fa-step-forward"></i>
+                                </span>
+                    <!--<i title="Repeat Song"      id="sxmt-repeat"    class="fa fa-3x fa-repeat hideOnMobile"></i>-->
+                    <!--<i title="Latest Song"      id="sxmt-latest"    class="fa fa-3x fa-fast-forward hideOnMobile"></i>-->
+
+                    <!--<i id="sxmt-menu" class="fa fa-3x fa-caret-square-o-up" data-options="align:top" data-dropdown="sxmt-menu-drop"></i>-->
+                    <!--<i id="sxmt-menu" class="fa fa-3x fa-caret-square-o-up"></i>-->
+                    <!--<ul id="sxmt-menu-drop" class="tiny f-dropdown" data-dropdown-content>-->
+                    <!--<ul id="sxmt-menu-drop" style="display:none;">
+                        <li><i id="sxmt-menu-repeat" class="fa fa-2x fa-repeat"></i></li>
+                        <li><i id="sxmt-menu-latest" class="fa fa-2x fa-fast-forward"></i></li>
+                    </ul>-->
                 </div>
-                <a id="videoSkip" class="large button expand" style="display: none;">Next Video</a>
-                <div id="stations"></div>
             </div>
         </div>
-        <div id="historyColumn" class="large-5 columns">
-            <div id="sidebarRight" class="sidebar panel">
-                <div id="videoHistoryHeader">
-                    <h5>History</h5>
-                    <hr />
+    </section>
+</nav>
+    <div id="sxmt-content-pane" class="row">
+        <div id="sxmt-stations-panel">
+            <div id="sxmt-stations-overlay"><div id="sxmt-stations-overlay-text"><i class="fa fa-spinner fa-spin sxmt-vertical-center"></i></div></div>
+            <!--<div id="sxmt-stations-wrapper">-->
+                <!--<div id="sxmt-station-tabs-wrapper">-->
+                    <ul class="tabs" data-tab>
+                        <li class="tab-title active"><a href="#sxmt-stations">Stations</a></li>
+                        <li class="tab-title"><a href="#videoHistory">History</a></li>
+                    </ul>
+                    <div class="tabs-content">
+                        <ul id="sxmt-stations" class="content active">
+                            <li style="color: whitesmoke;text-align: center;"><i class="fa fa-spinner fa-spin sxmt-vertical-center"></i>&nbsp;Loading Stations</li>
+                        </ul>
+                        <ul id="videoHistory" class="content"></ul>
+                    </div>
+                <!--</div>-->
+                <div id="sxmt-now-playing" style="display:none;"><!-- TODO on hover/click bring up song info -->
+                    <img id="sxmt-now-playing-img" src="">
+                    <div id="sxmt-now-playing-text">FILL IN</div>
                 </div>
-                <nav id="videoHistoryNav">
-                    <ul id="videoHistory" class="side-nav"></ul>
-                </nav>
+            <!--</div>-->
+        </div>
+        <div id="videoColumn">
+            <div class="panel">
+                <h3 id="videoHeader" class="noMargin">Ready for Some Music?</h3>
+                <div id="videoWrapper">
+                    <div id="sxmt-video-overlay"><div id="sxmt-video-overlay-text">Choose a Station to Get Started</div></div>
+                    <div id="videoPlayer" style="text-align:center;white-space:pre;font-family:monospace;"><i class="fa fa-spinner fa-spin sxmt-vertical-center"></i></div>
+                </div>
             </div>
         </div>
     </div>
-</section>
+<a class="exit-off-canvas"></a>
+</div></div>
 
 <!-- TEMPLATES/ -->
 <script id="HT_videoUrl" type="text/x-handlebars-template"><a href="https://www.youtube.com/watch?v={{id}}" target="_blank">{{title}}<!--{{song}}&nbsp;by&nbsp;{{artist}}--></a></script>
 <script id="HT_videoHeader" type="text/x-handlebars-template"><span id="videoStatus" style="display:none;">You&rsquo;re Listening To:&nbsp;</span><span id="videoUrl">{{> videoUrl}}</span></script>
 <script id="HT_videoEmbedUrl" type="text/x-handlebars-template">https://www.youtube.com/embed/{{id}}?enablejsapi=1</script>
-<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}'),url('images/noImg.png');">{{name}}</div>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
+<!--<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<div class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}'),url('images/noImg.png');">{{name}}</div>{{/each}}</script>&lt;!&ndash;TODO fancy up the station buttons (now playing and artist for stations?)&ndash;&gt;-->
+<script id="HT_stations" type="text/x-handlebars-template">{{#each this}}<li class="station panel" data-station="{{id}}" style="background-image:url('{{thumbnail}}'),url('images/noImg.png');">
+    <div class="sxmt-station-overlay"><div class="sxmt-station-overlay-text">{{name}}</div></div>
+</li>{{/each}}</script><!--TODO fancy up the station buttons (now playing and artist for stations?)-->
 <script id="HT_history" type="text/x-handlebars-template">{{#each this}}{{> historyEntry}}{{/each}}</script>
-<script id="HT_historyEntry" type="text/x-handlebars-template"><a class="historyEntry panel" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><img src="{{song.thumbnail}}" style="float:left;margin-right:10px;height:100%;" /><span class="historyTitle">{{song.title}}</span><br><b>Song:&nbsp;</b>{{song.song}}<br><b>Artist:&nbsp;</b>{{song.artist}}</a>
+<script id="HT_historyEntry" type="text/x-handlebars-template"><li><a class="historyEntry panel" href="https://www.youtube.com/watch?v={{song.id}}" target="_blank" data-station="{{station}}" data-song="{{song.id}}" data-tweet="{{song.tweet}}"><img src="{{song.thumbnail}}" style="float:left;margin-right:10px;height:100%;" /><span class="historyTitle" title="{{song.title}}">{{song.title}}</span><br><span title="{{song.song}}">"{{song.song}}"</span><br><span title="{{song.artist}}">{{song.artist}}</span></a></li>
 </script><!--TODO fancy up-->
+<script id="HT_nowPlayingText" type="text/x-handlebars-template">
+    <span class="sxmt-song-title" title="{{title}}">{{title}}</span><br><span title="{{song}}">"{{song}}"</span><br><span title="{{artist}}">{{artist}}</span>
+</script>
 <!-- /TEMPLATES -->
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript" src="js/foundation.min.js"></script>
-<script type="text/javascript" src="js/slick.min.js"></script>
 <script type="text/javascript" src="js/fastclick.js"></script>
 <script type="text/javascript" src="js/handlebars.min.js"></script>
 <script type="text/javascript" src="https://www.youtube.com/iframe_api"></script>
+<script type="text/javascript" src="js/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/jquery.jscrollpane.min.js"></script>
 <script type="text/javascript" src="js/sxmt.js"></script>
 </body>
 </html>
