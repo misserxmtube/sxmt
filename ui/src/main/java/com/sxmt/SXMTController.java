@@ -24,6 +24,10 @@ public class SXMTController {
     )
     public List<Station> getAllStations() throws SQLException {
         return StationRetriever.getStations();
+        // TESTING CODE
+        /*List<Station> s = new ArrayList<>();
+        s.add(new Station("Test Station", "123", "", ""));
+        return s;*/
     }
 
 	@RequestMapping(
@@ -48,10 +52,24 @@ public class SXMTController {
             // send back the matching song
             video = VideoRetriever.getVideo(station, Long.parseLong(tweet));
         }
-        final Long tweetIdL = video.getRelevantTweetId();
-        final Long referenceIdL = video.getReferenceTweetId();
-        String tweetId = null;
-        String referenceId = null;
+        return videoForDisplayToSong(video);
+    }
+
+	@RequestMapping(
+            value="/prevsong",
+            method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Song prevSong(@RequestBody StationSong stationInfo) throws SQLException {
+        return videoForDisplayToSong(VideoRetriever.getPrevVideo(Long.parseLong(stationInfo.getStation()), Long.parseLong(stationInfo.getTweet())));
+    }
+
+    private Song videoForDisplayToSong(VideoForDisplay video) {
+        // TESTING CODE
+//        video = new VideoForDisplay("Test Song", "Test Artist", "Test Title", "94Rq2TX0wj4", "Test Channel", "", 0L, 0L);
+        Long tweetIdL = video.getRelevantTweetId(), referenceIdL = video.getReferenceTweetId();
+        String tweetId = null, referenceId = null;
         if (tweetIdL != null) tweetId = tweetIdL.toString();
         if (referenceIdL != null) referenceId = referenceIdL.toString();
         return new Song( // Getting close to actually replacing this with VideoForDisplay
@@ -75,22 +93,11 @@ public class SXMTController {
         final List<Station> allStations = getAllStations();
 		for (Station s : allStations)
 		{
-            final String stationId = String.valueOf(s.getId());
-            final StationSong stationSong = new StationSong();
+			final String stationId = String.valueOf(s.getId());
+			final StationSong stationSong = new StationSong();
 			stationSong.setStation(stationId);
 			allSongs.add(getSongForStation(stationSong));
 		}
 		return allSongs;
-	}
-
-	@RequestMapping(
-			value="/song/previous",
-			method = RequestMethod.POST,
-			consumes = MediaType.APPLICATION_JSON_VALUE,
-			produces = MediaType.APPLICATION_JSON_VALUE
-	)
-	public Song getPreviousSongForStation(@RequestBody StationSong stationInfo) throws SQLException {
-		// todo wait for persistence layer implementation
-		return null;
 	}
 }
