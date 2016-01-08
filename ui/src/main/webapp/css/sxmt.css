@@ -13,7 +13,7 @@ body {
 }
 
 .row {
-    max-width: 100em;
+    max-width: none;
 }
 
 .station {
